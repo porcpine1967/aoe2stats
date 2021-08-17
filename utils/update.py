@@ -109,7 +109,7 @@ def fetch_matches(start):
         if not match["version"]:
             continue
         # ignore if not map_type
-        if not match["match_type"]:
+        if not match["map_type"]:
             continue
         match_rows = []
         have_winner = False
