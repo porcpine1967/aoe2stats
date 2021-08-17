@@ -40,77 +40,113 @@ def civ_map():
     return cmap
 
 
-def most_popular_player(where=""):
-    """ Returns an array of civ name:player-preference-units in order of descending
-popularity."""
+def most_popular_player(version, where=None):
+    """ Returns number of players and an array of
+        civ name:player-preference-units in order of descending popularity."""
+
     sql = """SELECT player_id, civ_id, COUNT(*) FROM matches
-             {}
-             GROUP BY player_id, civ_id""".format(
-        where
+            WHERE civ_id IS NOT NULL AND version = {}{}
+            GROUP BY player_id, civ_id""".format(
+        version, where_array_to_sql(where)
     )
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    players = defaultdict(lambda: Player())
+    players = defaultdict(Player)
     for row in cur.execute(sql).fetchall():
         players[row[0]].add_civ(row[1], row[2])
-
     data = Counter()
     cmap = civ_map()
     for player in players.values():
         for civ_id, value in player.preference_units.items():
             data[cmap[civ_id]] += value
-    return data
+    return len(players), data
 
 
-def most_popular_match(where=""):
+def most_popular_match(version, where=None):
     """ Returns an array of civ name:number of plays in order of descending
 popularity."""
     sql = """SELECT civ_id, COUNT(*) as cnt FROM matches
-            {}
+            WHERE civ_id IS NOT NULL AND version = {}{}
             GROUP BY civ_id""".format(
-        where
+        version, where_array_to_sql(where)
     )
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     data = Counter()
     cmap = civ_map()
+    total = 0.0
     for row in cur.execute(sql).fetchall():
+        total += row[1]
         data[cmap[row[0]]] = row[1]
-    return data
+    return total, data
 
 
-def collate_popularities():
+def where_array_to_sql(where):
+    """ Turns a set of where clauses into an sql string. """
+    if not where:
+        return ""
+    return "".join([" AND {}".format(x) for x in where])
+
+
+def collate_popularities(where=None):
     """ Returns map of civilizations to map of popularity attributes """
 
-    civ_data = defaultdict(lambda: {})
-    player_popularity = most_popular_player()
-    match_popularity = most_popular_match()
+    civ_data = defaultdict(dict)
+    version = latest_version()
+    player_total, player_popularity = most_popular_player(version, where)
+    match_total, match_popularity = most_popular_match(version, where)
 
     rank = 0
     for civ_name, total in player_popularity.most_common():
         rank += 1
         civ_info = civ_data[civ_name]
         civ_info["player_rank"] = rank
-        civ_info["player_score"] = total
+        civ_info["player_absolute_score"] = total
+        civ_info["player_score"] = total / player_total
 
     rank = 0
     for civ_name, total in match_popularity.most_common():
         rank += 1
         civ_info = civ_data[civ_name]
         civ_info["match_rank"] = rank
-        civ_info["match_score"] = total
+        civ_info["match_absolute_score"] = total
+        civ_info["match_score"] = total / match_total
 
     return civ_data
 
 
+def latest_version():
+    """ Returns latest version available in db. """
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    version = 0
+    for row in cur.execute("SELECT DISTINCT version FROM matches").fetchall():
+        current_version = row[0]
+        if not current_version:
+            continue
+        if int(current_version) > version:
+            version = int(current_version)
+    return version
+
+
 def run():
     """ Make it easy to switch ad hoc what one does. """
-    civ_data = collate_popularities()
-    for civ_info in sorted(civ_data.items(), key=lambda x: x[1]["player_rank"]):
+    civ_data = collate_popularities(["map_type = 9", "rating_type = 4",])
+    for civ_info in sorted(civ_data.items(), key=lambda x: x[1]["match_rank"]):
+        civilization_name = civ_info[0]
+        data = civ_info[1]
+        rank_diff = data["player_rank"] - data["match_rank"]
+        if rank_diff == 0:
+            rank_diff = ""
+        else:
+            rank_diff = "{:+}".format(rank_diff)
         print(
-            "{:15}: {:5.0f}: {:5.0f}".format(
-                civ_info[0], civ_info[1]["player_score"], civ_info[1]["match_score"],
+            "{:11}: {:5.1f}%: {:5.1f}%: {}".format(
+                civilization_name,
+                data["player_score"] * 100,
+                data["match_score"] * 100,
+                rank_diff,
             )
         )
 

@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Emacs
+*~
+
+# Local db
+data/aoe2.net.db
