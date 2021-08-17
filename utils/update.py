@@ -105,6 +105,12 @@ def fetch_matches(start):
         # ignore unranked
         if match["rating_type"] == 0:
             continue
+        # ignore if not version
+        if not match["version"]:
+            continue
+        # ignore if not map_type
+        if not match["match_type"]:
+            continue
         match_rows = []
         have_winner = False
         row = [
@@ -119,6 +125,8 @@ def fetch_matches(start):
         civs = set()
         for player in match["players"]:
             if not player["profile_id"]:
+                continue
+            if not player["civ"]:
                 continue
             if player["won"]:
                 have_winner = True

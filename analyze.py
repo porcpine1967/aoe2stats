@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 """ Runs queries and prints tables based on data drawn from aoe2.net """
+from argparse import ArgumentParser
 from collections import Counter, defaultdict
 import json
 
 import sqlite3
+
+import utils.update
 
 DB = "data/aoe2.net.db"
 
@@ -89,11 +92,10 @@ def where_array_to_sql(where):
     return "".join([" AND {}".format(x) for x in where])
 
 
-def collate_popularities(where=None):
+def collate_popularities(version, where=None):
     """ Returns map of civilizations to map of popularity attributes """
 
     civ_data = defaultdict(dict)
-    version = latest_version()
     player_total, player_popularity = most_popular_player(version, where)
     match_total, match_popularity = most_popular_match(version, where)
 
@@ -130,9 +132,10 @@ def latest_version():
     return version
 
 
-def run():
-    """ Make it easy to switch ad hoc what one does. """
-    civ_data = collate_popularities(["map_type = 9", "rating_type = 4",])
+def analyze_popularity(version=None, where=None):
+    """ Print out results of popularity analysis """
+
+    civ_data = collate_popularities(version, where)
     for civ_info in sorted(civ_data.items(), key=lambda x: x[1]["match_rank"]):
         civilization_name = civ_info[0]
         data = civ_info[1]
@@ -149,6 +152,37 @@ def run():
                 rank_diff,
             )
         )
+
+
+def run():
+    """ Make it easy to switch ad hoc what one does. """
+    parser = ArgumentParser()
+    parser.add_argument(
+        "query",
+        default="all",
+        choices=("all", "1v1", "team",),
+        help="Which records to analyze",
+    )
+    parser.add_argument("-m", choices=("arabia", "arena",), help="Which map")
+    parser.add_argument("-v", default=None, help="AOE2 Patch Version")
+    parser.add_argument(
+        "-w", action="store_true", help="Use data from just the past week"
+    )
+    args = parser.parse_args()
+    where = []
+    if args.query == "1v1":
+        where.append("rating_type = 2")
+    elif args.query == "team":
+        where.append("rating_type = 4")
+
+    if args.m == "arabia":
+        where.append("map_type = 9")
+    elif args.m == "arena":
+        where.append("map_type = 29")
+
+    if args.w:
+        where.append("started > {}".format(utils.update.one_week_ago()))
+    analyze_popularity(args.v or latest_version(), where)
 
 
 if __name__ == "__main__":
