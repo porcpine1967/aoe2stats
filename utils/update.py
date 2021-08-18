@@ -2,6 +2,7 @@
 
 """ Downloads data from aoe2.net and adds to local db. """
 
+from argparse import ArgumentParser
 from datetime import datetime, timedelta
 import json
 import sys
@@ -93,7 +94,11 @@ def fetch_matches(start):
     """ Fetches match data via one api call starting at start_time.
         Returns number of matches, latest start time, and
         array of values ready for sql insert. """
-    print("FETCHING from {}".format(start))
+    print(
+        "FETCHING from {} ({})".format(
+            datetime.fromtimestamp(start).strftime("%Y-%m-%d %H:%M"), start
+        )
+    )
     match_data = []
     response = requests.get(API_TEMPLATE.format(start=start, count=MAX_DOWNLOAD))
     if response.status_code != 200:
@@ -153,12 +158,20 @@ def fetch_matches(start):
     return len(data), next_start, match_data
 
 
+def time_left(script_start, pct):
+    """ Returns string version of hours/minutes/seconds  probably left. """
+    seconds_left = int((datetime.utcnow().timestamp() - script_start) / pct)
+    return "Time Remaining: {}".format(str(timedelta(seconds=seconds_left)))
+
+
 def fetch_and_save(start):
     """ Fetches up to one week of data from start. """
+    script_start = datetime.utcnow().timestamp()
     hold_start = 0
     fetch_start = start
     data_length = MAX_DOWNLOAD
     week = 604800
+    expected_end = start + week > script_start and script_start or start + week
     while (
         data_length >= MAX_DOWNLOAD
         and fetch_start > hold_start
@@ -167,20 +180,26 @@ def fetch_and_save(start):
         hold_start = fetch_start
         data_length, fetch_start, match_data = fetch_matches(fetch_start)
         save_matches(match_data)
+        print(
+            time_left(script_start, float(fetch_start - start) / (expected_end - start))
+        )
 
 
-def lords_of_the_west():
-    """ Downloads data for addition of Burgundians and Sicilians."""
-    start = int(datetime.timestamp(datetime(2021, 1, 26)))
+def run(start):
+    """ Parses arguments and runs the appropriate functions. """
+    prepare_database()
     fetch_and_save(start)
 
 
-def run():
-    """ Parses arguments and runs the appropriate functions. """
-    prepare_database()
-    print(last_match_time())
-    fetch_and_save(last_match_time())
-
-
 if __name__ == "__main__":
-    run()
+    parser = ArgumentParser()
+    parser.add_argument(
+        "--start", help="Start time in YYYY-MM-DD format",
+    )
+
+    args = parser.parse_args()
+    if args.start:
+        start_timestamp = int(datetime.strptime(args.start, "%Y-%m-%d").timestamp())
+    else:
+        start_timestamp = last_match_time()
+    run(start_timestamp)
