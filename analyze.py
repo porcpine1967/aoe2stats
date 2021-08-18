@@ -17,12 +17,17 @@ class Player:
 
     def __init__(self):
         self.civ_uses = Counter()
+        self.civ_wins = defaultdict(dict)
         self.total = 0.0
 
-    def add_civ(self, civ, civ_count):
-        """ Adds civilization data for later calculations. """
+    def add_civ_use(self, civ, civ_count):
+        """ Adds civilization usage data for later calculations. """
         self.civ_uses[civ] += civ_count
         self.total += civ_count
+
+    def add_civ_win(self, civ, won, win_count):
+        """ Adds civilization win data for later calculations. """
+        self.civ_wins[civ][won] = win_count
 
     @property
     def preference_units(self):
@@ -32,8 +37,16 @@ class Player:
             pus[civ] = total / self.total
         return pus
 
-    def rating(self, rating_type):
-        """ Returns the highest rating at that rating type."""
+    def win_percentage(self, civ):
+        """ Calculates the user's win percentage for the given civ."""
+        data = self.civ_wins[civ]
+        if 1 in data and 0 not in data:
+            return 1
+        if 1 not in data and 0 in data:
+            return 0
+        win_count = data[1]
+        total = data[0] + data[1]
+        return float(win_count) / total
 
 
 def standard_ratings(version, where=None):
@@ -80,7 +93,7 @@ def most_popular_player(version, where=None):
     cur = conn.cursor()
     players = defaultdict(Player)
     for row in cur.execute(sql).fetchall():
-        players[row[0]].add_civ(row[1], row[2])
+        players[row[0]].add_civ_use(row[1], row[2])
     conn.close()
     data = Counter()
     cmap = civ_map()
@@ -111,11 +124,94 @@ popularity."""
     return total, data
 
 
+def win_rates_player(version, where=None):
+    """ Returns an array of civ name: win percentage in order of
+descending wins. """
+    sql = """ SELECT player_id, civ_id, won, COUNT(*) as cnt FROM matches
+              WHERE civ_id IS NOT NULL AND version = {}{}
+              AND mirror = 0
+              GROUP BY player_id, civ_id, won""".format(
+        version, where_array_to_sql(where)
+    )
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    players = defaultdict(Player)
+    for row in cur.execute(sql).fetchall():
+        players[row[0]].add_civ_win(row[1], row[2], row[3])
+    conn.close()
+    cmap = civ_map()
+    win_calculator = defaultdict(list)
+    for civ_id in cmap:
+        for player in players.values():
+            try:
+                win_calculator[civ_id].append(player.win_percentage(civ_id))
+            except KeyError:
+                pass
+    data = Counter()
+    for civ_id, percentages in win_calculator.items():
+        if not percentages:
+            print(civ_id)
+        data[cmap[civ_id]] = statistics.mean(percentages)
+    return len(players), data
+
+
+def win_rates_match(version, where=None):
+    """ Returns an array of civ name: win percentage in order of
+descending wins. """
+    sql = """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
+              WHERE civ_id IS NOT NULL AND version = {}{}
+              AND mirror = 0
+              GROUP BY civ_id, won""".format(
+        version, where_array_to_sql(where)
+    )
+
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+
+    civs = defaultdict(dict)
+    total = 0
+    for row in cur.execute(sql).fetchall():
+        civ, won, count = row
+        total += count
+        civs[civ][won] = count
+    conn.close()
+
+    cmap = civ_map()
+    civ_percentages = Counter()
+    for civ, data in civs.items():
+        civ_percentages[cmap[civ]] = data[1] / sum([data[0], data[1]])
+    return total, civ_percentages
+
+
 def where_array_to_sql(where):
     """ Turns a set of where clauses into an sql string. """
     if not where:
         return ""
     return "".join([" AND {}".format(x) for x in where])
+
+
+def collate_win_rates(version, where=None):
+    """ Returns map of civilizations to map of popularity attributes """
+
+    civ_data = defaultdict(dict)
+    player_total, player_popularity = win_rates_player(version, where)
+    match_total, match_popularity = win_rates_match(version, where)
+    print("Total players: {:7d}".format(int(player_total)))
+    print("Total matches: {:7d}".format(int(match_total)))
+    rank = 0
+    for civ_name, total in match_popularity.most_common():
+        rank += 1
+        civ_info = civ_data[civ_name]
+        civ_info["match_rank"] = rank
+        civ_info["match_score"] = total
+    rank = 0
+    for civ_name, total in player_popularity.most_common():
+        rank += 1
+        civ_info = civ_data[civ_name]
+        civ_info["player_rank"] = rank
+        civ_info["player_score"] = total
+
+    return civ_data
 
 
 def collate_popularities(version, where=None):
@@ -125,8 +221,8 @@ def collate_popularities(version, where=None):
     player_total, player_popularity = most_popular_player(version, where)
     match_total, match_popularity = most_popular_match(version, where)
 
-    print("Total matches: {:7d}".format(int(match_total)))
     print("Total players: {:7d}".format(int(player_total)))
+    print("Total matches: {:7d}".format(int(match_total)))
     rank = 0
     for civ_name, total in player_popularity.most_common():
         rank += 1
@@ -158,18 +254,21 @@ def latest_version():
         if int(current_version) > version:
             version = int(current_version)
     conn.close()
+    print("Version:", version)
     return version
 
 
-def analyze_popularity(version=None, where=None):
-    """ Print out results of popularity analysis """
+def display(metric, version, where):
+    """ Print table of data. """
+    if metric == "popularity":
+        civ_data = collate_popularities(version, where)
+    elif metric == "winrate":
+        civ_data = collate_win_rates(version, where)
 
-    civ_data = collate_popularities(version, where)
     print("Civilization   : Player :  Match : Diff")
     for idx, civ_info in enumerate(
         sorted(civ_data.items(), key=lambda x: x[1]["player_rank"])
     ):
-
         civilization_name = civ_info[0]
         data = civ_info[1]
         rank_diff = data["player_rank"] - data["match_rank"]
@@ -197,6 +296,9 @@ def run():
         choices=("all", "1v1", "team",),
         help="Which records to analyze",
     )
+    parser.add_argument(
+        "metric", choices=("popularity", "winrate",), help="Which metric to show"
+    )
     parser.add_argument("-m", choices=("arabia", "arena",), help="Which map")
     parser.add_argument("-v", default=None, help="AOE2 Patch Version")
     parser.add_argument(
@@ -214,6 +316,7 @@ def run():
         "-highelo", action="store_true", help="Data from elos above stdev"
     )
     args = parser.parse_args()
+    version = args.v or latest_version()
     where = []
     if args.query == "1v1":
         where.append("rating_type = 2")
@@ -233,19 +336,19 @@ def run():
     elif args.lelo:
         where.append("rating < {}".format(args.lelo))
     elif args.lowelo:
-        low, _ = standard_ratings(args.v or latest_version(), where)
+        low, _ = standard_ratings(version, where)
         print("All elos below {}".format(int(low)))
         where.append("rating < {}".format(low))
     elif args.midelo:
-        low, high = standard_ratings(args.v or latest_version(), where)
+        low, high = standard_ratings(version, where)
         print("All elos between {} and {}".format(int(low), int(high)))
         where.append("rating BETWEEN {} AND {}".format(low, high))
     elif args.highelo:
-        _, high = standard_ratings(args.v or latest_version(), where)
+        _, high = standard_ratings(version, where)
         print("All elos above {}".format(int(high)))
         where.append("rating > {}".format(high))
 
-    analyze_popularity(args.v or latest_version(), where)
+    display(args.metric, version, where)
 
 
 if __name__ == "__main__":
