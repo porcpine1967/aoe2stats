@@ -55,7 +55,7 @@ def standard_ratings(version, where=None):
         Only really makes sense of rating_type is in query."""
 
     sql = """SELECT MAX(rating) FROM matches
-            WHERE civ_id IS NOT NULL AND rating IS NOT NULL AND version = {}{}
+            WHERE civ_id IS NOT NULL AND rating IS NOT NULL AND version in ({}){}
             GROUP BY player_id""".format(
         version, where_array_to_sql(where)
     )
@@ -85,7 +85,7 @@ def most_popular_player(version, where=None):
         civ name:player-preference-units in order of descending popularity."""
 
     sql = """SELECT player_id, civ_id, COUNT(*) FROM matches
-            WHERE civ_id IS NOT NULL AND version = {}{}
+            WHERE civ_id IS NOT NULL AND version in ({}){}
             GROUP BY player_id, civ_id""".format(
         version, where_array_to_sql(where)
     )
@@ -107,7 +107,7 @@ def most_popular_match(version, where=None):
     """ Returns an array of civ name:number of plays in order of descending
 popularity."""
     sql = """SELECT civ_id, COUNT(*) as cnt FROM matches
-            WHERE civ_id IS NOT NULL AND version = {}{}
+            WHERE civ_id IS NOT NULL AND version in ({}){}
             GROUP BY civ_id""".format(
         version, where_array_to_sql(where)
     )
@@ -128,7 +128,7 @@ def win_rates_player(version, where=None):
     """ Returns an array of civ name: win percentage in order of
 descending wins. """
     sql = """ SELECT player_id, civ_id, won, COUNT(*) as cnt FROM matches
-              WHERE civ_id IS NOT NULL AND version = {}{}
+              WHERE civ_id IS NOT NULL AND version in ({}){}
               AND mirror = 0
               GROUP BY player_id, civ_id, won""".format(
         version, where_array_to_sql(where)
@@ -159,7 +159,7 @@ def win_rates_match(version, where=None):
     """ Returns an array of civ name: win percentage in order of
 descending wins. """
     sql = """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
-              WHERE civ_id IS NOT NULL AND version = {}{}
+              WHERE civ_id IS NOT NULL AND version in ({}){}
               AND mirror = 0
               GROUP BY civ_id, won""".format(
         version, where_array_to_sql(where)
@@ -300,7 +300,9 @@ def run():
         "metric", choices=("popularity", "winrate",), help="Which metric to show"
     )
     parser.add_argument("-m", choices=("arabia", "arena",), help="Which map")
-    parser.add_argument("-v", default=None, help="AOE2 Patch Version")
+    parser.add_argument(
+        "-v", default=None, help="AOE2 Patch Version(s if comma-delimited-no-space)"
+    )
     parser.add_argument(
         "-w", action="store_true", help="Use data from just the past week"
     )

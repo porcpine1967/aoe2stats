@@ -159,8 +159,11 @@ def fetch_matches(start):
 
 
 def time_left(script_start, pct):
-    """ Returns string version of hours/minutes/seconds  probably left. """
-    seconds_left = int((datetime.utcnow().timestamp() - script_start) / pct)
+    """ Returns string version of hours:minutes:seconds probably left. """
+    now = datetime.utcnow().timestamp()
+    seconds_to_run = int((now - script_start) / pct)
+    estimated_end = datetime.fromtimestamp(script_start + seconds_to_run)
+    seconds_left = estimated_end - now
     return "Time Remaining: {}".format(str(timedelta(seconds=seconds_left)))
 
 
