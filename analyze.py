@@ -49,6 +49,11 @@ class Player:
         return float(win_count) / total
 
 
+def week_before_last_rating():
+    """ Returns timestamp of a week before last rating. """
+    return utils.update.last_match_time() - 7 * 24 * 60 * 60
+
+
 def standard_ratings(version, where=None):
     """ Returns lower and upper bounds of stdev of elo ratings.
         Assumes highest rating of a user is most accurate.
@@ -150,7 +155,7 @@ descending wins. """
     data = Counter()
     for civ_id, percentages in win_calculator.items():
         if not percentages:
-            print(civ_id)
+            continue
         data[cmap[civ_id]] = statistics.mean(percentages)
     return len(players), data
 
@@ -331,7 +336,7 @@ def run():
         where.append("map_type = 29")
 
     if args.w:
-        where.append("started > {}".format(utils.update.one_week_ago()))
+        where.append("started > {}".format(week_before_last_rating()))
 
     if args.gelo:
         where.append("rating > {}".format(args.gelo))

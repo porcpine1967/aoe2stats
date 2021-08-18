@@ -5,10 +5,11 @@
 from argparse import ArgumentParser
 from datetime import datetime, timedelta
 import json
+import sqlite3
 import sys
+import time
 
 import requests
-import sqlite3
 
 DB = "data/aoe2.net.db"
 
@@ -162,7 +163,7 @@ def time_left(script_start, pct):
     """ Returns string version of hours:minutes:seconds probably left. """
     now = datetime.utcnow().timestamp()
     seconds_to_run = int((now - script_start) / pct)
-    estimated_end = datetime.fromtimestamp(script_start + seconds_to_run)
+    estimated_end = script_start + seconds_to_run
     seconds_left = estimated_end - now
     return "Time Remaining: {}".format(str(timedelta(seconds=seconds_left)))
 
@@ -183,6 +184,7 @@ def fetch_and_save(start):
         hold_start = fetch_start
         data_length, fetch_start, match_data = fetch_matches(fetch_start)
         save_matches(match_data)
+        time.sleep(10)
         print(
             time_left(script_start, float(fetch_start - start) / (expected_end - start))
         )
