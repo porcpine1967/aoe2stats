@@ -41,7 +41,7 @@ BATCH_SIZE = 300
 def one_week_ago():
     """ Returns unix timestamp of one week ago. """
     week = timedelta(days=7)
-    return int(datetime.timestamp((datetime.utcnow() - week)))
+    return int(datetime.timestamp((datetime.now() - week)))
 
 
 def prepare_database():
@@ -60,7 +60,8 @@ def last_match_time():
     result = query.fetchone()[0]
     conn.close()
     cutoff = one_week_ago()
-    return result and result > cutoff and result or cutoff
+    # results trickle in, so start 1 hour before end of last run
+    return result and result > cutoff and result - 3600 or cutoff
 
 
 def batch(iterable, size=1):
@@ -161,33 +162,33 @@ def fetch_matches(start):
 
 def time_left(script_start, pct):
     """ Returns string version of hours:minutes:seconds probably left. """
-    now = datetime.utcnow().timestamp()
-    seconds_to_run = int((now - script_start) / pct)
+    now = datetime.now().timestamp()
+    seconds_to_run = (now - script_start) / pct
     estimated_end = script_start + seconds_to_run
-    seconds_left = estimated_end - now
+    seconds_left = int(estimated_end - now)
     return "Time Remaining: {}".format(str(timedelta(seconds=seconds_left)))
 
 
 def fetch_and_save(start):
     """ Fetches up to one week of data from start. """
-    script_start = datetime.utcnow().timestamp()
+    script_start = datetime.now().timestamp()
+    print("Starting at {}".format(int(script_start)))
     hold_start = 0
     fetch_start = start
     data_length = MAX_DOWNLOAD
     week = 604800
-    expected_end = start + week > script_start and script_start or start + week
-    while (
-        data_length >= MAX_DOWNLOAD
-        and fetch_start > hold_start
-        and fetch_start - start < week
-    ):
+    expected_end = script_start if start + week > script_start else start + week
+    while fetch_start > hold_start and fetch_start - start < week:
         hold_start = fetch_start
         data_length, fetch_start, match_data = fetch_matches(fetch_start)
         save_matches(match_data)
+        if data_length < MAX_DOWNLOAD:
+            break
         time.sleep(10)
         print(
             time_left(script_start, float(fetch_start - start) / (expected_end - start))
         )
+    print("Ending at {}".format(int(datetime.now().timestamp())))
 
 
 def run(start):
@@ -201,10 +202,15 @@ if __name__ == "__main__":
     parser.add_argument(
         "--start", help="Start time in YYYY-MM-DD format",
     )
+    parser.add_argument(
+        "--start-ts", type=int, help="Start time as UNIX timestamp",
+    )
 
     args = parser.parse_args()
     if args.start:
         start_timestamp = int(datetime.strptime(args.start, "%Y-%m-%d").timestamp())
+    elif args.start_ts:
+        start_timestamp = args.start_ts
     else:
         start_timestamp = last_match_time()
     run(start_timestamp)
