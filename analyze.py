@@ -59,16 +59,19 @@ def standard_ratings(version, where=None):
         Assumes highest rating of a user is most accurate.
         Only really makes sense of rating_type is in query."""
 
-    sql = """SELECT MAX(rating) FROM matches
-            WHERE civ_id IS NOT NULL AND rating IS NOT NULL AND version in ({}){}
-            GROUP BY player_id""".format(
-        version, where_array_to_sql(where)
-    )
+    sql_template = """SELECT MAX(rating) FROM matches
+                      WHERE civ_id IS NOT NULL
+                      AND rating IS NOT NULL
+                      AND version in ({}){}
+                      GROUP BY player_id"""
+    sql = sql_from_template(sql_template, version, where)
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     elos = [x[0] for x in cur.execute(sql).fetchall()]
     conn.close()
+    if not elos:
+        return 0, 0
     mean = statistics.mean(elos)
     std = statistics.pstdev(elos, mean)
     return mean - std, mean + std
@@ -77,8 +80,8 @@ def standard_ratings(version, where=None):
 def civ_map():
     """ Generates dict for mapping civ id to civ name. """
     cmap = {}
-    with open("data/strings.json") as f:
-        data = json.load(f)
+    with open("data/strings.json") as open_file:
+        data = json.load(open_file)
     for civ_info in data["civ"]:
         cmap[civ_info["id"]] = civ_info["string"]
 
@@ -89,11 +92,11 @@ def most_popular_player(version, where=None):
     """ Returns number of players and an array of
         civ name:player-preference-units in order of descending popularity."""
 
-    sql = """SELECT player_id, civ_id, COUNT(*) FROM matches
-            WHERE civ_id IS NOT NULL AND version in ({}){}
-            GROUP BY player_id, civ_id""".format(
-        version, where_array_to_sql(where)
-    )
+    sql_template = """SELECT player_id, civ_id, COUNT(*) FROM matches
+                      WHERE civ_id IS NOT NULL AND version in ({}){}
+                      GROUP BY player_id, civ_id"""
+    sql = sql_from_template(sql_template, version, where)
+
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     players = defaultdict(Player)
@@ -111,11 +114,10 @@ def most_popular_player(version, where=None):
 def most_popular_match(version, where=None):
     """ Returns an array of civ name:number of plays in order of descending
 popularity."""
-    sql = """SELECT civ_id, COUNT(*) as cnt FROM matches
-            WHERE civ_id IS NOT NULL AND version in ({}){}
-            GROUP BY civ_id""".format(
-        version, where_array_to_sql(where)
-    )
+    sql_template = """SELECT civ_id, COUNT(*) as cnt FROM matches
+                      WHERE civ_id IS NOT NULL AND version in ({}){}
+                      GROUP BY civ_id"""
+    sql = sql_from_template(sql_template, version, where)
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
@@ -131,13 +133,13 @@ popularity."""
 
 def win_rates_player(version, where=None):
     """ Returns an array of civ name: win percentage in order of
-descending wins. """
-    sql = """ SELECT player_id, civ_id, won, COUNT(*) as cnt FROM matches
-              WHERE civ_id IS NOT NULL AND version in ({}){}
-              AND mirror = 0
-              GROUP BY player_id, civ_id, won""".format(
-        version, where_array_to_sql(where)
-    )
+        descending wins. """
+    sql_template = """ SELECT player_id, civ_id, won, COUNT(*) as cnt FROM matches
+                       WHERE civ_id IS NOT NULL AND version in ({}){}
+                       AND mirror = 0
+                       GROUP BY player_id, civ_id, won"""
+    sql = sql_from_template(sql_template, version, where)
+
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     players = defaultdict(Player)
@@ -162,13 +164,12 @@ descending wins. """
 
 def win_rates_match(version, where=None):
     """ Returns an array of civ name: win percentage in order of
-descending wins. """
-    sql = """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
-              WHERE civ_id IS NOT NULL AND version in ({}){}
-              AND mirror = 0
-              GROUP BY civ_id, won""".format(
-        version, where_array_to_sql(where)
-    )
+        descending wins. """
+    sql_template = """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
+                       WHERE civ_id IS NOT NULL AND version in ({}){}
+                       AND mirror = 0
+                       GROUP BY civ_id, won"""
+    sql = sql_from_template(sql_template, version, where)
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
@@ -186,6 +187,11 @@ descending wins. """
     for civ, data in civs.items():
         civ_percentages[cmap[civ]] = data[1] / sum([data[0], data[1]])
     return total, civ_percentages
+
+
+def sql_from_template(template, version, where_array):
+    """ Formats template with standard variables."""
+    return template.format(version, where_array_to_sql(where_array))
 
 
 def where_array_to_sql(where):
@@ -263,7 +269,7 @@ def latest_version():
     return version
 
 
-def display(metric, version, where):
+def display(metric, version, where, cap):
     """ Print table of data. """
     if metric == "popularity":
         civ_data = collate_popularities(version, where)
@@ -271,11 +277,18 @@ def display(metric, version, where):
         civ_data = collate_win_rates(version, where)
 
     print("Civilization   : Player :  Match : Diff")
-    for idx, civ_info in enumerate(
-        sorted(civ_data.items(), key=lambda x: x[1]["player_rank"])
-    ):
-        civilization_name = civ_info[0]
-        data = civ_info[1]
+
+    def by_player_rank(civ_data_kv_pair):
+        return civ_data_kv_pair[1]["player_rank"]
+
+    civ_data_by_player_rank = sorted(civ_data.items(), key=by_player_rank)
+
+    for idx, civ_info in enumerate(civ_data_by_player_rank):
+        if cap and idx >= cap:
+            break
+
+        civilization_name, data = civ_info
+
         rank_diff = data["player_rank"] - data["match_rank"]
         if rank_diff == 0:
             rank_diff = ""
@@ -292,8 +305,22 @@ def display(metric, version, where):
         )
 
 
+def map_id_lookup():
+    """ Returns a dictionary of map_name:map_id pairs. """
+    mmap = {}
+    with open("data/strings.json") as open_file:
+        data = json.load(open_file)
+    for civ_info in data["map_type"]:
+        mmap[civ_info["string"]] = civ_info["id"]
+        mmap[civ_info["string"].lower()] = civ_info["id"]
+
+    return mmap
+
+
 def run():
     """ Make it easy to switch ad hoc what one does. """
+    map_ids = map_id_lookup()
+
     parser = ArgumentParser()
     parser.add_argument(
         "query",
@@ -304,7 +331,7 @@ def run():
     parser.add_argument(
         "metric", choices=("popularity", "winrate",), help="Which metric to show"
     )
-    parser.add_argument("-m", choices=("arabia", "arena",), help="Which map")
+    parser.add_argument("-m", choices=map_ids.keys(), help="Which map")
     parser.add_argument(
         "-v", default=None, help="AOE2 Patch Version(s if comma-delimited-no-space)"
     )
@@ -322,6 +349,7 @@ def run():
     parser.add_argument(
         "-highelo", action="store_true", help="Data from elos above stdev"
     )
+    parser.add_argument("-cap", type=int, help="Max number of civs to show")
     args = parser.parse_args()
     version = args.v or latest_version()
     where = []
@@ -330,10 +358,8 @@ def run():
     elif args.query == "team":
         where.append("rating_type = 4")
 
-    if args.m == "arabia":
-        where.append("map_type = 9")
-    elif args.m == "arena":
-        where.append("map_type = 29")
+    if args.m:
+        where.append("map_type = {}".format(map_ids[args.m]))
 
     if args.w:
         where.append("started > {}".format(week_before_last_rating()))
@@ -355,7 +381,9 @@ def run():
         print("All elos above {}".format(int(high)))
         where.append("rating > {}".format(high))
 
-    display(args.metric, version, where)
+    cap = args.cap or 0
+
+    display(args.metric, version, where, cap)
 
 
 if __name__ == "__main__":
