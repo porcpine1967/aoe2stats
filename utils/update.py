@@ -3,7 +3,7 @@
 """ Downloads data from aoe2.net and adds to local db. """
 
 from argparse import ArgumentParser
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 import sqlite3
 import sys
@@ -96,28 +96,23 @@ def fetch_matches(start):
     """ Fetches match data via one api call starting at start_time.
         Returns number of matches, latest start time, and
         array of values ready for sql insert. """
-    print(
-        "FETCHING from {} ({})".format(
-            datetime.fromtimestamp(start).strftime("%Y-%m-%d %H:%M"), start
-        )
-    )
+
+    start_time = datetime.fromtimestamp(start).strftime("%Y-%m-%d %H:%M")
+    print("FETCHING from {} ({})".format(start_time, start))
+
     match_data = []
-    response = requests.get(API_TEMPLATE.format(start=start, count=MAX_DOWNLOAD))
+    url = API_TEMPLATE.format(start=start, count=MAX_DOWNLOAD)
+    response = requests.get(url)
     if response.status_code != 200:
         print(response.text)
         sys.exit(1)
     next_start = start
     data = json.loads(response.text)
     for match in data:
-        # ignore unranked
-        if match["rating_type"] == 0:
+        # ignore unranked, if no version, if no map_type
+        if match["rating_type"] == 0 or not match["version"] or not match["map_type"]:
             continue
-        # ignore if not version
-        if not match["version"]:
-            continue
-        # ignore if not map_type
-        if not match["map_type"]:
-            continue
+
         match_rows = []
         have_winner = False
         row = [
@@ -131,9 +126,7 @@ def fetch_matches(start):
             next_start = match["started"]
         civs = set()
         for player in match["players"]:
-            if not player["profile_id"]:
-                continue
-            if not player["civ"]:
+            if not player["profile_id"] or not player["civ"]:
                 continue
             if player["won"]:
                 have_winner = True
@@ -177,7 +170,8 @@ def fetch_and_save(start):
     fetch_start = start
     data_length = MAX_DOWNLOAD
     week = 604800
-    expected_end = script_start if start + week > script_start else start + week
+    week_ago = start + week
+    expected_end = script_start if script_start < week_ago else week_ago
     while fetch_start > hold_start and fetch_start - start < week:
         hold_start = fetch_start
         data_length, fetch_start, match_data = fetch_matches(fetch_start)
@@ -185,9 +179,8 @@ def fetch_and_save(start):
         if data_length < MAX_DOWNLOAD:
             break
         time.sleep(10)
-        print(
-            time_left(script_start, float(fetch_start - start) / (expected_end - start))
-        )
+        pct = float(fetch_start - start) / (expected_end - start)
+        print(time_left(script_start, pct))
     print("Ending at {}".format(int(datetime.now().timestamp())))
 
 
@@ -208,7 +201,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     if args.start:
-        start_timestamp = int(datetime.strptime(args.start, "%Y-%m-%d").timestamp())
+        start_date = datetime.strptime(args.start, "%Y-%m-%d")
+        start_timestamp = int(start_date.timestamp())
     elif args.start_ts:
         start_timestamp = args.start_ts
     else:
