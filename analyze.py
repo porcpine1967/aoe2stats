@@ -130,11 +130,22 @@ def win_rates_player(version, where=None):
 def total_win_rate(players):
     """ Prints out total win percentage of players in sample. """
     win_counter = Counter()
+    win_percentages = []
     for player in players.values():
+        wins = 0
+        losses = 0
         for win_type, count in player.wins.items():
             win_counter[win_type] += count
+            if win_type:
+                wins = count
+            else:
+                losses = count
+        win_percentages.append(100.0 * wins / (wins + losses))
     print(
-        "Pct wins in this group of players: {:2.0f}%".format(
+        "Pct wins in group (player): {:2.0f}%".format(statistics.mean(win_percentages))
+    )
+    print(
+        "Pct wins in group (match): {:2.0f}%".format(
             100.0 * win_counter[1] / (win_counter[0] + win_counter[1])
         )
     )
@@ -345,14 +356,6 @@ def run():
     args = parser.parse_args()
     version = args.v or latest_version()
     where = []
-    if args.unrated:
-        where.append(
-            "match_id IN (SELECT DISTINCT match_id FROM matches WHERE rating IS NULL)"
-        )
-    if args.no_unrated:
-        where.append(
-            "match_id NOT IN (SELECT match_id FROM matches WHERE rating IS NULL)"
-        )
     if args.query == "1v1":
         where.append("rating_type = 2")
     elif args.query == "team":
@@ -383,6 +386,14 @@ def run():
         print("All elos above {}".format(int(high)))
         where.append("rating > {}".format(high))
 
+    if args.unrated:
+        where.append(
+            "match_id IN (SELECT DISTINCT match_id FROM matches WHERE rating IS NULL)"
+        )
+    if args.no_unrated:
+        where.append(
+            "match_id NOT IN (SELECT match_id FROM matches WHERE rating IS NULL)"
+        )
     cap = args.n or 0
 
     display(args.metric, version, where, cap)
