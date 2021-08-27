@@ -10,6 +10,7 @@ class Player:
         self.civ_uses = Counter()
         self.map_uses = Counter()
         self.civ_wins = defaultdict(dict)
+        self.wins = Counter()
         self.total = 0.0
 
     def add_civ_use(self, civ, civ_count):
@@ -25,6 +26,7 @@ class Player:
     def add_civ_win(self, civ, won, win_count):
         """ Adds civilization win data for later calculations. """
         self.civ_wins[civ][won] = win_count
+        self.wins[won] += win_count
 
     @property
     def civ_preference_units(self):

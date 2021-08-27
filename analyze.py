@@ -110,6 +110,7 @@ def win_rates_player(version, where=None):
     for row in cur.execute(sql).fetchall():
         players[row[0]].add_civ_win(row[1], row[2], row[3])
     conn.close()
+    total_win_rate(players)
     cmap = civ_map()
     win_calculator = defaultdict(list)
     for civ_id in cmap:
@@ -124,6 +125,19 @@ def win_rates_player(version, where=None):
             continue
         data[cmap[civ_id]] = statistics.mean(percentages)
     return len(players), data
+
+
+def total_win_rate(players):
+    """ Prints out total win percentage of players in sample. """
+    win_counter = Counter()
+    for player in players.values():
+        for win_type, count in player.wins.items():
+            win_counter[win_type] += count
+    print(
+        "Pct wins in this group of players: {:2.0f}%".format(
+            100.0 * win_counter[1] / (win_counter[0] + win_counter[1])
+        )
+    )
 
 
 def win_rates_match(version, where=None):
@@ -313,10 +327,32 @@ def run():
     parser.add_argument(
         "-highelo", action="store_true", help="Data from elos above stdev"
     )
+    parser.add_argument(
+        "-noelo", action="store_true", help="Data from players with no elo"
+    )
     parser.add_argument("-n", type=int, help="Max number of civs to show")
+
+    parser.add_argument(
+        "-no-unrated",
+        action="store_true",
+        help="Remove matches where one or both players have no elo",
+    )
+    parser.add_argument(
+        "-unrated",
+        action="store_true",
+        help="Matches where one or both players have no elo",
+    )
     args = parser.parse_args()
     version = args.v or latest_version()
     where = []
+    if args.unrated:
+        where.append(
+            "match_id IN (SELECT DISTINCT match_id FROM matches WHERE rating IS NULL)"
+        )
+    if args.no_unrated:
+        where.append(
+            "match_id NOT IN (SELECT match_id FROM matches WHERE rating IS NULL)"
+        )
     if args.query == "1v1":
         where.append("rating_type = 2")
     elif args.query == "team":
@@ -328,6 +364,8 @@ def run():
     if args.w:
         where.append("started > {}".format(week_before_last_rating()))
 
+    if args.noelo:
+        where.append("rating IS NULL")
     if args.gelo:
         where.append("rating > {}".format(args.gelo))
     elif args.lelo:
