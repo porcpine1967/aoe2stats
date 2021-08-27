@@ -7,46 +7,10 @@ import statistics
 
 import sqlite3
 
+from utils.models import Player
 import utils.update
 
 DB = "data/aoe2.net.db"
-
-
-class Player:
-    """ Object to calculate player-preference-units. """
-
-    def __init__(self):
-        self.civ_uses = Counter()
-        self.civ_wins = defaultdict(dict)
-        self.total = 0.0
-
-    def add_civ_use(self, civ, civ_count):
-        """ Adds civilization usage data for later calculations. """
-        self.civ_uses[civ] += civ_count
-        self.total += civ_count
-
-    def add_civ_win(self, civ, won, win_count):
-        """ Adds civilization win data for later calculations. """
-        self.civ_wins[civ][won] = win_count
-
-    @property
-    def preference_units(self):
-        """ Generates preference units of player. """
-        pus = {}
-        for civ, total in self.civ_uses.items():
-            pus[civ] = total / self.total
-        return pus
-
-    def win_percentage(self, civ):
-        """ Calculates the user's win percentage for the given civ."""
-        data = self.civ_wins[civ]
-        if 1 in data and 0 not in data:
-            return 1
-        if 1 not in data and 0 in data:
-            return 0
-        win_count = data[1]
-        total = data[0] + data[1]
-        return float(win_count) / total
 
 
 def week_before_last_rating():
@@ -106,7 +70,7 @@ def most_popular_player(version, where=None):
     data = Counter()
     cmap = civ_map()
     for player in players.values():
-        for civ_id, value in player.preference_units.items():
+        for civ_id, value in player.civ_preference_units.items():
             data[cmap[civ_id]] += value
     return len(players), data
 
@@ -349,7 +313,7 @@ def run():
     parser.add_argument(
         "-highelo", action="store_true", help="Data from elos above stdev"
     )
-    parser.add_argument("-cap", type=int, help="Max number of civs to show")
+    parser.add_argument("-n", type=int, help="Max number of civs to show")
     args = parser.parse_args()
     version = args.v or latest_version()
     where = []
@@ -381,7 +345,7 @@ def run():
         print("All elos above {}".format(int(high)))
         where.append("rating > {}".format(high))
 
-    cap = args.cap or 0
+    cap = args.n or 0
 
     display(args.metric, version, where, cap)
 

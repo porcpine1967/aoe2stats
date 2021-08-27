@@ -13,7 +13,7 @@ import requests
 
 DB = "data/aoe2.net.db"
 
-MATCH_TABLE = "matches"
+MATCH_TABLE = "unranked_matches"
 
 CREATE_MATCH_TABLE = """CREATE TABLE IF NOT EXISTS {} (
 id integer PRIMARY KEY,
@@ -71,13 +71,13 @@ def batch(iterable, size=1):
         yield iterable[ndx : min(ndx + size, length)]
 
 
-def save_matches(matches):
+def save_matches(matches, table):
     """ Inserts each match value into the database. """
     sql = """ INSERT OR IGNORE INTO {}
 (match_id, map_type, rating_type, version, started,
 player_id, civ_id, rating, won, mirror)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""".format(
-        MATCH_TABLE
+        table
     )
     print(len(matches))
     conn = sqlite3.connect(DB)
@@ -100,7 +100,9 @@ def fetch_matches(start):
     start_time = datetime.fromtimestamp(start).strftime("%Y-%m-%d %H:%M")
     print("FETCHING from {} ({})".format(start_time, start))
 
-    match_data = []
+    ranked_match_data = []
+    unranked_match_data = []
+
     url = API_TEMPLATE.format(start=start, count=MAX_DOWNLOAD)
     response = requests.get(url)
     if response.status_code != 200:
@@ -109,11 +111,13 @@ def fetch_matches(start):
     next_start = start
     data = json.loads(response.text)
     for match in data:
-        # ignore unranked, if no version, if no map_type
-        if match["rating_type"] == 0 or not match["version"] or not match["map_type"]:
+        # ignore if no version, if no map_type
+        if not match["version"] or not match["map_type"]:
             continue
 
+        unranked = match["rating_type"] == 0
         match_rows = []
+
         have_winner = False
         row = [
             match["match_id"],
@@ -141,6 +145,11 @@ def fetch_matches(start):
         # Make sure have even number of players and someone won
         if len(match_rows) % 2 or not have_winner:
             continue
+
+        # change rating type if team game
+        if unranked and len(match_rows) > 2:
+            for row in match_rows:
+                row[2] = 5
         # Determine if it is a mirror match (all have same civs)
         if len(civs) > 1:
             for row in match_rows:
@@ -148,9 +157,12 @@ def fetch_matches(start):
         else:
             for row in match_rows:
                 row.append(True)
-        match_data += match_rows
+        if unranked:
+            unranked_match_data += match_rows
+        else:
+            ranked_match_data += match_rows
 
-    return len(data), next_start, match_data
+    return len(data), next_start, ranked_match_data, unranked_match_data
 
 
 def time_left(script_start, pct):
@@ -174,10 +186,12 @@ def fetch_and_save(start):
     expected_end = script_start if script_start < week_ago else week_ago
     while fetch_start > hold_start and fetch_start - start < week:
         hold_start = fetch_start
-        data_length, fetch_start, match_data = fetch_matches(fetch_start)
-        save_matches(match_data)
+        data_length, fetch_start, ranked, unranked = fetch_matches(fetch_start)
+        save_matches(ranked, "matches")
+        save_matches(unranked, "unranked_matches")
         if data_length < MAX_DOWNLOAD:
             break
+        print("sleeping...")
         time.sleep(10)
         pct = float(fetch_start - start) / (expected_end - start)
         print(time_left(script_start, pct))
@@ -186,11 +200,11 @@ def fetch_and_save(start):
 
 def run(start):
     """ Parses arguments and runs the appropriate functions. """
-    prepare_database()
     fetch_and_save(start)
 
 
 if __name__ == "__main__":
+    prepare_database()
     parser = ArgumentParser()
     parser.add_argument(
         "--start", help="Start time in YYYY-MM-DD format",
