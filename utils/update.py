@@ -167,11 +167,16 @@ def fetch_matches(start):
 
 def time_left(script_start, pct):
     """ Returns string version of hours:minutes:seconds probably left. """
-    now = datetime.now().timestamp()
-    seconds_to_run = (now - script_start) / pct
-    estimated_end = script_start + seconds_to_run
-    seconds_left = int(estimated_end - now)
-    return "Time Remaining: {}".format(str(timedelta(seconds=seconds_left)))
+    now = datetime.now()
+    now_ts = now.timestamp()
+    seconds_to_run = (now_ts - script_start) / pct
+    estimated_end_ts = script_start + seconds_to_run
+    seconds_left = int(estimated_end_ts - now_ts)
+    time_remaining = timedelta(seconds=seconds_left)
+    estimated_end = now + time_remaining
+    return "Time Remaining: {}\nEstimated end: {}".format(
+        str(time_remaining), estimated_end.strftime("%H:%M")
+    )
 
 
 def fetch_and_save(start):
@@ -198,12 +203,8 @@ def fetch_and_save(start):
     print("Ending at {}".format(int(datetime.now().timestamp())))
 
 
-def run(start):
+def run():
     """ Parses arguments and runs the appropriate functions. """
-    fetch_and_save(start)
-
-
-if __name__ == "__main__":
     prepare_database()
     parser = ArgumentParser()
     parser.add_argument(
@@ -221,4 +222,8 @@ if __name__ == "__main__":
         start_timestamp = args.start_ts
     else:
         start_timestamp = last_match_time()
-    run(start_timestamp)
+    fetch_and_save(start_timestamp)
+
+
+if __name__ == "__main__":
+    run()
