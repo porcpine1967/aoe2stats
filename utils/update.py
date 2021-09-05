@@ -38,6 +38,24 @@ API_TEMPLATE = "https://aoe2.net/api/matches?game=aoe2de&count={count}&since={st
 BATCH_SIZE = 300
 
 
+def latest_version():
+    """ Returns latest version available in db. """
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    version = 0
+    for row in cur.execute("SELECT DISTINCT version FROM matches").fetchall():
+        current_version = row[0]
+        if not current_version:
+            continue
+        if int(current_version) > version:
+            version = int(current_version)
+    conn.close()
+    return version
+
+
+DEFAULT_VERSION = latest_version()
+
+
 def one_week_ago():
     """ Returns unix timestamp of one week ago. """
     week = timedelta(days=7)
@@ -112,7 +130,7 @@ def fetch_matches(start):
     data = json.loads(response.text)
     for match in data:
         # ignore if no version, if no map_type
-        if not match["version"] or not match["map_type"]:
+        if not match["map_type"]:
             continue
 
         unranked = match["rating_type"] == 0
@@ -123,7 +141,7 @@ def fetch_matches(start):
             match["match_id"],
             match["map_type"],
             match["rating_type"],
-            match["version"],
+            match["version"] or DEFAULT_VERSION,
             match["started"],
         ]
         if match["started"] > next_start:
