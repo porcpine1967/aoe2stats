@@ -97,11 +97,9 @@ player_id, civ_id, rating, won, mirror)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""".format(
         table
     )
-    print(len(matches))
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     for match_batch in batch(matches, BATCH_SIZE):
-        print("SAVING BATCH")
         cur.execute("BEGIN")
 
         for match in match_batch:
@@ -128,6 +126,7 @@ def fetch_matches(start):
         sys.exit(1)
     next_start = start
     data = json.loads(response.text)
+    match_ids = set()
     for match in data:
         # ignore if no version, if no map_type
         if not match["map_type"]:
@@ -179,7 +178,8 @@ def fetch_matches(start):
             unranked_match_data += match_rows
         else:
             ranked_match_data += match_rows
-
+        match_ids.add(match["match_id"])
+    print("Match count:", len(match_ids))
     return len(data), next_start, ranked_match_data, unranked_match_data
 
 
@@ -218,7 +218,7 @@ def fetch_and_save(start):
         time.sleep(10)
         pct = float(fetch_start - start) / (expected_end - start)
         print(time_left(script_start, pct))
-    print("Ending at {}".format(int(datetime.now().timestamp())))
+    print("Ending at {}".format(datetime.now().strftime("%H:%M")))
 
 
 def run():
