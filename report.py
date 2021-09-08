@@ -18,6 +18,8 @@ QUERIES = {
 
 
 class WeekInfo:
+    """ Holder for weekly civ data. """
+
     def __init__(self):
         self.match_popularity_uses = defaultdict(Counter)
         self.match_popularity_totals = defaultdict(float)
@@ -26,6 +28,16 @@ class WeekInfo:
         self.match_losses = defaultdict(Counter)
         self.player_popularity_uses = defaultdict(Counter)
         self.player_winrates = defaultdict(list)
+
+    def match_popularity_rank(self, category):
+        """ Rank in category on match popularity metric. """
+        return self.match_popularity_ranks[category]
+
+    def match_popularity_pct(self, category):
+        """ Percentage of plays in this category this week. """
+        this_weeks_uses = self.match_popularity_uses[category]
+        this_weeks_total = self.match_popularity_totals[category]
+        return 100 * this_weeks_uses / this_weeks_total
 
 
 class Civilization:
@@ -45,31 +57,30 @@ class Civilization:
         return self.this_week
 
     def match_popularity_rank(self, category):
-        return self.this_week.match_popularity_ranks[category]
+        """ Returns rank of civ this week in terms of match popularity, for sorting """
+        return self.this_week.match_popularity_rank(category)
 
     def match_popularity(self, category):
-        this_weeks_uses = self.this_week.match_popularity_uses[category]
-        this_weeks_total = self.this_week.match_popularity_totals[category]
-        this_weeks_rank = self.this_week.match_popularity_ranks[category]
-        last_weeks_rank = self.last_week.match_popularity_ranks[category]
+        """ String representation of match popularity of civ in given category. """
+        this_weeks_rank = self.this_week.match_popularity_rank(category)
+        last_weeks_rank = self.last_week.match_popularity_rank(category)
         return "{:>2}. {:15} ({:+d}) ({:2.1f}%)".format(
             this_weeks_rank,
             self.name,
             last_weeks_rank - this_weeks_rank,
-            100 * this_weeks_uses / this_weeks_total,
+            self.this_week.match_popularity_pct(category),
         )
 
 
 def filters(category):
     """ Generates additional "where" conditions for query """
-    if category == "all":
-        return ""
     if category == "1v1":
         return "AND rating_type = 2"
     if category == "1v1 Arabia":
         return "AND rating_type = 2 AND map_type = 9"
     if category == "1v1 Arena":
         return "AND rating_type = 2 AND map_type = 29"
+    return ""
 
 
 def most_popular_match(civs, week_index, timebox, category):
@@ -83,10 +94,12 @@ def most_popular_match(civs, week_index, timebox, category):
         week = civ.week_by_index(week_index)
         weeks.append(week)
         week.match_popularity_uses[category] = count
-    for rank, week in enumerate(
-        sorted(weeks, reverse=True, key=lambda x: x.match_popularity_uses[category])
-    ):
-        week.match_popularity_ranks[category] = rank + 1
+
+    def week_sorter(week):
+        return -1 * week.match_popularity_uses[category]
+
+    for rank, week in enumerate(sorted(weeks, key=week_sorter), 1):
+        week.match_popularity_ranks[category] = rank
         week.match_popularity_totals[category] = total
 
 
