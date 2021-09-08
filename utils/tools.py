@@ -2,8 +2,34 @@
 """ Useful functions. """
 
 from datetime import datetime, timedelta, timezone
+import json
+import sqlite3
 
+DB = "data/aoe2.net.db"
 SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
+
+
+def civ_map():
+    """ Generates dict for mapping civ id to civ name. """
+    cmap = {}
+    with open("data/strings.json") as open_file:
+        data = json.load(open_file)
+    for civ_info in data["civ"]:
+        cmap[civ_info["id"]] = civ_info["string"]
+
+    return cmap
+
+
+def map_id_lookup():
+    """ Returns a dictionary of map_name:map_id pairs. """
+    mmap = {}
+    with open("data/strings.json") as open_file:
+        data = json.load(open_file)
+    for civ_info in data["map_type"]:
+        mmap[civ_info["string"]] = civ_info["id"]
+        mmap[civ_info["string"].lower()] = civ_info["id"]
+
+    return mmap
 
 
 def timeboxes(breakp):
@@ -29,6 +55,15 @@ def last_time_breakpoint(now):
         20,
         tzinfo=timezone.utc,
     )
+
+
+def execute_sql(sql):
+    """ Generator for an sql statement and database. """
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    for row in cur.execute(sql).fetchall():
+        yield row
+    conn.close()
 
 
 if __name__ == "__main__":

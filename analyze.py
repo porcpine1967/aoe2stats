@@ -2,11 +2,11 @@
 """ Runs queries and prints tables based on data drawn from aoe2.net """
 from argparse import ArgumentParser
 from collections import Counter, defaultdict
-import json
 import statistics
 
 import sqlite3
 
+from utils.tools import civ_map, map_id_lookup
 from utils.models import Player
 import utils.update
 
@@ -21,7 +21,7 @@ def week_before_last_rating():
 def standard_ratings(version, where=None):
     """ Returns lower and upper bounds of stdev of elo ratings.
         Assumes highest rating of a user is most accurate.
-        Only really makes sense of rating_type is in query."""
+        Only really makes sense if rating_type is in query."""
 
     sql_template = """SELECT MAX(rating) FROM matches
                       WHERE civ_id IS NOT NULL
@@ -39,17 +39,6 @@ def standard_ratings(version, where=None):
     mean = statistics.mean(elos)
     std = statistics.pstdev(elos, mean)
     return mean - std, mean + std
-
-
-def civ_map():
-    """ Generates dict for mapping civ id to civ name. """
-    cmap = {}
-    with open("data/strings.json") as open_file:
-        data = json.load(open_file)
-    for civ_info in data["civ"]:
-        cmap[civ_info["id"]] = civ_info["string"]
-
-    return cmap
 
 
 def most_popular_player(version, where=None):
@@ -292,18 +281,6 @@ def display(metric, version, where, cap):
                 rank_diff,
             )
         )
-
-
-def map_id_lookup():
-    """ Returns a dictionary of map_name:map_id pairs. """
-    mmap = {}
-    with open("data/strings.json") as open_file:
-        data = json.load(open_file)
-    for civ_info in data["map_type"]:
-        mmap[civ_info["string"]] = civ_info["id"]
-        mmap[civ_info["string"].lower()] = civ_info["id"]
-
-    return mmap
 
 
 def run():

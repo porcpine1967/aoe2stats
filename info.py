@@ -5,12 +5,11 @@ from collections import Counter, defaultdict
 from datetime import datetime
 import json
 
-import sqlite3
-
-from analyze import DB, latest_version, week_before_last_rating
+from analyze import latest_version, week_before_last_rating
 
 import utils.map_pools
 from utils.models import Player
+from utils.tools import execute_sql
 
 
 def map_map():
@@ -48,12 +47,9 @@ def show_maps_player_info(where):
         " AND ".join(where)
     )
 
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
     players = defaultdict(Player)
-    for row in cur.execute(sql).fetchall():
+    for row in execute_sql(sql):
         players[row[0]].add_map_use(row[1], row[2])
-    conn.close()
     data = Counter()
     mmap = map_map()
 
@@ -72,18 +68,16 @@ def show_maps_player_info(where):
 
 def show_maps_match_info(where):
     """ Display table of map popularity information by match. """
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
     mmap = map_map()
     ctr = Counter()
     total = 0
-    for row in cur.execute(
+    for row in execute_sql(
         """SELECT map_type, count(*) as cnt FROM matches
         WHERE {} AND map_type IS NOT NULL
         GROUP BY map_type order by cnt DESC""".format(
             " AND ".join(where)
         )
-    ).fetchall():
+    ):
         map_type, count = row
         ctr[mmap[map_type]] = count
         total += count
@@ -91,31 +85,25 @@ def show_maps_match_info(where):
         print(
             "{:30} : {:>7}: ({:2.0f}%)".format(map_name, count, (100.0 * count) / total)
         )
-    conn.close()
 
 
 def show_versions():
     """ Display a table of version:count pairs. """
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-    for row in cur.execute(
+    for row in execute_sql(
         """SELECT version, MIN(started), MAX(started), count(*) FROM matches
         WHERE version IS NOT NULL
         GROUP BY version"""
-    ).fetchall():
+    ):
         version, earliest, latest, count = row
         print(
             "{} ({} - {}): {:>7}".format(
                 version, timestamp_to_day(earliest), timestamp_to_day(latest), count
             )
         )
-    conn.close()
 
 
 def show_boards(where):
     """ Display a table of board:count pairs."""
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
     bmap = board_map()
     sql = """SELECT rating_type, count(*) FROM matches
         WHERE {} AND rating_type IS NOT NULL
@@ -124,13 +112,12 @@ def show_boards(where):
     )
     ctr = Counter()
     total = 0
-    for row in cur.execute(sql).fetchall():
+    for row in execute_sql(sql):
         rating_type, count = row
         ctr[bmap[rating_type]] = count
         total += count
     for board, count in ctr.most_common():
         print("{:30} : {:>7}: ({:2.0f}%)".format(board, count, (100.0 * count) / total))
-    conn.close()
 
 
 def show_pools():
