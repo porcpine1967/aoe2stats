@@ -43,10 +43,9 @@ def latest_version():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     version = 0
-    for row in cur.execute("SELECT DISTINCT version FROM matches").fetchall():
-        current_version = row[0]
-        if not current_version:
-            continue
+    for (current_version,) in cur.execute(
+        "SELECT DISTINCT version FROM matches WHERE version IS NOT NULL"
+    ).fetchall():
         if int(current_version) > version:
             version = int(current_version)
     conn.close()
