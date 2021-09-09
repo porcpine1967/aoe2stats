@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 from collections import defaultdict
 from datetime import datetime
 import statistics
+from statsmodels.stats.proportion import proportion_confint
 
 from utils.models import Player
 from utils.tools import civ_map, execute_sql, last_time_breakpoint, timeboxes
@@ -33,6 +34,13 @@ QUERIES = {
                             GROUP BY player_id, civ_id, won""",
 }
 
+CATEGORY_FILTERS = {
+    "1v1": "AND rating_type = 2",
+    "1v1 Arabia": "AND rating_type = 2 AND map_type = 9",
+    "1v1 Arena": "AND rating_type = 2 AND map_type = 29",
+    "1v1 Other": "AND rating_type = 2 AND map_type NOT IN (9,29)",
+}
+
 
 class WeekInfo:
     """ Holder for weekly civ data. """
@@ -43,6 +51,9 @@ class WeekInfo:
         self.popularity_ranks = defaultdict(int)
         self.win_results = defaultdict(list)
         self.win_ranks = defaultdict(int)
+        self.bottom_win_ranks = defaultdict(int)
+        self.winrate_pcts = {}
+        self.bottom_winrate_pcts = {}
 
     def popularity_rank(self, category):
         """ Rank in category on match popularity metric. """
@@ -60,9 +71,25 @@ class WeekInfo:
 
     def winrate_pct(self, category):
         """ Percentage of games won by this week in this category. """
-        if not self.win_results[category]:
-            return 0
-        return 100 * statistics.mean(self.win_results[category])
+        if category not in self.winrate_pcts:
+            try:
+                mean = statistics.mean(self.win_results[category])
+                self.winrate_pcts[category] = 100 * mean
+            except statistics.StatisticsError:
+                self.winrate_pcts[category] = 0
+        return self.winrate_pcts[category]
+
+    def bottom_winrate_pct(self, category):
+        """ Percentage of games won by this week in this category. """
+        if category not in self.bottom_winrate_pcts:
+            try:
+                wins = sum(self.win_results[category])
+                total = len(self.win_results[category])
+                low_confidence, _ = proportion_confint(wins, total)
+                self.bottom_winrate_pcts[category] = 100 * low_confidence
+            except statistics.StatisticsError:
+                self.bottom_winrate_pcts[category] = 0
+        return self.bottom_winrate_pcts[category]
 
 
 class Civilization:
@@ -101,20 +128,14 @@ class Civilization:
             pct = self.this_week.winrate_pct(category)
         else:
             return ""
-        return "{:>2}. {:15} ({:+3d}) ({:2.1f}%)".format(
+        return "{:>2}. {:15} ({:+3d}) ({:4.1f}%)".format(
             this_weeks_rank, self.name, last_weeks_rank - this_weeks_rank, pct,
         )
 
 
 def filters(category):
     """ Generates additional "where" conditions for query """
-    if category == "1v1":
-        return "AND rating_type = 2"
-    if category == "1v1 Arabia":
-        return "AND rating_type = 2 AND map_type = 9"
-    if category == "1v1 Arena":
-        return "AND rating_type = 2 AND map_type = 29"
-    return ""
+    return CATEGORY_FILTERS[category]
 
 
 def most_popular_match(civs, week_index, timebox, category):
@@ -168,11 +189,17 @@ def winrate_match(civs, week_index, timebox, category):
         weeks.add(week)
         week.win_results[category] += [won for _ in range(count)]
 
-    def week_sorter(week):
+    def sort_win_pct(week):
         return -1 * week.winrate_pct(category)
 
-    for rank, week in enumerate(sorted(weeks, key=week_sorter), 1):
+    def sort_bottom_win_pct(week):
+        return -1 * week.bottom_winrate_pct(category)
+
+    for rank, week in enumerate(sorted(weeks, key=sort_win_pct), 1):
         week.win_ranks[category] = rank
+
+    for rank, week in enumerate(sorted(weeks, key=sort_bottom_win_pct), 1):
+        week.bottom_win_ranks[category] = rank
 
 
 def winrate_player(civs, week_index, timebox, category):
@@ -205,20 +232,18 @@ class ReportManager:
     def __init__(self, args):
         self.args = args
         self.civs = {}
-        self.report_types = set()
         if args.w:
-            self.report_types.add("winrate")
+            self.report_types = ("winrate",)
         elif args.p:
-            self.report_types.add("popularity")
+            self.report_types = ("popularity",)
         else:
-            self.report_types.update(("winrate", "popularity",))
+            self.report_types = (
+                "popularity",
+                "winrate",
+            )
         for civ_id, name in civ_map().items():
             self.civs[civ_id] = Civilization(name, civ_id)
-        self.categories = (
-            "1v1",
-            "1v1 Arabia",
-            "1v1 Arena",
-        )
+        self.categories = list(CATEGORY_FILTERS.keys())
 
     def generate(self):
         """ Load data into civs. Returns report date."""
