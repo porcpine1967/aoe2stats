@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """ Generates weekly report of map and civ usage."""
-from collections import Counter, defaultdict
+from argparse import ArgumentParser
+from collections import defaultdict
 from datetime import datetime
 import statistics
 
@@ -201,8 +202,16 @@ def winrate_player(civs, week_index, timebox, category):
 class ReportManager:
     """ Does all the heavy lifting of making the report. """
 
-    def __init__(self):
+    def __init__(self, args):
+        self.args = args
         self.civs = {}
+        self.report_types = set()
+        if args.w:
+            self.report_types.add("winrate")
+        elif args.p:
+            self.report_types.add("popularity")
+        else:
+            self.report_types.update(("winrate", "popularity",))
         for civ_id, name in civ_map().items():
             self.civs[civ_id] = Civilization(name, civ_id)
         self.categories = (
@@ -211,8 +220,13 @@ class ReportManager:
             "1v1 Arena",
         )
 
-    def generate(self, methodology):
+    def generate(self):
         """ Load data into civs. Returns report date."""
+        if self.args.m:
+            methodology = "match"
+        else:
+            methodology = "player"
+
         last_tuesday = last_time_breakpoint(datetime.now())
         for idx, timebox in enumerate(timeboxes(datetime.timestamp(last_tuesday))):
             for category in self.categories:
@@ -230,10 +244,7 @@ class ReportManager:
         print("*" * len(message))
         print(message)
         print("*" * len(message))
-        for report_type in (
-            "popularity",
-            "winrate",
-        ):
+        for report_type in self.report_types:
             print("")
             print(report_type.capitalize())
             data = defaultdict(list)
@@ -249,7 +260,7 @@ class ReportManager:
 
                 for civ in sorted(self.civs.values(), key=civ_sorter):
                     data[category].append(civ)
-            for i in range(10):
+            for i in range(self.args.n or len(self.civs)):
                 print(
                     "    ".join(["{}" for _ in range(len(self.categories))]).format(
                         *[
@@ -262,7 +273,18 @@ class ReportManager:
                 )
 
 
-if __name__ == "__main__":
-    report = ReportManager()
-    generation_enddate = report.generate("player")
+def run():
+    """ Basic functioning of app. Removes global variables. """
+    parser = ArgumentParser()
+    parser.add_argument("-w", action="store_true", help="Only winrates")
+    parser.add_argument("-p", action="store_true", help="Only popularity")
+    parser.add_argument("-m", action="store_true", help="Use match methodology")
+    parser.add_argument("-n", type=int, help="Only show n records")
+    args = parser.parse_args()
+    report = ReportManager(args)
+    generation_enddate = report.generate()
     report.display(generation_enddate)
+
+
+if __name__ == "__main__":
+    run()
