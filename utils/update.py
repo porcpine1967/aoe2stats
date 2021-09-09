@@ -3,6 +3,7 @@
 """ Downloads data from aoe2.net and adds to local db. """
 
 from argparse import ArgumentParser
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 import json
 import sqlite3
@@ -11,11 +12,9 @@ import time
 
 import requests
 
-DB = "data/aoe2.net.db"
-
-MATCH_TABLE = "unranked_matches"
-
-CREATE_MATCH_TABLE = """CREATE TABLE IF NOT EXISTS {} (
+RANKED_DB = "data/ranked.db"
+UNRANKED_DB = "data/unranked.db"
+CREATE_MATCH_TABLE = """CREATE TABLE IF NOT EXISTS matches (
 id integer PRIMARY KEY,
 match_id text,
 player_id integer,
@@ -27,9 +26,7 @@ started integer,
 version text,
 won integer,
 mirror integer,
-UNIQUE(match_id, player_id))""".format(
-    MATCH_TABLE
-)
+UNIQUE(match_id, player_id))"""
 
 MAX_DOWNLOAD = 1000
 
@@ -40,7 +37,7 @@ BATCH_SIZE = 300
 
 def latest_version():
     """ Returns latest version available in db. """
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(RANKED_DB)
     cur = conn.cursor()
     version = 0
     for (current_version,) in cur.execute(
@@ -54,6 +51,11 @@ def latest_version():
 
 DEFAULT_VERSION = latest_version()
 
+GAME_TYPE_TO_RATING_TYPE = {
+    "1v1": {0: 2, 2: 1, 12: 9, 13: 13},
+    "team": {0: 4, 2: 3, 12: 9, 13: 14},
+}
+
 
 def one_week_ago():
     """ Returns unix timestamp of one week ago. """
@@ -63,22 +65,26 @@ def one_week_ago():
 
 def prepare_database():
     """ Creates the db file if not exists. Creates table if not exists. """
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-    cur.execute(CREATE_MATCH_TABLE)
-    conn.close()
+    for db in (
+        RANKED_DB,
+        UNRANKED_DB,
+    ):
+        conn = sqlite3.connect(db)
+        cur = conn.cursor()
+        cur.execute(CREATE_MATCH_TABLE)
+        conn.close()
 
 
 def last_match_time():
     """ Returns the time of the last match retrieved or one week ago. """
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(RANKED_DB)
     cur = conn.cursor()
-    query = cur.execute("SELECT MAX(started) FROM {}".format(MATCH_TABLE))
+    query = cur.execute("SELECT MAX(started) FROM matches")
     result = query.fetchone()[0]
     conn.close()
     cutoff = one_week_ago()
-    # results trickle in, so start 1 hour before end of last run
-    return result and result > cutoff and result - 3600 or cutoff
+    # results trickle in, so start 90 minutes before end of last run
+    return result and result > cutoff and result - 5400 or cutoff
 
 
 def batch(iterable, size=1):
@@ -88,15 +94,13 @@ def batch(iterable, size=1):
         yield iterable[ndx : min(ndx + size, length)]
 
 
-def save_matches(matches, table):
+def save_matches(matches, database):
     """ Inserts each match value into the database. """
-    sql = """ INSERT OR IGNORE INTO {}
+    sql = """ INSERT OR IGNORE INTO matches
 (match_id, map_type, rating_type, version, started,
 player_id, civ_id, rating, won, mirror)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""".format(
-        table
-    )
-    conn = sqlite3.connect(DB)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+    conn = sqlite3.connect(database)
     cur = conn.cursor()
     for match_batch in batch(matches, BATCH_SIZE):
         cur.execute("BEGIN")
@@ -105,6 +109,19 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""".format(
             cur.execute(sql, match)
         cur.execute("COMMIT")
     conn.close()
+
+
+def deduce_rating_type(match):
+    """ Deduces rating type based on match data"""
+    # Only deduce if unranked, which has rating_type 0
+    if match["rating_type"]:
+        return match["rating_type"]
+    try:
+        if match["num_players"] > 2:
+            return GAME_TYPE_TO_RATING_TYPE["team"][match["game_type"]]
+        return GAME_TYPE_TO_RATING_TYPE["1v1"][match["game_type"]]
+    except KeyError:
+        return None
 
 
 def fetch_matches(start):
@@ -127,18 +144,22 @@ def fetch_matches(start):
     data = json.loads(response.text)
     match_ids = set()
     for match in data:
-        # ignore if no version, if no map_type
-        if not match["map_type"]:
+        rating_type = deduce_rating_type(match)
+        # ignore if no map_type, no rating_type
+        if not match["map_type"] or not rating_type:
+            continue
+        try:
+            validate_player_info(match)
+        except PlayerInfoException:
             continue
 
         unranked = match["rating_type"] == 0
         match_rows = []
 
-        have_winner = False
         row = [
             match["match_id"],
             match["map_type"],
-            match["rating_type"],
+            rating_type,
             match["version"] or DEFAULT_VERSION,
             match["started"],
         ]
@@ -146,10 +167,6 @@ def fetch_matches(start):
             next_start = match["started"]
         civs = set()
         for player in match["players"]:
-            if not player["profile_id"] or not player["civ"]:
-                continue
-            if player["won"]:
-                have_winner = True
             player_row = [
                 player["profile_id"],
                 player["civ"],
@@ -158,21 +175,11 @@ def fetch_matches(start):
             ]
             match_rows.append(row + player_row)
             civs.add(player["civ"])
-        # Make sure have even number of players and someone won
-        if len(match_rows) % 2 or not have_winner:
-            continue
 
-        # change rating type if team game
-        if unranked and len(match_rows) > 2:
-            for row in match_rows:
-                row[2] = 5
         # Determine if it is a mirror match (all have same civs)
-        if len(civs) > 1:
-            for row in match_rows:
-                row.append(False)
-        else:
-            for row in match_rows:
-                row.append(True)
+        for row in match_rows:
+            row.append(len(civs) == 1)
+
         if unranked:
             unranked_match_data += match_rows
         else:
@@ -180,6 +187,37 @@ def fetch_matches(start):
         match_ids.add(match["match_id"])
     print("Match count:", len(match_ids))
     return len(data), next_start, ranked_match_data, unranked_match_data
+
+
+class PlayerInfoException(Exception):
+    """ Exception thrown when match player info invalid."""
+
+
+def validate_player_info(match):
+    """ Raises PlayerInfoException if player info makes match invalid for analysis."""
+    if match["num_players"] != len(match["players"]):
+        raise PlayerInfoException("num_players not match number of players")
+    if match["num_players"] % 2:
+        raise PlayerInfoException("odd number of players")
+    teams = Counter()
+    wins = Counter()
+    for player in match["players"]:
+        if "civ" not in player:
+            raise PlayerInfoException("Player missing civ")
+        if "profile_id" not in player:
+            raise PlayerInfoException("Player missing profile_id")
+        teams[player["team"]] += 1
+        wins[player["won"]] += 1
+    if len(teams) != 2:
+        raise PlayerInfoException("Unusual number of teams: {}".format(len(teams)))
+    if len(set(teams.values())) != 1:
+        raise PlayerInfoException("Teams not evenly divided")
+    if len(wins) != 2:
+        raise PlayerInfoException(
+            "Unreasonable number of win conditions: {}".format(len(wins))
+        )
+    if len(set(wins.values())) != 1:
+        raise PlayerInfoException("Wins not evenly divided")
 
 
 def time_left(script_start, pct):
@@ -209,8 +247,8 @@ def fetch_and_save(start):
     while fetch_start > hold_start and fetch_start - start < week:
         hold_start = fetch_start
         data_length, fetch_start, ranked, unranked = fetch_matches(fetch_start)
-        save_matches(ranked, "matches")
-        save_matches(unranked, "unranked_matches")
+        save_matches(ranked, RANKED_DB)
+        save_matches(unranked, UNRANKED_DB)
         if data_length < MAX_DOWNLOAD:
             break
         print("sleeping...")

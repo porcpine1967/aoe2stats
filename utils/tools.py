@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 import json
 import sqlite3
 
-DB = "data/aoe2.net.db"
+DB = "data/ranked.db"
 SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
 
 

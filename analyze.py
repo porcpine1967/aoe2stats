@@ -10,7 +10,7 @@ from utils.tools import civ_map, map_id_lookup
 from utils.models import Player
 import utils.update
 
-DB = "data/aoe2.net.db"
+DB = "data/ranked.db"
 
 
 def week_before_last_rating():

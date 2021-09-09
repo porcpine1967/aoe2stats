@@ -132,4 +132,4 @@ dmypy.json
 *~
 
 # Local db
-data/aoe2.net.db
+data/*.db
