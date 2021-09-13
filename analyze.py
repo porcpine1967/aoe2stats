@@ -334,9 +334,9 @@ def run():
     version = args.v or latest_version()
     where = []
     if args.query == "1v1":
-        where.append("rating_type = 2")
+        where.append("game_type = 0 AND team_size = 1")
     elif args.query == "team":
-        where.append("rating_type = 4")
+        where.append("game_type = 0 AND team_size > 1")
 
     if args.m:
         where.append("map_type = {}".format(map_ids[args.m]))

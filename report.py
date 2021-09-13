@@ -35,10 +35,10 @@ QUERIES = {
 }
 
 CATEGORY_FILTERS = {
-    "1v1": "AND rating_type = 2",
-    "1v1 Arabia": "AND rating_type = 2 AND map_type = 9",
-    "1v1 Arena": "AND rating_type = 2 AND map_type = 29",
-    "1v1 Other": "AND rating_type = 2 AND map_type NOT IN (9,29)",
+    "1v1": "AND game_type = 0 AND team_size = 1",
+    "1v1 Arabia": "AND game_type = 0 AND team_size = 1 AND map_type = 9",
+    "1v1 Arena": "AND game_type = 0 AND team_size = 1 AND map_type = 29",
+    "1v1 Other": "AND game_type = 0 AND team_size = 1 AND map_type NOT IN (9,29)",
 }
 
 

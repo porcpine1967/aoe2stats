@@ -26,6 +26,8 @@ started integer,
 version text,
 won integer,
 mirror integer,
+team_size integer,
+game_type integer,
 UNIQUE(match_id, player_id))"""
 
 MAX_DOWNLOAD = 1000
@@ -98,8 +100,9 @@ def save_matches(matches, database):
     """ Inserts each match value into the database. """
     sql = """ INSERT OR IGNORE INTO matches
 (match_id, map_type, rating_type, version, started,
+team_size, game_type,
 player_id, civ_id, rating, won, mirror)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
     conn = sqlite3.connect(database)
     cur = conn.cursor()
     for match_batch in batch(matches, BATCH_SIZE):
@@ -109,19 +112,6 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
             cur.execute(sql, match)
         cur.execute("COMMIT")
     conn.close()
-
-
-def deduce_rating_type(match):
-    """ Deduces rating type based on match data"""
-    # Only deduce if unranked, which has rating_type 0
-    if match["rating_type"]:
-        return match["rating_type"]
-    try:
-        if match["num_players"] > 2:
-            return GAME_TYPE_TO_RATING_TYPE["team"][match["game_type"]]
-        return GAME_TYPE_TO_RATING_TYPE["1v1"][match["game_type"]]
-    except KeyError:
-        return None
 
 
 def fetch_matches(start):
@@ -144,24 +134,24 @@ def fetch_matches(start):
     data = json.loads(response.text)
     match_ids = set()
     for match in data:
-        rating_type = deduce_rating_type(match)
-        # ignore if no map_type, no rating_type
-        if not match["map_type"] or not rating_type:
+        # ignore if no map_type
+        if not match["map_type"]:
             continue
         try:
             validate_player_info(match)
         except PlayerInfoException:
             continue
 
-        unranked = match["rating_type"] == 0
         match_rows = []
 
         row = [
             match["match_id"],
             match["map_type"],
-            rating_type,
+            match["rating_type"],
             match["version"] or DEFAULT_VERSION,
             match["started"],
+            match["num_players"] / 2,
+            match["game_type"],
         ]
         if match["started"] > next_start:
             next_start = match["started"]
@@ -180,10 +170,10 @@ def fetch_matches(start):
         for row in match_rows:
             row.append(len(civs) == 1)
 
-        if unranked:
-            unranked_match_data += match_rows
-        else:
+        if match["ranked"]:
             ranked_match_data += match_rows
+        else:
+            unranked_match_data += match_rows
         match_ids.add(match["match_id"])
     print("Match count:", len(match_ids))
     return len(data), next_start, ranked_match_data, unranked_match_data
