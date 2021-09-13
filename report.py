@@ -34,12 +34,26 @@ QUERIES = {
                             GROUP BY player_id, civ_id, won""",
 }
 
-CATEGORY_FILTERS = {
-    "1v1": "AND game_type = 0 AND team_size = 1",
-    "1v1 Arabia": "AND game_type = 0 AND team_size = 1 AND map_type = 9",
-    "1v1 Arena": "AND game_type = 0 AND team_size = 1 AND map_type = 29",
-    "1v1 Other": "AND game_type = 0 AND team_size = 1 AND map_type NOT IN (9,29)",
-}
+
+def build_category_filters(start, end):
+    """ Generate filters because easier."""
+    filters = {}
+    for i in range(start, end + 1):
+        filters["{}v{}".format(i, i)] = "AND game_type = 0 AND team_size = {}".format(i)
+        filters[
+            "{}v{} Arabia".format(i, i)
+        ] = "AND game_type = 0 AND team_size = {} AND map_type = 9".format(i)
+
+        filters[
+            "{}v{} Arena".format(i, i)
+        ] = "AND game_type = 0 AND team_size = {} AND map_type = 29".format(i)
+        filters[
+            "{}v{} Other".format(i, i)
+        ] = "AND game_type = 0 AND team_size = {} AND map_type NOT IN (9,29)".format(i)
+    return filters
+
+
+CATEGORY_FILTERS = build_category_filters(1, 4)
 
 
 class WeekInfo:
@@ -243,7 +257,7 @@ class ReportManager:
             )
         for civ_id, name in civ_map().items():
             self.civs[civ_id] = Civilization(name, civ_id)
-        self.categories = list(CATEGORY_FILTERS.keys())
+        self.categories = list(build_category_filters(args.s, args.s).keys())
 
     def generate(self):
         """ Load data into civs. Returns report date."""
@@ -305,6 +319,7 @@ def run():
     parser.add_argument("-p", action="store_true", help="Only popularity")
     parser.add_argument("-m", action="store_true", help="Use match methodology")
     parser.add_argument("-n", type=int, help="Only show n records")
+    parser.add_argument("-s", default=1, type=int, help="Team size")
     args = parser.parse_args()
     report = ReportManager(args)
     generation_enddate = report.generate()
