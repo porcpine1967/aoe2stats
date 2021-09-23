@@ -10,11 +10,16 @@ from utils.models import Player
 from utils.tools import civ_map, execute_sql, last_time_breakpoint, timeboxes
 
 QUERIES = {
-    "match_popularity": """SELECT civ_id, COUNT(*) AS cnt FROM matches
-                      WHERE civ_id IS NOT NULL
-                      AND started BETWEEN {:0.0f} AND {:0.0f}
-                      {}
-                      GROUP BY civ_id""",
+    "match_popularity": """SELECT civ, COUNT(*) AS cnt FROM
+                           (SELECT GROUP_CONCAT(civ_id, ":") AS civ FROM
+                            (SELECT match_id, civ_id, won
+                             FROM matches
+                             WHERE civ_id IS NOT NULL
+                             AND started BETWEEN {:0.0f} AND {:0.0f}
+                             {}
+                             ORDER BY match_id, won, civ_id)
+                            GROUP BY match_id, won)
+                           GROUP BY civ""",
     "player_popularity": """SELECT player_id, civ_id, COUNT(*) AS cnt FROM matches
                       WHERE civ_id IS NOT NULL
                       AND started BETWEEN {:0.0f} AND {:0.0f}
@@ -33,6 +38,24 @@ QUERIES = {
                             {}
                             GROUP BY player_id, civ_id, won""",
 }
+
+
+class CivDict(defaultdict):
+    """ Generates civ if missing."""
+
+    def __init__(self):
+        super().__init__()
+        self.cmap = civ_map()
+
+    def __missing__(self, key):
+        civ_ids = []
+        civ_names = []
+
+        for i in str(key).split(":"):
+            civ_ids.append(i)
+            civ_names.append(self.cmap[int(i)])
+            self[key] = Civilization(":".join(civ_names), ":".join(civ_ids))
+        return self[key]
 
 
 def build_category_filters(start, end):
@@ -115,6 +138,13 @@ class Civilization:
         self.last_week = WeekInfo()
         self.this_week = WeekInfo()
 
+    @property
+    def info_template(self):
+        """ Generates template based on number of civs."""
+        num_civs = len(self.civ_id.split(":"))
+        civ_length = 11 * num_civs + num_civs - 1
+        return "{{:>2}}. {{:{}}} ({{:+3d}}) ({{:4.1f}}%)".format(civ_length)
+
     def week_by_index(self, index):
         """ Returns week by index for dynamic choosing.
         0 == last week; 1 == this week."""
@@ -126,7 +156,7 @@ class Civilization:
         """ Returns rank of civ this week in terms of match popularity, for sorting """
         if metric == "popularity":
             return self.this_week.popularity_rank(category)
-        elif metric == "winrate":
+        if metric == "winrate":
             return self.this_week.winrate_rank(category)
         return 0
 
@@ -142,7 +172,7 @@ class Civilization:
             pct = self.this_week.winrate_pct(category)
         else:
             return ""
-        return "{:>2}. {:15} ({:+3d}) ({:4.1f}%)".format(
+        return self.info_template.format(
             this_weeks_rank, self.name, last_weeks_rank - this_weeks_rank, pct,
         )
 
@@ -167,8 +197,17 @@ def most_popular_match(civs, week_index, timebox, category):
     def week_sorter(week):
         return -1 * week.popularity_uses[category]
 
+    last_rank = 0
+    last_score = 0
+
     for rank, week in enumerate(sorted(weeks, key=week_sorter), 1):
-        week.popularity_ranks[category] = rank
+        score = week.popularity_uses[category]
+        if score == last_score:
+            week.popularity_ranks[category] = last_rank
+        else:
+            week.popularity_ranks[category] = rank
+            last_rank = rank
+            last_score = score
         week.popularity_totals[category] = total
 
 
@@ -245,7 +284,7 @@ class ReportManager:
 
     def __init__(self, args):
         self.args = args
-        self.civs = {}
+        self.civs = CivDict()
         if args.w:
             self.report_types = ("winrate",)
         elif args.p:
@@ -255,8 +294,6 @@ class ReportManager:
                 "popularity",
                 "winrate",
             )
-        for civ_id, name in civ_map().items():
-            self.civs[civ_id] = Civilization(name, civ_id)
         self.categories = list(build_category_filters(args.s, args.s).keys())
 
     def generate(self):

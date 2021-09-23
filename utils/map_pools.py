@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 """ Map Pool Data. """
 from collections import defaultdict
+from datetime import datetime, timedelta
 import json
 import sys
+from utils.tools import execute_sql, last_time_breakpoint, timeboxes
 
 RANKED_MAP_POOLS = {
     "1v1": {
@@ -12,6 +14,8 @@ RANKED_MAP_POOLS = {
         "20210727": [9, 29, 152, 72, 19, 162, 76],
         "20210810": [9, 29, 150, 140, 32, 160, 77],
         "20210824": [67, 9, 29, 139, 167, 33, 75],
+        "20210907": [161, 9, 149, 72, 17, 29, 21],
+        "20210921": [9, 167, 77, 140, 71, 29],
     },
     "team": {
         "20201215": [9, 29, 12, 72, 77, 33, 23, 76, 27],
@@ -20,6 +24,8 @@ RANKED_MAP_POOLS = {
         "20210727": [9, 29, 11, 12, 72, 163, 77, 33, 87],
         "20210810": [9, 29, 12, 16, 74, 161, 77, 33, 23],
         "20210824": [149, 9, 29, 12, 158, 32, 77, 165, 76],
+        "20210907": [114, 12, 140, 166, 29, 31, 33, 77, 9],
+        "20210921": [11, 12, 167, 29, 33, 72, 74, 77, 9],
     },
 }
 
@@ -32,6 +38,17 @@ def map_id_lookup():
     for civ_info in data["map_type"]:
         mmap[civ_info["string"]] = civ_info["id"]
         mmap[civ_info["string"].lower()] = civ_info["id"]
+
+    return mmap
+
+
+def map_name_lookup():
+    """ Returns a dictionary of map_id:map_name pairs. """
+    mmap = defaultdict(lambda: "UNKNOWN")
+    with open("data/strings.json") as open_file:
+        data = json.load(open_file)
+    for civ_info in data["map_type"]:
+        mmap[civ_info["id"]] = civ_info["string"]
 
     return mmap
 
@@ -67,5 +84,25 @@ def pool(rating, pool_name):
     return ",".join([str(i) for i in RANKED_MAP_POOLS[rating][pool_name]])
 
 
+def last_wednesday_pool():
+    last_tuesday = last_time_breakpoint(datetime.now())
+    start = last_tuesday.strftime("%Y%m%d")
+    timestamp = (last_tuesday + timedelta(days=1)).timestamp()
+    lookup = map_name_lookup()
+    for team_size in (1, 2, 3, 4):
+        sql = """SELECT DISTINCT map_type FROM matches
+        WHERE started BETWEEN {:0.0f} AND {:0.0f}
+        AND game_type = 0 AND team_size = {}""".format(
+            timestamp - 10 * 60 * 60, timestamp + 2 * 60 * 60, team_size
+        )
+        print("{}v{}".format(team_size, team_size))
+        print(", ".join(sorted([lookup[r] for r, in execute_sql(sql)])))
+        print(
+            '"{}": [{}],'.format(
+                start, ", ".join(sorted([str(r) for r, in execute_sql(sql)]))
+            )
+        )
+
+
 if __name__ == "__main__":
-    ids_from_names(sys.argv[1:])
+    last_wednesday_pool()

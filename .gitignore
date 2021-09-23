@@ -133,3 +133,4 @@ dmypy.json
 
 # Local db
 data/*.db
+tmp/*
