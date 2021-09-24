@@ -129,6 +129,12 @@ class WeekInfo:
         return self.bottom_winrate_pcts[category]
 
 
+def info_template(num_civs):
+    """ Generates template based on number of civs."""
+    civ_length = 11 * num_civs + num_civs - 1
+    return "{{:>2}}. {{:{}}} ({{:+4d}}) ({{:4.1f}}%)".format(civ_length)
+
+
 class Civilization:
     """ Holds information per civ. """
 
@@ -137,13 +143,6 @@ class Civilization:
         self.name = name
         self.last_week = WeekInfo()
         self.this_week = WeekInfo()
-
-    @property
-    def info_template(self):
-        """ Generates template based on number of civs."""
-        num_civs = len(self.civ_id.split(":"))
-        civ_length = 11 * num_civs + num_civs - 1
-        return "{{:>2}}. {{:{}}} ({{:+4d}}) ({{:4.1f}}%)".format(civ_length)
 
     def week_by_index(self, index):
         """ Returns week by index for dynamic choosing.
@@ -160,7 +159,7 @@ class Civilization:
             return self.this_week.winrate_rank(category)
         return 0
 
-    def info(self, metric, category):
+    def info(self, metric, category, num_civs):
         """ String representation of match popularity of civ in given category. """
         if metric == "popularity":
             this_weeks_rank = self.this_week.popularity_rank(category)
@@ -172,7 +171,7 @@ class Civilization:
             pct = self.this_week.winrate_pct(category)
         else:
             return ""
-        return self.info_template.format(
+        return info_template(num_civs).format(
             this_weeks_rank, self.name, last_weeks_rank - this_weeks_rank, pct,
         )
 
@@ -344,7 +343,7 @@ class ReportManager:
                     "    ".join(["{}" for _ in range(len(self.categories))]).format(
                         *[
                             data[self.categories[j]][i].info(
-                                report_type, self.categories[j]
+                                report_type, self.categories[j], self.args.s
                             )
                             for j in range(len(self.categories))
                         ]
