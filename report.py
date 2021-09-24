@@ -143,7 +143,7 @@ class Civilization:
         """ Generates template based on number of civs."""
         num_civs = len(self.civ_id.split(":"))
         civ_length = 11 * num_civs + num_civs - 1
-        return "{{:>2}}. {{:{}}} ({{:+3d}}) ({{:4.1f}}%)".format(civ_length)
+        return "{{:>2}}. {{:{}}} ({{:+4d}}) ({{:4.1f}}%)".format(civ_length)
 
     def week_by_index(self, index):
         """ Returns week by index for dynamic choosing.
@@ -324,8 +324,9 @@ class ReportManager:
             print("")
             print(report_type.capitalize())
             data = defaultdict(list)
+            template = "{:^" + str(18 + 12 * self.args.s) + "}"
             print(
-                "    ".join(["{:^33}" for _ in range(len(self.categories))]).format(
+                "    ".join([template for _ in range(len(self.categories))]).format(
                     *self.categories
                 )
             )
@@ -335,8 +336,10 @@ class ReportManager:
                     return civ.rank(report_type, category)
 
                 for civ in sorted(self.civs.values(), key=civ_sorter):
-                    data[category].append(civ)
-            for i in range(self.args.n or len(self.civs)):
+                    if civ.rank(report_type, category):
+                        data[category].append(civ)
+            data_category_length = min([len(civs) for civs in data.values()])
+            for i in range(self.args.n or data_category_length):
                 print(
                     "    ".join(["{}" for _ in range(len(self.categories))]).format(
                         *[

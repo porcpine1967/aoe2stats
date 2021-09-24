@@ -66,6 +66,15 @@ def execute_sql(sql):
     conn.close()
 
 
+def all_tuesdays():
+    sql = """SELECT started from matches ORDER BY started"""
+    tuesdays = set()
+    for (r,) in execute_sql(sql):
+        now = datetime.fromtimestamp(r)
+        tuesdays.add(last_time_breakpoint(now).strftime("%Y%m%d"))
+    for tuesday in sorted(list(tuesdays)):
+        print(tuesday)
+
+
 if __name__ == "__main__":
-    n = datetime(2012, 1, 4, tzinfo=timezone.utc)
-    print(last_time_breakpoint(n))
+    all_tuesdays()
