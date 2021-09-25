@@ -20,11 +20,17 @@ QUERIES = {
                              ORDER BY match_id, won, civ_id)
                             GROUP BY match_id, won)
                            GROUP BY civ""",
-    "player_popularity": """SELECT player_id, civ_id, COUNT(*) AS cnt FROM matches
-                      WHERE civ_id IS NOT NULL
-                      AND started BETWEEN {:0.0f} AND {:0.0f}
-                      {}
-                      GROUP BY player_id, civ_id""",
+    "player_popularity": """SELECT player, civ, COUNT(*) AS cnt FROM
+                            (SELECT GROUP_CONCAT(player_id, ":") as player,
+                             GROUP_CONCAT(civ_id, ":") AS civ FROM
+                             (SELECT player_id, match_id, civ_id, won
+                              FROM matches
+                              WHERE civ_id IS NOT NULL
+                              AND started BETWEEN {:0.0f} AND {:0.0f}
+                              {}
+                              ORDER BY player_id, won, civ_id)
+                             GROUP BY match_id, won)
+                            GROUP BY player, civ""",
     "win_rates_match": """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
                            WHERE civ_id IS NOT NULL
                            AND mirror = 0
@@ -48,14 +54,17 @@ class CivDict(defaultdict):
         self.cmap = civ_map()
 
     def __missing__(self, key):
+        str_key = str(key)
+        if str_key in self:
+            return self[str_key]
         civ_ids = []
         civ_names = []
 
-        for i in str(key).split(":"):
+        for i in str_key.split(":"):
             civ_ids.append(i)
             civ_names.append(self.cmap[int(i)])
-            self[key] = Civilization(":".join(civ_names), ":".join(civ_ids))
-        return self[key]
+            self[str_key] = Civilization(":".join(civ_names), ":".join(civ_ids))
+        return self[str_key]
 
 
 def build_category_filters(start, end):
@@ -262,14 +271,12 @@ def winrate_player(civs, week_index, timebox, category):
         players[player_id].add_civ_win(civ_id, won, count)
 
     weeks = set()
-    for civ_id, civ in civs.items():
-        week = civ.week_by_index(week_index)
-        weeks.add(week)
-        for player in players.values():
-            try:
-                week.win_results[category].append(player.win_percentage(civ_id))
-            except KeyError:
-                pass
+    for player in players.values():
+        for civ_id in player.civ_wins:
+            civ = civs[civ_id]
+            week = civ.week_by_index(week_index)
+            weeks.add(week)
+            week.win_results[category].append(player.win_percentage(civ_id))
 
     def week_sorter(week):
         return -1 * week.winrate_pct(category)
