@@ -10,7 +10,9 @@ import sqlite3
 import sys
 import time
 
-import requests
+from requests import Session
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 RANKED_DB = "data/ranked.db"
 UNRANKED_DB = "data/unranked.db"
@@ -125,8 +127,14 @@ def fetch_matches(start):
     ranked_match_data = []
     unranked_match_data = []
 
+    retry_strategy = Retry(backoff_factor=10, total=6)
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    http = Session()
+    http.mount("https://", adapter)
+    http.mount("http://", adapter)
+
     url = API_TEMPLATE.format(start=start, count=MAX_DOWNLOAD)
-    response = requests.get(url)
+    response = http.get(url)
     if response.status_code != 200:
         print(response.text)
         sys.exit(1)
@@ -176,6 +184,9 @@ def fetch_matches(start):
             unranked_match_data += match_rows
         match_ids.add(match["match_id"])
     print("Match count:", len(match_ids))
+    if next_start == start:
+        print("NEXT START HAS NOT CHANGED")
+        next_start += 60 * 60
     return len(data), next_start, ranked_match_data, unranked_match_data
 
 
@@ -224,7 +235,7 @@ def time_left(script_start, pct):
     )
 
 
-def fetch_and_save(start):
+def fetch_and_save(start, end_ts):
     """ Fetches up to one week of data from start. """
     script_start = datetime.now().timestamp()
     print("Starting at {}".format(int(script_start)))
@@ -232,15 +243,19 @@ def fetch_and_save(start):
     fetch_start = start
     data_length = MAX_DOWNLOAD
     week = 604800
-    week_ago = start + week
-    expected_end = script_start if script_start < week_ago else week_ago
-    while fetch_start > hold_start and fetch_start - start < week:
+
+    end_time = start + week
+    if end_ts:
+        end_time = end_ts
+    expected_end = script_start if script_start < end_time else end_time
+    while fetch_start > hold_start and fetch_start < end_time:
         hold_start = fetch_start
         data_length, fetch_start, ranked, unranked = fetch_matches(fetch_start)
         save_matches(ranked, RANKED_DB)
         save_matches(unranked, UNRANKED_DB)
         if data_length < MAX_DOWNLOAD:
             break
+        print("Next start:", fetch_start)
         print("sleeping...")
         time.sleep(10)
         pct = float(fetch_start - start) / (expected_end - start)
@@ -259,6 +274,13 @@ def run():
         "--start-ts", type=int, help="Start time as UNIX timestamp",
     )
 
+    parser.add_argument(
+        "--end", help="End time in YYYY-MM-DD format",
+    )
+    parser.add_argument(
+        "--end-ts", type=int, help="End time as UNIX timestamp",
+    )
+
     args = parser.parse_args()
     if args.start:
         start_date = datetime.strptime(args.start, "%Y-%m-%d")
@@ -267,7 +289,15 @@ def run():
         start_timestamp = args.start_ts
     else:
         start_timestamp = last_match_time()
-    fetch_and_save(start_timestamp)
+    if args.end:
+        end_date = datetime.strptime(args.end, "%Y-%m-%d")
+        end_timestamp = int(end_date.timestamp())
+    elif args.end_ts:
+        end_timestamp = args.end_ts
+    else:
+        end_timestamp = None
+
+    fetch_and_save(start_timestamp, end_timestamp)
 
 
 if __name__ == "__main__":
