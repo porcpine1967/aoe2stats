@@ -15,7 +15,8 @@ class Player:
 
     def add_civ_use(self, civ, civ_count):
         """ Adds civilization usage data for later calculations. """
-        self.civ_uses[civ] += civ_count
+        civ_id = ":".join(sorted(civ.split(":")))
+        self.civ_uses[civ_id] += civ_count
         self.total += civ_count
 
     def add_map_use(self, map_type, map_count):

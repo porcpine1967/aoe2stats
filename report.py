@@ -31,6 +31,17 @@ QUERIES = {
                               ORDER BY player_id, won, civ_id)
                              GROUP BY match_id, won)
                             GROUP BY player, civ""",
+    "match_popularity_basic": """SELECT cast(civ_id as text), COUNT(*) AS cnt FROM matches
+                                 WHERE civ_id IS NOT NULL
+                                 AND started BETWEEN {:0.0f} AND {:0.0f}
+                                 {}
+                                 GROUP BY civ_id""",
+    "player_popularity_basic": """SELECT cast(player_id as text), cast(civ_id as text),
+                                  COUNT(*) AS cnt FROM matches
+                                  WHERE civ_id IS NOT NULL
+                                  AND started BETWEEN {:0.0f} AND {:0.0f}
+                                  {}
+                                  GROUP BY player_id, civ_id""",
     "win_rates_match": """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
                            WHERE civ_id IS NOT NULL
                            AND mirror = 0
@@ -68,21 +79,23 @@ class CivDict(defaultdict):
 
 
 def build_category_filters(start, end):
-    """ Generate filters because easier."""
-    filters = {}
+    """ Generate category_filters because easier."""
+    category_filters = {}
     for i in range(start, end + 1):
-        filters["{}v{}".format(i, i)] = "AND game_type = 0 AND team_size = {}".format(i)
-        filters[
+        category_filters[
+            "{}v{}".format(i, i)
+        ] = "AND game_type = 0 AND team_size = {}".format(i)
+        category_filters[
             "{}v{} Arabia".format(i, i)
         ] = "AND game_type = 0 AND team_size = {} AND map_type = 9".format(i)
 
-        filters[
+        category_filters[
             "{}v{} Arena".format(i, i)
         ] = "AND game_type = 0 AND team_size = {} AND map_type = 29".format(i)
-        filters[
+        category_filters[
             "{}v{} Other".format(i, i)
         ] = "AND game_type = 0 AND team_size = {} AND map_type NOT IN (9,29)".format(i)
-    return filters
+    return category_filters
 
 
 CATEGORY_FILTERS = build_category_filters(1, 4)
@@ -190,9 +203,10 @@ def filters(category):
     return CATEGORY_FILTERS[category]
 
 
-def most_popular_match(civs, week_index, timebox, category):
+def most_popular_match(civs, week_index, timebox, category, basic):
     """ Loads civs with most popular by match for given week. """
-    sql = QUERIES["match_popularity"].format(*timebox, filters(category))
+    key = "match_popularity_basic" if basic else "match_popularity"
+    sql = QUERIES[key].format(*timebox, filters(category))
     total = 0
     weeks = []
     for civ_id, count in execute_sql(sql):
@@ -219,9 +233,10 @@ def most_popular_match(civs, week_index, timebox, category):
         week.popularity_totals[category] = total
 
 
-def most_popular_player(civs, week_index, timebox, category):
+def most_popular_player(civs, week_index, timebox, category, basic):
     """ Loads civs with most popular by player for given week. """
-    sql = QUERIES["player_popularity"].format(*timebox, filters(category))
+    key = "player_popularity_basic" if basic else "player_popularity"
+    sql = QUERIES[key].format(*timebox, filters(category))
     players = defaultdict(Player)
     for player_id, civ_id, count in execute_sql(sql):
         players[player_id].add_civ_use(civ_id, count)
@@ -302,22 +317,30 @@ class ReportManager:
             )
         self.categories = list(build_category_filters(args.s, args.s).keys())
 
-    def generate(self):
+    def generate(self, endtime=datetime.now()):
         """ Load data into civs. Returns report date."""
         if self.args.m:
             methodology = "match"
         else:
             methodology = "player"
 
-        last_tuesday = last_time_breakpoint(datetime.now())
+        last_tuesday = last_time_breakpoint(endtime)
         for idx, timebox in enumerate(timeboxes(datetime.timestamp(last_tuesday))):
             for category in self.categories:
                 if methodology == "player":
-                    most_popular_player(self.civs, idx, timebox, category)
-                    winrate_player(self.civs, idx, timebox, category)
+                    if not self.args.w:
+                        most_popular_player(
+                            self.civs, idx, timebox, category, self.args.b
+                        )
+                    if not self.args.p:
+                        winrate_player(self.civs, idx, timebox, category)
                 elif methodology == "match":
-                    most_popular_match(self.civs, idx, timebox, category)
-                    winrate_match(self.civs, idx, timebox, category)
+                    if not self.args.w:
+                        most_popular_match(
+                            self.civs, idx, timebox, category, self.args.b
+                        )
+                    if not self.args.p:
+                        winrate_match(self.civs, idx, timebox, category)
         return last_tuesday
 
     def display(self, report_date):
@@ -358,15 +381,23 @@ class ReportManager:
                 )
 
 
-def run():
-    """ Basic functioning of app. Removes global variables. """
+def parsed_args():
+    """ args returned from command line."""
     parser = ArgumentParser()
     parser.add_argument("-w", action="store_true", help="Only winrates")
     parser.add_argument("-p", action="store_true", help="Only popularity")
     parser.add_argument("-m", action="store_true", help="Use match methodology")
     parser.add_argument("-n", type=int, help="Only show n records")
     parser.add_argument("-s", default=1, type=int, help="Team size")
-    args = parser.parse_args()
+    parser.add_argument(
+        "-b", action="store_true", help="Use Basic Popularity report for team"
+    )
+    return parser.parse_args()
+
+
+def run():
+    """ Basic functioning of app. Removes global variables. """
+    args = parsed_args()
     report = ReportManager(args)
     generation_enddate = report.generate()
     report.display(generation_enddate)
