@@ -3,7 +3,7 @@
 from collections import defaultdict
 from datetime import datetime, timedelta
 
-from report import parsed_args, ReportManager
+from report import arg_parser, ReportManager
 
 CIV_REBALANCES = {
     51737: {
@@ -101,16 +101,19 @@ def display(reporter, civ_names):
             )
 
 
-def run(version):
+def run():
     """ Print results of version."""
-    version_info = CIV_REBALANCES[version]
-    print("Report on version", version)
+    parser = arg_parser()
+    parser.add_argument("version", type=int, help="Which version to use")
+    args = parser.parse_args()
+    version_info = CIV_REBALANCES[args.version]
+    print("Report on version", args.version)
     date = datetime.strptime(version_info["date"], "%Y%m%d")
     endtime = date + timedelta(days=8)
-    reporter = ReportManager(parsed_args())
+    reporter = ReportManager(args)
     reporter.generate(endtime)
     display(reporter, [civ.capitalize() for civ in version_info["civs"]])
 
 
 if __name__ == "__main__":
-    run(50292)
+    run()

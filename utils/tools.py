@@ -9,6 +9,13 @@ DB = "data/ranked.db"
 SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
 
 
+def batch(iterable, size=1):
+    """ Breaks iterable into chunks. """
+    length = len(iterable)
+    for ndx in range(0, length, size):
+        yield iterable[ndx : min(ndx + size, length)]
+
+
 def civ_map():
     """ Generates dict for mapping civ id to civ name. """
     cmap = {}
@@ -59,7 +66,7 @@ def last_time_breakpoint(now):
 
 def execute_sql(sql):
     """ Generator for an sql statement and database. """
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(DB, timeout=20)
     cur = conn.cursor()
     for row in cur.execute(sql).fetchall():
         yield row
@@ -67,14 +74,16 @@ def execute_sql(sql):
 
 
 def all_tuesdays():
-    sql = """SELECT started from matches ORDER BY started"""
+    """ All tuesdays in the database."""
+    sql = """SELECT DISTINCT date(started, "unixepoch") AS ymd, started FROM matches
+    GROUP BY ymd ORDER BY started"""
     tuesdays = set()
-    for (r,) in execute_sql(sql):
-        now = datetime.fromtimestamp(r)
-        tuesdays.add(last_time_breakpoint(now).strftime("%Y%m%d"))
-    for tuesday in sorted(list(tuesdays)):
-        print(tuesday)
+    for _, started in execute_sql(sql):
+        now = datetime.fromtimestamp(started)
+        tuesdays.add(last_time_breakpoint(now))
+    return sorted(list(tuesdays))
 
 
 if __name__ == "__main__":
-    all_tuesdays()
+    for tuesday in all_tuesdays():
+        print(tuesday)

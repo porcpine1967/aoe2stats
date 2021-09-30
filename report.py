@@ -2,58 +2,24 @@
 """ Generates weekly report of map and civ usage."""
 from argparse import ArgumentParser
 from collections import defaultdict
-from datetime import datetime
-import statistics
-from statsmodels.stats.proportion import proportion_confint
+from datetime import datetime, timedelta
 
-from utils.models import Player
-from utils.tools import civ_map, execute_sql, last_time_breakpoint, timeboxes
+from utils.tools import civ_map, execute_sql, last_time_breakpoint
 
 QUERIES = {
-    "match_popularity": """SELECT civ, COUNT(*) AS cnt FROM
-                           (SELECT GROUP_CONCAT(civ_id, ":") AS civ FROM
-                            (SELECT match_id, civ_id, won
-                             FROM matches
-                             WHERE civ_id IS NOT NULL
-                             AND started BETWEEN {:0.0f} AND {:0.0f}
-                             {}
-                             ORDER BY match_id, won, civ_id)
-                            GROUP BY match_id, won)
-                           GROUP BY civ""",
-    "player_popularity": """SELECT player, civ, COUNT(*) AS cnt FROM
-                            (SELECT GROUP_CONCAT(player_id, ":") as player,
-                             GROUP_CONCAT(civ_id, ":") AS civ FROM
-                             (SELECT player_id, match_id, civ_id, won
-                              FROM matches
-                              WHERE civ_id IS NOT NULL
-                              AND started BETWEEN {:0.0f} AND {:0.0f}
-                              {}
-                              ORDER BY player_id, won, civ_id)
-                             GROUP BY match_id, won)
-                            GROUP BY player, civ""",
-    "match_popularity_basic": """SELECT cast(civ_id as text), COUNT(*) AS cnt FROM matches
-                                 WHERE civ_id IS NOT NULL
-                                 AND started BETWEEN {:0.0f} AND {:0.0f}
-                                 {}
-                                 GROUP BY civ_id""",
-    "player_popularity_basic": """SELECT cast(player_id as text), cast(civ_id as text),
-                                  COUNT(*) AS cnt FROM matches
-                                  WHERE civ_id IS NOT NULL
-                                  AND started BETWEEN {:0.0f} AND {:0.0f}
-                                  {}
-                                  GROUP BY player_id, civ_id""",
-    "win_rates_match": """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
-                           WHERE civ_id IS NOT NULL
-                           AND mirror = 0
-                           AND started BETWEEN {:0.0f} AND {:0.0f}
+    "popularity": """SELECT civ_id, pct, rank FROM results
+                           WHERE week = "{}"
                            {}
-                           GROUP BY civ_id, won""",
-    "win_rates_player": """ SELECT player_id, civ_id, won, COUNT(*) AS cnt FROM matches
-                            WHERE civ_id IS NOT NULL
-                            AND mirror = 0
-                            AND started BETWEEN {:0.0f} AND {:0.0f}
-                            {}
-                            GROUP BY player_id, civ_id, won""",
+                           AND methodology = "{}"
+                           AND metric = "popularity"
+                           AND compound = {}
+    """,
+    "win_rates": """SELECT civ_id, pct, rank FROM results
+                           WHERE week = "{}"
+                           {}
+                           AND methodology = "{}"
+                           AND metric = "winrate"
+    """,
 }
 
 
@@ -82,19 +48,15 @@ def build_category_filters(start, end):
     """ Generate category_filters because easier."""
     category_filters = {}
     for i in range(start, end + 1):
-        category_filters[
-            "{}v{}".format(i, i)
-        ] = "AND game_type = 0 AND team_size = {}".format(i)
-        category_filters[
-            "{}v{} Arabia".format(i, i)
-        ] = "AND game_type = 0 AND team_size = {} AND map_type = 9".format(i)
-
-        category_filters[
-            "{}v{} Arena".format(i, i)
-        ] = "AND game_type = 0 AND team_size = {} AND map_type = 29".format(i)
-        category_filters[
-            "{}v{} Other".format(i, i)
-        ] = "AND game_type = 0 AND team_size = {} AND map_type NOT IN (9,29)".format(i)
+        for category in (
+            "All",
+            "Arabia",
+            "Arena",
+            "Others",
+        ):
+            category_filters[
+                "{}v{} {}".format(i, i, category)
+            ] = "AND map_category = '{}' AND team_size = {}".format(category, i)
     return category_filters
 
 
@@ -105,14 +67,10 @@ class WeekInfo:
     """ Holder for weekly civ data. """
 
     def __init__(self):
-        self.popularity_uses = defaultdict(float)
-        self.popularity_totals = defaultdict(float)
+        self.popularity_pcts = defaultdict(float)
         self.popularity_ranks = defaultdict(int)
-        self.win_results = defaultdict(list)
-        self.win_ranks = defaultdict(int)
-        self.bottom_win_ranks = defaultdict(int)
+        self.winrate_ranks = defaultdict(int)
         self.winrate_pcts = {}
-        self.bottom_winrate_pcts = {}
 
     def popularity_rank(self, category):
         """ Rank in category on match popularity metric. """
@@ -120,35 +78,15 @@ class WeekInfo:
 
     def popularity_pct(self, category):
         """ Percentage of plays in this category this week. """
-        this_weeks_uses = self.popularity_uses[category]
-        this_weeks_total = self.popularity_totals[category] or 1
-        return 100 * this_weeks_uses / this_weeks_total
+        return 100 * self.popularity_pcts[category]
 
     def winrate_rank(self, category):
         """ Rank of civ for this week in terms of win rate."""
-        return self.win_ranks[category]
+        return self.winrate_ranks[category]
 
     def winrate_pct(self, category):
         """ Percentage of games won by this week in this category. """
-        if category not in self.winrate_pcts:
-            try:
-                mean = statistics.mean(self.win_results[category])
-                self.winrate_pcts[category] = 100 * mean
-            except statistics.StatisticsError:
-                self.winrate_pcts[category] = 0
-        return self.winrate_pcts[category]
-
-    def bottom_winrate_pct(self, category):
-        """ Percentage of games won by this week in this category. """
-        if category not in self.bottom_winrate_pcts:
-            try:
-                wins = sum(self.win_results[category])
-                total = len(self.win_results[category])
-                low_confidence, _ = proportion_confint(wins, total)
-                self.bottom_winrate_pcts[category] = 100 * low_confidence
-            except statistics.StatisticsError:
-                self.bottom_winrate_pcts[category] = 0
-        return self.bottom_winrate_pcts[category]
+        return 100 * self.winrate_pcts[category]
 
 
 def info_template(num_civs):
@@ -174,7 +112,7 @@ class Civilization:
         return self.this_week
 
     def rank(self, metric, category):
-        """ Returns rank of civ this week in terms of match popularity, for sorting """
+        """ Returns rank of civ this week."""
         if metric == "popularity":
             return self.this_week.popularity_rank(category)
         if metric == "winrate":
@@ -182,7 +120,7 @@ class Civilization:
         return 0
 
     def info(self, metric, category, num_civs):
-        """ String representation of match popularity of civ in given category. """
+        """ String representation of civ in given category. """
         if metric == "popularity":
             this_weeks_rank = self.this_week.popularity_rank(category)
             last_weeks_rank = self.last_week.popularity_rank(category)
@@ -203,101 +141,24 @@ def filters(category):
     return CATEGORY_FILTERS[category]
 
 
-def most_popular_match(civs, week_index, timebox, category, basic):
+def most_popular(civs, week_index, week, category, methodology, compound):
     """ Loads civs with most popular by match for given week. """
-    key = "match_popularity_basic" if basic else "match_popularity"
-    sql = QUERIES[key].format(*timebox, filters(category))
-    total = 0
-    weeks = []
-    for civ_id, count in execute_sql(sql):
-        total += count
+    sql = QUERIES["popularity"].format(week, filters(category), methodology, compound)
+    for civ_id, pct, rank in execute_sql(sql):
         civ = civs[civ_id]
         week = civ.week_by_index(week_index)
-        weeks.append(week)
-        week.popularity_uses[category] += count
-
-    def week_sorter(week):
-        return -1 * week.popularity_uses[category]
-
-    last_rank = 0
-    last_score = 0
-
-    for rank, week in enumerate(sorted(weeks, key=week_sorter), 1):
-        score = week.popularity_uses[category]
-        if score == last_score:
-            week.popularity_ranks[category] = last_rank
-        else:
-            week.popularity_ranks[category] = rank
-            last_rank = rank
-            last_score = score
-        week.popularity_totals[category] = total
-
-
-def most_popular_player(civs, week_index, timebox, category, basic):
-    """ Loads civs with most popular by player for given week. """
-    key = "player_popularity_basic" if basic else "player_popularity"
-    sql = QUERIES[key].format(*timebox, filters(category))
-    players = defaultdict(Player)
-    for player_id, civ_id, count in execute_sql(sql):
-        players[player_id].add_civ_use(civ_id, count)
-
-    weeks = set()
-    for player in players.values():
-        for civ_id, value in player.civ_preference_units.items():
-            week = civs[civ_id].week_by_index(week_index)
-            weeks.add(week)
-            week.popularity_uses[category] += value
-
-    def week_sorter(week):
-        return -1 * week.popularity_uses[category]
-
-    for rank, week in enumerate(sorted(weeks, key=week_sorter), 1):
+        week.popularity_pcts[category] = pct
         week.popularity_ranks[category] = rank
-        week.popularity_totals[category] = len(players)
 
 
-def winrate_match(civs, week_index, timebox, category):
+def winrate(civs, week_index, week, category, methodology):
     """ Loads civs with winrate data based on matches. """
-    sql = QUERIES["win_rates_match"].format(*timebox, filters(category))
-    weeks = set()
-    for civ_id, won, count in execute_sql(sql):
-        week = civs[civ_id].week_by_index(week_index)
-        weeks.add(week)
-        week.win_results[category] += [won for _ in range(count)]
-
-    def sort_win_pct(week):
-        return -1 * week.winrate_pct(category)
-
-    def sort_bottom_win_pct(week):
-        return -1 * week.bottom_winrate_pct(category)
-
-    for rank, week in enumerate(sorted(weeks, key=sort_win_pct), 1):
-        week.win_ranks[category] = rank
-
-    for rank, week in enumerate(sorted(weeks, key=sort_bottom_win_pct), 1):
-        week.bottom_win_ranks[category] = rank
-
-
-def winrate_player(civs, week_index, timebox, category):
-    """ Loads civs with winrate data based on player percentage. """
-    sql = QUERIES["win_rates_player"].format(*timebox, filters(category))
-    players = defaultdict(Player)
-    for player_id, civ_id, won, count in execute_sql(sql):
-        players[player_id].add_civ_win(civ_id, won, count)
-
-    weeks = set()
-    for player in players.values():
-        for civ_id in player.civ_wins:
-            civ = civs[civ_id]
-            week = civ.week_by_index(week_index)
-            weeks.add(week)
-            week.win_results[category].append(player.win_percentage(civ_id))
-
-    def week_sorter(week):
-        return -1 * week.winrate_pct(category)
-
-    for rank, week in enumerate(sorted(weeks, key=week_sorter), 1):
-        week.win_ranks[category] = rank
+    sql = QUERIES["win_rates"].format(week, filters(category), methodology)
+    for civ_id, pct, rank in execute_sql(sql):
+        civ = civs[civ_id]
+        week = civ.week_by_index(week_index)
+        week.winrate_pcts[category] = pct
+        week.winrate_ranks[category] = rank
 
 
 class ReportManager:
@@ -325,22 +186,16 @@ class ReportManager:
             methodology = "player"
 
         last_tuesday = last_time_breakpoint(endtime)
-        for idx, timebox in enumerate(timeboxes(datetime.timestamp(last_tuesday))):
+        last_week = (last_tuesday - timedelta(days=14)).strftime("%Y%m%d")
+        this_week = (last_tuesday - timedelta(days=7)).strftime("%Y%m%d")
+        for idx, timebox in enumerate((last_week, this_week,)):
             for category in self.categories:
-                if methodology == "player":
-                    if not self.args.w:
-                        most_popular_player(
-                            self.civs, idx, timebox, category, self.args.b
-                        )
-                    if not self.args.p:
-                        winrate_player(self.civs, idx, timebox, category)
-                elif methodology == "match":
-                    if not self.args.w:
-                        most_popular_match(
-                            self.civs, idx, timebox, category, self.args.b
-                        )
-                    if not self.args.p:
-                        winrate_match(self.civs, idx, timebox, category)
+                if not self.args.w:
+                    most_popular(
+                        self.civs, idx, timebox, category, methodology, self.args.c
+                    )
+                if not self.args.p:
+                    winrate(self.civs, idx, timebox, category, methodology)
         return last_tuesday
 
     def display(self, report_date):
@@ -367,6 +222,7 @@ class ReportManager:
                 for civ in sorted(self.civs.values(), key=civ_sorter):
                     if civ.rank(report_type, category):
                         data[category].append(civ)
+
             data_category_length = min([len(civs) for civs in data.values()])
             for i in range(self.args.n or data_category_length):
                 print(
@@ -381,7 +237,7 @@ class ReportManager:
                 )
 
 
-def parsed_args():
+def arg_parser():
     """ args returned from command line."""
     parser = ArgumentParser()
     parser.add_argument("-w", action="store_true", help="Only winrates")
@@ -389,15 +245,13 @@ def parsed_args():
     parser.add_argument("-m", action="store_true", help="Use match methodology")
     parser.add_argument("-n", type=int, help="Only show n records")
     parser.add_argument("-s", default=1, type=int, help="Team size")
-    parser.add_argument(
-        "-b", action="store_true", help="Use Basic Popularity report for team"
-    )
-    return parser.parse_args()
+    parser.add_argument("-c", action="store_true", help="Use compound report for team")
+    return parser
 
 
 def run():
     """ Basic functioning of app. Removes global variables. """
-    args = parsed_args()
+    args = arg_parser().parse_args()
     report = ReportManager(args)
     generation_enddate = report.generate()
     report.display(generation_enddate)

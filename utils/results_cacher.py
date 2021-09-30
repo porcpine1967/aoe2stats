@@ -1,0 +1,468 @@
+#!/usr/bin/env python
+""" Save weekly calculations of popularity, win rates, rank, and sample_size."""
+
+from collections import defaultdict
+from datetime import datetime
+import sqlite3
+import statistics
+from statsmodels.stats.proportion import proportion_confint
+
+from models import Player
+from tools import all_tuesdays, batch, DB, execute_sql, SEVEN_DAYS_OF_SECONDS
+
+CREATE_RESULTS_TABLE = """CREATE TABLE IF NOT EXISTS results (
+id integer PRIMARY KEY,
+week text,
+civ_id text,
+team_size integer,
+map_category text,
+methodology text,
+metric text,
+compound integer,
+rank integer,
+pct real,
+sample_size integer,
+UNIQUE(week, civ_id, team_size, map_category, methodology, metric, compound))"""
+
+CREATE_WEEKCOUNTS_TABLE = """CREATE TABLE IF NOT EXISTS week_counts (
+id integer PRIMARY KEY, 
+week text,
+match_count integer,
+UNIQUE(week))"""
+
+WEEK_COUNT_SQL_TEMPLATE = """ SELECT match_count FROM week_counts
+WHERE week = "{}" """
+
+MATCHES_SQL_TEMPLATE = """SELECT count(*) FROM matches
+                          WHERE started BETWEEN {:0.0f} AND {:0.0f}"""
+QUERIES = {
+    "match_popularity": """SELECT civ, COUNT(*) AS cnt FROM
+                           (SELECT GROUP_CONCAT(civ_id, ":") AS civ FROM
+                            (SELECT match_id, civ_id, won
+                             FROM matches
+                             WHERE civ_id IS NOT NULL
+                             AND started BETWEEN {:0.0f} AND {:0.0f}
+                             {}
+                             ORDER BY match_id, won, civ_id)
+                            GROUP BY match_id, won)
+                           GROUP BY civ""",
+    "player_popularity": """SELECT player, civ, COUNT(*) AS cnt FROM
+                            (SELECT GROUP_CONCAT(player_id, ":") as player,
+                             GROUP_CONCAT(civ_id, ":") AS civ FROM
+                             (SELECT player_id, match_id, civ_id, won
+                              FROM matches
+                              WHERE civ_id IS NOT NULL
+                              AND started BETWEEN {:0.0f} AND {:0.0f}
+                              {}
+                              ORDER BY player_id, won, civ_id)
+                             GROUP BY match_id, won)
+                            GROUP BY player, civ""",
+    "match_popularity_basic": """SELECT cast(civ_id as text), COUNT(*) AS cnt FROM matches
+                                 WHERE civ_id IS NOT NULL
+                                 AND started BETWEEN {:0.0f} AND {:0.0f}
+                                 {}
+                                 GROUP BY civ_id""",
+    "player_popularity_basic": """SELECT cast(player_id as text), cast(civ_id as text),
+                                  COUNT(*) AS cnt FROM matches
+                                  WHERE civ_id IS NOT NULL
+                                  AND started BETWEEN {:0.0f} AND {:0.0f}
+                                  {}
+                                  GROUP BY player_id, civ_id""",
+    "win_rates_match": """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
+                           WHERE civ_id IS NOT NULL
+                           AND mirror = 0
+                           AND started BETWEEN {:0.0f} AND {:0.0f}
+                           {}
+                           GROUP BY civ_id, won""",
+    "win_rates_player": """ SELECT player_id, civ_id, won, COUNT(*) AS cnt FROM matches
+                            WHERE civ_id IS NOT NULL
+                            AND mirror = 0
+                            AND started BETWEEN {:0.0f} AND {:0.0f}
+                            {}
+                            GROUP BY player_id, civ_id, won""",
+}
+
+
+def prepare_database():
+    """ Creates tables if not exists. """
+    execute_sql(CREATE_RESULTS_TABLE)
+    execute_sql(CREATE_WEEKCOUNTS_TABLE)
+
+
+class CivDict(defaultdict):
+    """ Generates civ if missing."""
+
+    def __init__(self, klass, size, map_category, methodology):
+        super().__init__()
+        self.klass = klass
+        self.size = size
+        self.map_category = map_category
+        self.methodology = methodology
+
+    def __missing__(self, key):
+        str_key = str(key)
+        if str_key in self:
+            return self[str_key]
+        civ_ids = []
+
+        for i in str_key.split(":"):
+            civ_ids.append(i)
+        self[str_key] = self.klass(
+            ":".join(civ_ids), self.size, self.map_category, self.methodology
+        )
+        return self[str_key]
+
+
+def build_category_filters(start, end):
+    """ Generate category_filters because easier."""
+    category_filters = {}
+    for i in range(start, end + 1):
+        category_filters[
+            "All{}".format(i)
+        ] = "AND game_type = 0 AND team_size = {}".format(i)
+        category_filters[
+            "Arabia{}".format(i)
+        ] = "AND game_type = 0 AND team_size = {} AND map_type = 9".format(i)
+
+        category_filters[
+            "Arena{}".format(i)
+        ] = "AND game_type = 0 AND team_size = {} AND map_type = 29".format(i)
+        category_filters[
+            "Others{}".format(i)
+        ] = "AND game_type = 0 AND team_size = {} AND map_type NOT IN (9,29)".format(i)
+    return category_filters
+
+
+CATEGORY_FILTERS = build_category_filters(1, 4)
+
+
+class Civilization:
+    """ Base class for holder of weekly information."""
+
+    def __init__(self, civ_id, size, map_category, methodology):
+        self.civ_id = civ_id
+        self.size = size
+        self.map_category = map_category
+        self.methodology = methodology
+        self.rank = 0
+        self.total = 0
+
+    @property
+    def pct(self):
+        """ Override in subclass."""
+        raise NotImplementedError
+
+    @property
+    def metric(self):
+        """ Override in subclass."""
+        raise NotImplementedError
+
+    @property
+    def sample_size(self):
+        """ Override in subclass."""
+        raise NotImplementedError
+
+    @property
+    def compound(self):
+        """ Override in subclass."""
+        raise NotImplementedError
+
+    def info(self):
+        """ Information about civ."""
+        return [
+            self.civ_id,
+            self.size,
+            self.map_category,
+            self.methodology,
+            self.metric,
+            self.compound,
+            self.rank,
+            self.pct,
+            self.sample_size,
+        ]
+
+
+class PopularCivilization(Civilization):
+    """ Holds weekly popularity information. """
+
+    def __init__(self, civ_id, size, map_category, methodology):
+        Civilization.__init__(self, civ_id, size, map_category, methodology)
+        self.times_used = 0.0
+        self.total = 0.0
+        self.rank = 0
+
+    @property
+    def score(self):
+        """ How to rank"""
+        return self.times_used
+
+    @property
+    def compound(self):
+        """ Whether a single civ or a set of civs."""
+        return ":" in self.civ_id
+
+    @property
+    def pct(self):
+        """ Percentage of plays in this category this week. """
+        return self.times_used / (self.total or 1.0)
+
+    @property
+    def metric(self):
+        """ What is actually measured."""
+        return "popularity"
+
+    @property
+    def sample_size(self):
+        """ How many data points."""
+        return self.times_used
+
+
+class WinrateCivilization(Civilization):
+    """ Holds weekly winrate information. """
+
+    def __init__(self, civ_id, size, map_category, methodology):
+        Civilization.__init__(self, civ_id, size, map_category, methodology)
+        self.win_results = []
+        self.cached_winrate_pct = None
+
+    @property
+    def sample_size(self):
+        """ How many data points."""
+        return len(self.win_results)
+
+    @property
+    def metric(self):
+        """ What is actually measured."""
+        return "winrate"
+
+    @property
+    def score(self):
+        """ How to rank"""
+        return self.pct
+
+    @property
+    def compound(self):
+        """ Whether a single civ or a set of civs."""
+        return False
+
+    @property
+    def pct(self):
+        """ Percentage of games won by this civ. """
+        if self.cached_winrate_pct is None:
+            try:
+                self.cached_winrate_pct = statistics.mean(self.win_results)
+            except statistics.StatisticsError:
+                self.cached_winrate_pct = 0
+        return self.cached_winrate_pct
+
+
+class BottomWinrateCivilization(WinrateCivilization):
+    """ Holds weekly bottom winrate information."""
+
+    @property
+    def metric(self):
+        """ What is actually measured."""
+        return "bottom_winrate"
+
+    @property
+    def pct(self):
+        """ Percentage of games won by this civ assuming the worst. """
+        if self.cached_winrate_pct is None:
+            try:
+                wins = sum(self.win_results)
+                total = len(self.win_results)
+                low_confidence, _ = proportion_confint(wins, total)
+                self.cached_winrate_pct = low_confidence
+            except statistics.StatisticsError:
+                self.cached_winrate_pct = 0
+        return self.cached_winrate_pct
+
+
+def filters(category, size):
+    """ Generates additional "where" conditions for query """
+    return CATEGORY_FILTERS[category + str(size)]
+
+
+def most_popular_match(timebox, size, map_category, basic):
+    """ Returns civs with most popular by match for given week. """
+    if not basic and size < 2:
+        return []
+    key = "match_popularity_basic" if basic else "match_popularity"
+    sql = QUERIES[key].format(*timebox, filters(map_category, size))
+    total = 0
+    civs = CivDict(PopularCivilization, size, map_category, "match")
+    for civ_id, count in execute_sql(sql):
+        total += count
+        civ = civs[civ_id]
+        civ.times_used += count
+
+    def civ_sorter(civ):
+        return -1 * civ.times_used
+
+    rank_civs(civs.values(), civ_sorter, total)
+
+    return list(civs.values())
+
+
+def most_popular_player(timebox, size, map_category, basic):
+    """ Returns civs with most popular by player for given week. """
+    if not basic and size < 2:
+        return []
+    key = "player_popularity_basic" if basic else "player_popularity"
+    sql = QUERIES[key].format(*timebox, filters(map_category, size))
+    players = defaultdict(Player)
+    for player_id, civ_id, count in execute_sql(sql):
+        players[player_id].add_civ_use(civ_id, count)
+
+    civs = CivDict(PopularCivilization, size, map_category, "player")
+    for player in players.values():
+        for civ_id, value in player.civ_preference_units.items():
+            civ = civs[civ_id]
+            civ.times_used += value
+
+    def civ_sorter(civ):
+        return -1 * civ.times_used
+
+    rank_civs(civs.values(), civ_sorter, len(players))
+
+    return list(civs.values())
+
+
+def rank_civs(civs, sorter, total):
+    """ Set rank and total for each civ."""
+    last_rank = 0
+    last_score = 0
+
+    for rank, civ in enumerate(sorted(civs, key=sorter), 1):
+        score = civ.score
+        if score == last_score:
+            civ.rank = last_rank
+        else:
+            civ.rank = rank
+            last_rank = rank
+            last_score = score
+        civ.total = total
+
+
+def winrate_match(timebox, size, map_category):
+    """ Returns civs with winrate data based on matches. """
+    sql = QUERIES["win_rates_match"].format(*timebox, filters(map_category, size))
+    civs = CivDict(WinrateCivilization, size, map_category, "match")
+    bottom_civs = CivDict(BottomWinrateCivilization, size, map_category, "match")
+    total = 0
+    for civ_id, won, count in execute_sql(sql):
+        total += count
+        wins = [won for _ in range(count)]
+        civ = civs[civ_id]
+        civ.win_results += wins
+        bottom_civ = bottom_civs[civ_id]
+        bottom_civ.win_results += wins
+
+    def sort_win_pct(civ):
+        return -1 * civ.pct
+
+    rank_civs(civs.values(), sort_win_pct, total)
+    rank_civs(bottom_civs.values(), sort_win_pct, total)
+
+    return list(civs.values()) + list(bottom_civs.values())
+
+
+def winrate_player(timebox, size, map_category):
+    """ Returns civs with winrate data based on player percentage. """
+    sql = QUERIES["win_rates_player"].format(*timebox, filters(map_category, size))
+    players = defaultdict(Player)
+    for player_id, civ_id, won, count in execute_sql(sql):
+        players[player_id].add_civ_win(civ_id, won, count)
+
+    civs = CivDict(WinrateCivilization, size, map_category, "player")
+    total = len(players)
+    for player in players.values():
+        for civ_id in player.civ_wins:
+            civ = civs[civ_id]
+            civ.win_results.append(player.win_percentage(civ_id))
+
+    def sort_win_pct(civ):
+        return -1 * civ.pct
+
+    rank_civs(civs.values(), sort_win_pct, total)
+    return list(civs.values())
+
+
+def timeboxes_to_update():
+    """ Returns array of timebox tuples that need to be updated."""
+    timeboxes = []
+    for tuesday in all_tuesdays():
+        old_count = None
+        week = tuesday.strftime("%Y%m%d")
+        for (count,) in execute_sql(WEEK_COUNT_SQL_TEMPLATE.format(week)):
+            old_count = count
+        timestamp = datetime.timestamp(tuesday)
+        timebox = (
+            timestamp,
+            timestamp + SEVEN_DAYS_OF_SECONDS,
+        )
+        if old_count:
+            new_count = None
+            for (count,) in execute_sql(MATCHES_SQL_TEMPLATE.format(*timebox)):
+                new_count = count
+            if old_count == new_count:
+                print("Skipping", week)
+                continue
+
+        timeboxes.append(timebox)
+    return timeboxes
+
+
+def save_civs(civs, timebox):
+    """ Calls saves on the civs and updates week_counts."""
+    results_sql = """INSERT OR REPLACE INTO results
+    (week, civ_id, team_size, map_category, methodology, metric,
+    compound, rank, pct, sample_size)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    tuesday = datetime.fromtimestamp(timebox[0])
+    week = tuesday.strftime("%Y%m%d")
+    print("Saving", week, len(civs))
+    for match_batch in batch(civs, 300):
+        cur.execute("BEGIN")
+
+        for civ in match_batch:
+            cur.execute(results_sql, [week] + civ.info())
+        cur.execute("COMMIT")
+    match_count = None
+    for (count,) in execute_sql(MATCHES_SQL_TEMPLATE.format(*timebox)):
+        match_count = count
+    week_counts_sql = """INSERT OR REPLACE INTO week_counts
+    (week, match_count) VALUES (?, ?)"""
+    cur.execute("BEGIN")
+    cur.execute(week_counts_sql, (week, match_count))
+    cur.execute("COMMIT")
+    conn.close()
+
+
+def generate_results():
+    """ Generate all the results"""
+    categories = {x[:-1] for x in CATEGORY_FILTERS}
+    for timebox in timeboxes_to_update():
+        civs = []
+        for map_category in categories:
+            for team_size in range(1, 4):
+                civs.extend(most_popular_match(timebox, team_size, map_category, True))
+                civs.extend(most_popular_match(timebox, team_size, map_category, False))
+                civs.extend(winrate_match(timebox, team_size, map_category))
+                civs.extend(most_popular_player(timebox, team_size, map_category, True))
+                civs.extend(
+                    most_popular_player(timebox, team_size, map_category, False)
+                )
+                civs.extend(winrate_player(timebox, team_size, map_category))
+        save_civs(civs, timebox)
+
+
+def run():
+    prepare_database()
+    generate_results()
+
+
+if __name__ == "__main__":
+    run()

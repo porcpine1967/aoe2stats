@@ -14,6 +14,8 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
+from tools import batch
+
 RANKED_DB = "data/ranked.db"
 UNRANKED_DB = "data/unranked.db"
 CREATE_MATCH_TABLE = """CREATE TABLE IF NOT EXISTS matches (
@@ -91,13 +93,6 @@ def last_match_time():
     return result and result > cutoff and result - 5400 or cutoff
 
 
-def batch(iterable, size=1):
-    """ Breaks iterable into chunks. """
-    length = len(iterable)
-    for ndx in range(0, length, size):
-        yield iterable[ndx : min(ndx + size, length)]
-
-
 def save_matches(matches, database):
     """ Inserts each match value into the database. """
     sql = """ INSERT OR IGNORE INTO matches
@@ -105,7 +100,7 @@ def save_matches(matches, database):
 team_size, game_type,
 player_id, civ_id, rating, won, mirror)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
-    conn = sqlite3.connect(database)
+    conn = sqlite3.connect(database, timeout=20)
     cur = conn.cursor()
     for match_batch in batch(matches, BATCH_SIZE):
         cur.execute("BEGIN")
@@ -169,7 +164,7 @@ def fetch_matches(start):
                 player["profile_id"],
                 player["civ"],
                 player["rating"],
-                player["won"],
+                player["won"] or 0,
             ]
             match_rows.append(row + player_row)
             civs.add(player["civ"])
