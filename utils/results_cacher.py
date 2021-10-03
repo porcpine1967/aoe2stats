@@ -7,8 +7,8 @@ import sqlite3
 import statistics
 from statsmodels.stats.proportion import proportion_confint
 
-from models import Player
-from tools import all_tuesdays, batch, DB, execute_sql, SEVEN_DAYS_OF_SECONDS
+from utils.models import Player
+from utils.tools import all_tuesdays, batch, DB, execute_sql, SEVEN_DAYS_OF_SECONDS
 
 CREATE_RESULTS_TABLE = """CREATE TABLE IF NOT EXISTS results (
 id integer PRIMARY KEY,
@@ -447,7 +447,7 @@ def generate_results():
     for timebox in timeboxes_to_update():
         civs = []
         for map_category in categories:
-            for team_size in range(1, 4):
+            for team_size in range(1, 5):
                 civs.extend(most_popular_match(timebox, team_size, map_category, True))
                 civs.extend(most_popular_match(timebox, team_size, map_category, False))
                 civs.extend(winrate_match(timebox, team_size, map_category))
@@ -460,6 +460,7 @@ def generate_results():
 
 
 def run():
+    """ Basic functioning of app."""
     prepare_database()
     generate_results()
 

@@ -64,6 +64,16 @@ def last_time_breakpoint(now):
     )
 
 
+def execute_transaction(sql):
+    """ Wrap sql in commit."""
+    conn = sqlite3.connect(DB, timeout=20)
+    cur = conn.cursor()
+    cur.execute("BEGIN")
+
+    cur.execute(sql)
+    cur.execute("COMMIT")
+
+
 def execute_sql(sql):
     """ Generator for an sql statement and database. """
     conn = sqlite3.connect(DB, timeout=20)

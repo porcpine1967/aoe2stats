@@ -2,11 +2,13 @@
 """ Runs queries and prints tables based on data drawn from aoe2.net """
 from argparse import ArgumentParser
 from collections import Counter, defaultdict
+from datetime import datetime
+import os
 import statistics
 
 import sqlite3
 
-from utils.tools import civ_map, map_id_lookup
+from utils.tools import civ_map, map_id_lookup, execute_sql
 from utils.models import Player
 import utils.update
 
@@ -376,5 +378,23 @@ def run():
     display(args.metric, version, where, cap)
 
 
+def missing_days():
+    sql = "SELECT DISTINCT started from matches WHERE started > 1611032396 ORDER BY started"
+    last_match_time = None
+    for (started,) in execute_sql(sql):
+        if last_match_time:
+            if started - last_match_time > 86400:
+                d = datetime.fromtimestamp(last_match_time)
+                print("{:>6} seconds from {}".format(started - last_match_time, d))
+                cmd = " python utils/update.py --start-ts {} --end-ts {}".format(
+                    last_match_time, started
+                )
+                print(cmd)
+                os.system(cmd)
+        last_match_time = started
+    os.system("python utils/update.py")
+    os.system("python utils/results_cacher.py")
+
+
 if __name__ == "__main__":
-    run()
+    missing_days()

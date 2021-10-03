@@ -9,28 +9,47 @@ from utils.tools import execute_sql, last_time_breakpoint, timeboxes
 
 RANKED_MAP_POOLS = {
     "1v1": {
-        "20201215": [67, 9, 29, 140, 32, 71, 116],
-        "20210112": [9, 29, 72, 33, 75, 23, 76],
-        "20210126": [149, 9, 10, 29, 150, 148, 151],
-        "20210727": [9, 29, 152, 72, 19, 162, 76],
-        "20210803": [152, 162, 19, 29, 72, 76, 9],
-        "20210810": [9, 29, 150, 140, 32, 160, 77],
-        "20210824": [67, 9, 29, 139, 167, 33, 75],
-        "20210907": [161, 9, 149, 72, 17, 29, 21],
-        "20210921": [9, 167, 77, 140, 71, 29],
+        "20210427": [9, 29, 33, 74, 86, 139, 140],
+        "20210504": [9, 10, 29, 71, 77, 87, 140],
+        "20210518": [9, 17, 21, 29, 149, 150, 152],
+        "20210601": [9, 19, 29, 33, 72, 140, 156],
+        "20210615": [9, 11, 29, 32, 71, 76, 86],
+        "20210629": [9, 23, 26, 29, 77, 141, 150],
+        "20210713": [9, 10, 17, 29, 67, 140, 149],
+        "20210727": [9, 19, 29, 72, 76, 152, 162],
+        "20210810": [9, 29, 32, 77, 140, 150, 160],
+        "20210824": [9, 29, 33, 67, 75, 139, 167],
+        "20210907": [9, 17, 21, 29, 72, 149, 161],
+        "20210921": [9, 23, 29, 71, 77, 140, 167],
     },
     "team": {
-        "20201215": [9, 29, 12, 72, 77, 33, 23, 76, 27],
-        "20210112": [9, 29, 12, 17, 141, 74, 114, 25, 87],
-        "20210126": [149, 9, 29, 150, 11, 12, 148, 77, 151],
-        "20210727": [9, 29, 11, 12, 72, 163, 77, 33, 87],
-        "20210803": [11, 12, 163, 29, 33, 72, 77, 87, 9],
-        "20210810": [9, 29, 12, 16, 74, 161, 77, 33, 23],
-        "20210824": [149, 9, 29, 12, 158, 32, 77, 165, 76],
-        "20210907": [114, 12, 140, 166, 29, 31, 33, 77, 9],
-        "20210921": [11, 12, 167, 29, 33, 72, 74, 77, 9],
+        "20210427": [9, 12, 19, 25, 29, 73, 77, 140, 141],
+        "20210504": [9, 12, 17, 21, 29, 31, 33, 76, 148],
+        "20210518": [9, 12, 23, 29, 77, 149, 152, 153, 155],
+        "20210601": [9, 11, 12, 29, 33, 71, 72, 77, 156],
+        "20210615": [9, 12, 29, 33, 74, 77, 87, 114, 140],
+        "20210629": [9, 12, 19, 27, 29, 33, 77, 147, 148],
+        "20210713": [9, 12, 21, 29, 31, 33, 71, 73, 77],
+        "20210727": [9, 11, 12, 29, 33, 72, 77, 87, 163],
+        "20210810": [9, 12, 16, 23, 29, 33, 74, 77, 161],
+        "20210824": [9, 12, 29, 32, 76, 77, 149, 158, 165],
+        "20210907": [9, 12, 29, 31, 33, 77, 114, 140, 166],
+        "20210921": [9, 11, 12, 29, 33, 72, 74, 77, 167],
     },
 }
+
+
+def map_type_filter(week, size):
+    """ Returns AND clause to make sure map type in a week."""
+    category = "team" if size > 1 else "1v1"
+    last_week = week
+    for pool_week in sorted(RANKED_MAP_POOLS[category]):
+        if int(pool_week) <= int(week):
+            last_week = pool_week
+        else:
+            break
+    map_pool = [str(_map) for _map in RANKED_MAP_POOLS[category][last_week]]
+    return "AND map_type in ({})".format(",".join(map_pool))
 
 
 def map_id_lookup():
@@ -87,37 +106,58 @@ def pool(rating, pool_name):
     return ",".join([str(i) for i in RANKED_MAP_POOLS[rating][pool_name]])
 
 
-def last_wednesday_pool(now=None):
+def last_wednesday_pool(team_size=1, now=None):
     """ Using last Wednesday as a reference,
     what maps were played in ranked?"""
     _now = now or datetime.now()
     last_tuesday = last_time_breakpoint(_now)
-    print(last_tuesday)
     start = last_tuesday.strftime("%Y%m%d")
-    timestamp = (last_tuesday + timedelta(days=1)).timestamp()
+    timestamp = (last_tuesday + timedelta(days=2)).timestamp()
     lookup = map_name_lookup()
-    for team_size in (1, 2, 3, 4):
-        sql = """SELECT map_type, COUNT(*) FROM matches
+    sql = """SELECT map_type, COUNT(*) FROM matches
         WHERE started BETWEEN {:0.0f} AND {:0.0f}
         AND game_type = 0 AND team_size = {}
-        GROUP BY map_type""".format(
-            timestamp - 10 * 60 * 60, timestamp + 2 * 60 * 60, team_size
-        )
-        print("{}v{}".format(team_size, team_size))
-        print(
-            ", ".join(
-                sorted(
-                    ["{} ({}:{})".format(lookup[r], r, c) for r, c in execute_sql(sql)]
-                )
-            )
-        )
-        print(
-            '"{}": [{}],'.format(
-                start, ", ".join(sorted([str(r) for r, _ in execute_sql(sql)])),
-            )
-        )
+        GROUP BY map_type
+        ORDER BY map_type""".format(
+        timestamp, timestamp + 3 * 60 * 60, team_size
+    )
+    return '"{}": [{}],'.format(start, ", ".join([str(r) for r, _ in execute_sql(sql)]))
 
 
 if __name__ == "__main__":
-
-    last_wednesday_pool(datetime(2021, 7, 28))
+    weeks = (
+        "20210427",
+        "20210504",
+        "20210511",
+        "20210518",
+        "20210525",
+        "20210601",
+        "20210608",
+        "20210615",
+        "20210622",
+        "20210629",
+        "20210706",
+        "20210713",
+        "20210720",
+        "20210727",
+        "20210803",
+        "20210810",
+        "20210817",
+        "20210824",
+        "20210831",
+        "20210907",
+        "20210914",
+        "20210921",
+        "20210928",
+    )
+    for team_size in (1, 2):
+        print("TEAM SIZE", team_size)
+        hold_week = ""
+        for week in weeks:
+            year = int(week[:4])
+            month = int(week[4:6])
+            day = int(week[6:])
+            info = last_wednesday_pool(team_size, datetime(year, month, day))
+            if info[12:] != hold_week:
+                hold_week = info[12:]
+                print(info)

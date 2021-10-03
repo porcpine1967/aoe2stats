@@ -7,14 +7,14 @@ from datetime import datetime, timedelta
 from utils.tools import civ_map, execute_sql, last_time_breakpoint
 
 QUERIES = {
-    "popularity": """SELECT civ_id, pct, rank FROM results
+    "popularity": """SELECT civ_id, pct, rank, sample_size FROM results
                            WHERE week = "{}"
                            {}
                            AND methodology = "{}"
                            AND metric = "popularity"
                            AND compound = {}
     """,
-    "win_rates": """SELECT civ_id, pct, rank FROM results
+    "win_rates": """SELECT civ_id, pct, rank, sample_size FROM results
                            WHERE week = "{}"
                            {}
                            AND methodology = "{}"
@@ -92,7 +92,7 @@ class WeekInfo:
 def info_template(num_civs):
     """ Generates template based on number of civs."""
     civ_length = 11 * num_civs + num_civs - 1
-    return "{{:>2}}. {{:{}}} ({{:+4d}}) ({{:4.1f}}%)".format(civ_length)
+    return "{{:>2}}. {{:{}}} ({{:+4.2f}}) ({{:4.1f}}%)".format(civ_length)
 
 
 class Civilization:
@@ -123,16 +123,16 @@ class Civilization:
         """ String representation of civ in given category. """
         if metric == "popularity":
             this_weeks_rank = self.this_week.popularity_rank(category)
-            last_weeks_rank = self.last_week.popularity_rank(category)
+            last_weeks_rank = self.last_week.popularity_pct(category)
             pct = self.this_week.popularity_pct(category)
         elif metric == "winrate":
             this_weeks_rank = self.this_week.winrate_rank(category)
-            last_weeks_rank = self.last_week.winrate_rank(category)
+            last_weeks_rank = self.last_week.winrate_pct(category)
             pct = self.this_week.winrate_pct(category)
         else:
             return ""
         return info_template(num_civs).format(
-            this_weeks_rank, self.name, last_weeks_rank - this_weeks_rank, pct,
+            this_weeks_rank, self.name, pct - last_weeks_rank, pct,
         )
 
 
@@ -144,7 +144,7 @@ def filters(category):
 def most_popular(civs, week_index, week, category, methodology, compound):
     """ Loads civs with most popular by match for given week. """
     sql = QUERIES["popularity"].format(week, filters(category), methodology, compound)
-    for civ_id, pct, rank in execute_sql(sql):
+    for civ_id, pct, rank, _ in execute_sql(sql):
         civ = civs[civ_id]
         week = civ.week_by_index(week_index)
         week.popularity_pcts[category] = pct
@@ -154,7 +154,7 @@ def most_popular(civs, week_index, week, category, methodology, compound):
 def winrate(civs, week_index, week, category, methodology):
     """ Loads civs with winrate data based on matches. """
     sql = QUERIES["win_rates"].format(week, filters(category), methodology)
-    for civ_id, pct, rank in execute_sql(sql):
+    for civ_id, pct, rank, _ in execute_sql(sql):
         civ = civs[civ_id]
         week = civ.week_by_index(week_index)
         week.winrate_pcts[category] = pct

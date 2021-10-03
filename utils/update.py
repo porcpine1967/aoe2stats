@@ -14,7 +14,8 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-from tools import batch
+from utils.tools import batch, execute_sql
+from utils.versions import version_for_timestamp
 
 RANKED_DB = "data/ranked.db"
 UNRANKED_DB = "data/unranked.db"
@@ -40,6 +41,8 @@ API_TEMPLATE = "https://aoe2.net/api/matches?game=aoe2de&count={count}&since={st
 
 BATCH_SIZE = 300
 
+MAX_STARTED_DIFFERENCE = 1200
+
 
 def latest_version():
     """ Returns latest version available in db. """
@@ -54,8 +57,6 @@ def latest_version():
     conn.close()
     return version
 
-
-DEFAULT_VERSION = latest_version()
 
 GAME_TYPE_TO_RATING_TYPE = {
     "1v1": {0: 2, 2: 1, 12: 9, 13: 13},
@@ -136,6 +137,8 @@ def fetch_matches(start):
     next_start = start
     data = json.loads(response.text)
     match_ids = set()
+    starteds = set()
+    starteds.add(start)
     for match in data:
         # ignore if no map_type
         if not match["map_type"]:
@@ -151,7 +154,7 @@ def fetch_matches(start):
             match["match_id"],
             match["map_type"],
             match["rating_type"],
-            match["version"] or DEFAULT_VERSION,
+            match["version"] or version_for_timestamp(match["started"]),
             match["started"],
             match["num_players"] / 2,
             match["game_type"],
@@ -178,10 +181,20 @@ def fetch_matches(start):
         else:
             unranked_match_data += match_rows
         match_ids.add(match["match_id"])
+        if match["started"] > start:
+            starteds.add(match["started"])
     print("Match count:", len(match_ids))
-    if next_start == start:
+    hold_started = None
+    for started in sorted(starteds):
+        if hold_started:
+            if started - hold_started > MAX_STARTED_DIFFERENCE:
+                print("JUMP OF {} SECONDS".format(started - hold_started))
+                next_start = hold_started
+                break
+        hold_started = started
+    if next_start <= start:
         print("NEXT START HAS NOT CHANGED")
-        next_start += 60 * 60
+        next_start += MAX_STARTED_DIFFERENCE
     return len(data), next_start, ranked_match_data, unranked_match_data
 
 
@@ -234,7 +247,6 @@ def fetch_and_save(start, end_ts):
     """ Fetches up to one week of data from start. """
     script_start = datetime.now().timestamp()
     print("Starting at {}".format(int(script_start)))
-    hold_start = 0
     fetch_start = start
     data_length = MAX_DOWNLOAD
     week = 604800
@@ -243,18 +255,24 @@ def fetch_and_save(start, end_ts):
     if end_ts:
         end_time = end_ts
     expected_end = script_start if script_start < end_time else end_time
-    while fetch_start > hold_start and fetch_start < end_time:
-        hold_start = fetch_start
+    for (cnt,) in execute_sql("SELECT COUNT(*) FROM matches"):
+        last_count = cnt
+    while fetch_start < end_time:
         data_length, fetch_start, ranked, unranked = fetch_matches(fetch_start)
         save_matches(ranked, RANKED_DB)
         save_matches(unranked, UNRANKED_DB)
-        if data_length < MAX_DOWNLOAD:
+        for (cnt,) in execute_sql("SELECT COUNT(*) FROM matches"):
+            print("Ranked change:", cnt - last_count)
+            last_count = cnt
+
+        if data_length < MAX_DOWNLOAD or fetch_start > end_time:
             break
         print("Next start:", fetch_start)
         print("sleeping...")
         time.sleep(10)
         pct = float(fetch_start - start) / (expected_end - start)
         print(time_left(script_start, pct))
+        print("Time left to cover:", timedelta(seconds=(expected_end - fetch_start)))
     print("Ending at {}".format(datetime.now().strftime("%H:%M")))
 
 
