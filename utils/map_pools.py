@@ -4,7 +4,13 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 import json
 import sys
-from utils.tools import execute_sql, last_time_breakpoint, timeboxes
+from utils.tools import (
+    execute_sql,
+    last_time_breakpoint,
+    map_id_lookup,
+    map_name_lookup,
+    timeboxes,
+)
 
 
 RANKED_MAP_POOLS = {
@@ -21,6 +27,7 @@ RANKED_MAP_POOLS = {
         "20210824": [9, 29, 33, 67, 75, 139, 167],
         "20210907": [9, 17, 21, 29, 72, 149, 161],
         "20210921": [9, 23, 29, 71, 77, 140, 167],
+        "20211005": [9, 10, 29, 32, 67, 87, 162],
     },
     "team": {
         "20210427": [9, 12, 19, 25, 29, 73, 77, 140, 141],
@@ -35,6 +42,7 @@ RANKED_MAP_POOLS = {
         "20210824": [9, 12, 29, 32, 76, 77, 149, 158, 165],
         "20210907": [9, 12, 29, 31, 33, 77, 114, 140, 166],
         "20210921": [9, 11, 12, 29, 33, 72, 74, 77, 167],
+        "20211005": [9, 12, 19, 25, 29, 33, 73, 76, 77],
     },
 }
 
@@ -50,29 +58,6 @@ def map_type_filter(week, size):
             break
     map_pool = [str(_map) for _map in RANKED_MAP_POOLS[category][last_week]]
     return "AND map_type in ({})".format(",".join(map_pool))
-
-
-def map_id_lookup():
-    """ Returns a dictionary of map_name:map_id pairs. """
-    mmap = defaultdict(lambda: "UNKNOWN")
-    with open("data/strings.json") as open_file:
-        data = json.load(open_file)
-    for civ_info in data["map_type"]:
-        mmap[civ_info["string"]] = civ_info["id"]
-        mmap[civ_info["string"].lower()] = civ_info["id"]
-
-    return mmap
-
-
-def map_name_lookup():
-    """ Returns a dictionary of map_id:map_name pairs. """
-    mmap = defaultdict(lambda: "UNKNOWN")
-    with open("data/strings.json") as open_file:
-        data = json.load(open_file)
-    for civ_info in data["map_type"]:
-        mmap[civ_info["id"]] = civ_info["string"]
-
-    return mmap
 
 
 def ids_from_names(names):
@@ -125,39 +110,4 @@ def last_wednesday_pool(team_size=1, now=None):
 
 
 if __name__ == "__main__":
-    weeks = (
-        "20210427",
-        "20210504",
-        "20210511",
-        "20210518",
-        "20210525",
-        "20210601",
-        "20210608",
-        "20210615",
-        "20210622",
-        "20210629",
-        "20210706",
-        "20210713",
-        "20210720",
-        "20210727",
-        "20210803",
-        "20210810",
-        "20210817",
-        "20210824",
-        "20210831",
-        "20210907",
-        "20210914",
-        "20210921",
-        "20210928",
-    )
-    for team_size in (1, 2):
-        print("TEAM SIZE", team_size)
-        hold_week = ""
-        for week in weeks:
-            year = int(week[:4])
-            month = int(week[4:6])
-            day = int(week[6:])
-            info = last_wednesday_pool(team_size, datetime(year, month, day))
-            if info[12:] != hold_week:
-                hold_week = info[12:]
-                print(info)
+    print(last_wednesday_pool(2))

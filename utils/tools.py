@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """ Useful functions. """
 
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 import json
 import sqlite3
@@ -22,9 +23,22 @@ def civ_map():
     with open("data/strings.json") as open_file:
         data = json.load(open_file)
     for civ_info in data["civ"]:
-        cmap[civ_info["id"]] = civ_info["string"]
+        cmap[int(civ_info["id"])] = civ_info["string"]
+        cmap[str(civ_info["id"])] = civ_info["string"]
 
     return cmap
+
+
+def map_name_lookup():
+    """ Returns a dictionary of map_id:map_name pairs. """
+    mmap = defaultdict(lambda: "UNKNOWN")
+    with open("data/strings.json") as open_file:
+        data = json.load(open_file)
+    for civ_info in data["map_type"]:
+        mmap[str(civ_info["id"])] = civ_info["string"]
+        mmap[int(civ_info["id"])] = civ_info["string"]
+
+    return mmap
 
 
 def map_id_lookup():

@@ -20,6 +20,12 @@ QUERIES = {
                            AND methodology = "{}"
                            AND metric = "winrate"
     """,
+    "bottom_win_rates": """SELECT civ_id, pct, rank, sample_size FROM results
+                           WHERE week = "{}"
+                           {}
+                           AND methodology = "{}"
+                           AND metric = "bottom_winrate"
+    """,
 }
 
 
@@ -151,9 +157,10 @@ def most_popular(civs, week_index, week, category, methodology, compound):
         week.popularity_ranks[category] = rank
 
 
-def winrate(civs, week_index, week, category, methodology):
+def winrate(civs, week_index, week, category, methodology, bottom):
     """ Loads civs with winrate data based on matches. """
-    sql = QUERIES["win_rates"].format(week, filters(category), methodology)
+    key = "bottom_win_rates" if bottom else "win_rates"
+    sql = QUERIES[key].format(week, filters(category), methodology)
     for civ_id, pct, rank, _ in execute_sql(sql):
         civ = civs[civ_id]
         week = civ.week_by_index(week_index)
@@ -180,7 +187,7 @@ class ReportManager:
 
     def generate(self, endtime=datetime.now()):
         """ Load data into civs. Returns report date."""
-        if self.args.m:
+        if self.args.m or self.args.bottom:
             methodology = "match"
         else:
             methodology = "player"
@@ -195,7 +202,9 @@ class ReportManager:
                         self.civs, idx, timebox, category, methodology, self.args.c
                     )
                 if not self.args.p:
-                    winrate(self.civs, idx, timebox, category, methodology)
+                    winrate(
+                        self.civs, idx, timebox, category, methodology, self.args.bottom
+                    )
         return last_tuesday
 
     def display(self, report_date):
@@ -246,6 +255,8 @@ def arg_parser():
     parser.add_argument("-n", type=int, help="Only show n records")
     parser.add_argument("-s", default=1, type=int, help="Team size")
     parser.add_argument("-c", action="store_true", help="Use compound report for team")
+    parser.add_argument("--week", help="Week in Ymd format")
+    parser.add_argument("--bottom", action="store_true", help="Show bottom winrates")
     return parser
 
 
@@ -253,7 +264,15 @@ def run():
     """ Basic functioning of app. Removes global variables. """
     args = arg_parser().parse_args()
     report = ReportManager(args)
-    generation_enddate = report.generate()
+    if args.week:
+        year = int(args.week[:4])
+        month = int(args.week[4:6])
+        day = int(args.week[6:])
+        endtime = datetime(year, month, day)
+    else:
+        endtime = datetime.now()
+
+    generation_enddate = report.generate(endtime)
     report.display(generation_enddate)
 
 

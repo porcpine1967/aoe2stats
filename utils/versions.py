@@ -5,6 +5,11 @@ from datetime import datetime, timezone
 from utils.tools import execute_sql, execute_transaction
 
 VERSIONS = {
+    54684: {"date": "20211007", "civs": []},
+    54480: {
+        "date": "20211005",
+        "civs": ["BULGARIANS", "BURGUNDIANS", "PORTUGUESE", "SICILIANS", "VIETNAMESE",],
+    },
     44834: {"date": "20210128", "civs": []},
     45340: {"date": "20210212", "civs": []},
     50700: {"date": "20210712", "civs": []},

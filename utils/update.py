@@ -4,7 +4,7 @@
 
 from argparse import ArgumentParser
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import json
 import sqlite3
 import sys
@@ -72,11 +72,8 @@ def one_week_ago():
 
 def prepare_database():
     """ Creates the db file if not exists. Creates table if not exists. """
-    for db in (
-        RANKED_DB,
-        UNRANKED_DB,
-    ):
-        conn = sqlite3.connect(db)
+    for database in (RANKED_DB, UNRANKED_DB):
+        conn = sqlite3.connect(database)
         cur = conn.cursor()
         cur.execute(CREATE_MATCH_TABLE)
         conn.close()
@@ -249,15 +246,10 @@ def fetch_and_save(start, end_ts):
     print("Starting at {}".format(int(script_start)))
     fetch_start = start
     data_length = MAX_DOWNLOAD
-    week = 604800
 
-    end_time = start + week
-    if end_ts:
-        end_time = end_ts
-    expected_end = script_start if script_start < end_time else end_time
     for (cnt,) in execute_sql("SELECT COUNT(*) FROM matches"):
         last_count = cnt
-    while fetch_start < end_time:
+    while True:
         data_length, fetch_start, ranked, unranked = fetch_matches(fetch_start)
         save_matches(ranked, RANKED_DB)
         save_matches(unranked, UNRANKED_DB)
@@ -265,14 +257,20 @@ def fetch_and_save(start, end_ts):
             print("Ranked change:", cnt - last_count)
             last_count = cnt
 
-        if data_length < MAX_DOWNLOAD or fetch_start > end_time:
+        if data_length < MAX_DOWNLOAD or (end_ts and fetch_start > end_ts):
             break
         print("Next start:", fetch_start)
         print("sleeping...")
         time.sleep(10)
+        if end_ts:
+            expected_end = end_ts
+        else:
+            expected_end = datetime.timestamp(datetime.now())
         pct = float(fetch_start - start) / (expected_end - start)
         print(time_left(script_start, pct))
-        print("Time left to cover:", timedelta(seconds=(expected_end - fetch_start)))
+        print(
+            "Time left to cover:", timedelta(seconds=(int(expected_end - fetch_start)))
+        )
     print("Ending at {}".format(datetime.now().strftime("%H:%M")))
 
 

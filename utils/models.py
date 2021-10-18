@@ -11,6 +11,7 @@ class Player:
         self.map_uses = Counter()
         self.civ_wins = defaultdict(dict)
         self.wins = Counter()
+        self.elos = []
         self.total = 0.0
 
     def add_civ_use(self, civ, civ_count):

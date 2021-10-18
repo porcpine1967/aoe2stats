@@ -379,7 +379,8 @@ def run():
 
 
 def missing_days():
-    sql = "SELECT DISTINCT started from matches WHERE started > 1611032396 ORDER BY started"
+    """ Print ranges with more than 1 day between matches."""
+    sql = "SELECT DISTINCT started from matches ORDER BY started"
     last_match_time = None
     for (started,) in execute_sql(sql):
         if last_match_time:
