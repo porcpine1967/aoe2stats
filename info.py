@@ -71,13 +71,12 @@ def show_maps_match_info(where):
     mmap = map_map()
     ctr = Counter()
     total = 0
-    for row in execute_sql(
-        """SELECT map_type, count(*) as cnt FROM matches
+    sql = """SELECT map_type, count(*) as cnt FROM matches
         WHERE {} AND map_type IS NOT NULL
         GROUP BY map_type order by cnt DESC""".format(
-            " AND ".join(where)
-        )
-    ):
+        " AND ".join(where)
+    )
+    for row in execute_sql(sql):
         map_type, count = row
         ctr[mmap[map_type]] = count
         total += count
@@ -166,9 +165,10 @@ if __name__ == "__main__":
     where_list = []
 
     if args.w:
-        last_tuesday = last_time_breakpoint(datetime.now())
-        start = (last_tuesday - timedelta(days=7)).timestamp()
-        end = last_tuesday.timestamp()
+        last_wednesday = last_time_breakpoint(datetime.now())
+        start = last_wednesday.timestamp()
+
+        end = (last_wednesday + timedelta(days=7)).timestamp()
         where_list.append("started BETWEEN {:0.0f} AND {:0.0f}".format(start, end))
     if args.r and args.pool:
         if args.pool == "latest":
@@ -177,7 +177,9 @@ if __name__ == "__main__":
             pool_list = utils.map_pools.pool(args.r, args.pool)
         where_list.append("map_type in ({})".format(pool_list))
         if not args.w:
-            start = last_time_breakpoint(datetime.strptime(args.pool, "%Y%m%d"))
+            start = last_time_breakpoint(
+                datetime.strptime(args.pool, "%Y%m%d")
+            ).replace(tzinfo=timezone.utc)
             end = start + timedelta(days=14)
             where_list.append(
                 "started BETWEEN {:0.0f} AND {:0.0f}".format(
@@ -185,9 +187,9 @@ if __name__ == "__main__":
                 )
             )
     if args.r == "1v1":
-        where_list.append("rating_type = 2")
-    elif args.r == "1v1":
-        where_list.append("rating_type = 4")
+        where_list.append("game_type = 0 and team_size = 1")
+    elif args.r == "team":
+        where_list.append("game_type = 0 and team_size > 1")
 
     if args.versions:
         show_versions()

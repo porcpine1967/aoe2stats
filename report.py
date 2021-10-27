@@ -50,23 +50,19 @@ class CivDict(defaultdict):
         return self[str_key]
 
 
-def build_category_filters(start, end):
+def build_category_filters(team_size):
     """ Generate category_filters because easier."""
     category_filters = {}
-    for i in range(start, end + 1):
-        for category in (
-            "All",
-            "Arabia",
-            "Arena",
-            "Others",
-        ):
-            category_filters[
-                "{}v{} {}".format(i, i, category)
-            ] = "AND map_category = '{}' AND team_size = {}".format(category, i)
+    for category in (
+        "All",
+        "Arabia",
+        "Arena",
+        "Others",
+    ):
+        category_filters[
+            "{} {}".format(team_size, category)
+        ] = "AND map_category = '{}' AND team_size = '{}'".format(category, team_size)
     return category_filters
-
-
-CATEGORY_FILTERS = build_category_filters(1, 4)
 
 
 class WeekInfo:
@@ -97,7 +93,7 @@ class WeekInfo:
 
 def info_template(num_civs):
     """ Generates template based on number of civs."""
-    civ_length = 11 * num_civs + num_civs - 1
+    civ_length = 11
     return "{{:>2}}. {{:{}}} ({{:+4.2f}}) ({{:4.1f}}%)".format(civ_length)
 
 
@@ -142,9 +138,10 @@ class Civilization:
         )
 
 
-def filters(category):
+def filters(label):
     """ Generates additional "where" conditions for query """
-    return CATEGORY_FILTERS[category]
+    team_size = label.split()[0]
+    return build_category_filters(team_size)[label]
 
 
 def most_popular(civs, week_index, week, category, methodology, compound):
@@ -183,7 +180,7 @@ class ReportManager:
                 "popularity",
                 "winrate",
             )
-        self.categories = list(build_category_filters(args.s, args.s).keys())
+        self.categories = list(build_category_filters(args.s).keys())
 
     def generate(self, endtime=datetime.now()):
         """ Load data into civs. Returns report date."""
@@ -192,9 +189,9 @@ class ReportManager:
         else:
             methodology = "player"
 
-        last_tuesday = last_time_breakpoint(endtime)
-        last_week = (last_tuesday - timedelta(days=14)).strftime("%Y%m%d")
-        this_week = (last_tuesday - timedelta(days=7)).strftime("%Y%m%d")
+        last_wednesday = last_time_breakpoint(endtime)
+        last_week = (last_wednesday - timedelta(days=14)).strftime("%Y%m%d")
+        this_week = (last_wednesday - timedelta(days=7)).strftime("%Y%m%d")
         for idx, timebox in enumerate((last_week, this_week,)):
             for category in self.categories:
                 if not self.args.w:
@@ -205,7 +202,7 @@ class ReportManager:
                     winrate(
                         self.civs, idx, timebox, category, methodology, self.args.bottom
                     )
-        return last_tuesday
+        return last_wednesday
 
     def display(self, report_date):
         """ Shows report. """
@@ -217,7 +214,7 @@ class ReportManager:
             print("")
             print(report_type.capitalize())
             data = defaultdict(list)
-            template = "{:^" + str(18 + 12 * self.args.s) + "}"
+            template = "{:^" + str(18 + 12) + "}"
             print(
                 "    ".join([template for _ in range(len(self.categories))]).format(
                     *self.categories
@@ -253,7 +250,7 @@ def arg_parser():
     parser.add_argument("-p", action="store_true", help="Only popularity")
     parser.add_argument("-m", action="store_true", help="Use match methodology")
     parser.add_argument("-n", type=int, help="Only show n records")
-    parser.add_argument("-s", default=1, type=int, help="Team size")
+    parser.add_argument("-s", default="1v1", help="Team size")
     parser.add_argument("-c", action="store_true", help="Use compound report for team")
     parser.add_argument("--week", help="Week in Ymd format")
     parser.add_argument("--bottom", action="store_true", help="Show bottom winrates")

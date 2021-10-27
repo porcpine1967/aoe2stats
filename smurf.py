@@ -140,16 +140,10 @@ ORDER BY started
         for row in execute_sql(sql):
             if row[0]:
                 matches.append(Match(row))
-        best_week_info = None
-        for match in matches:
-            week_info = WeekInfo(match.started, matches)
-            if week_info.games_played > 5:
-                if not best_week_info:
-                    best_week_info = week_info
-                    continue
-                if week_info.diff > best_week_info.diff:
-                    best_week_info = week_info
-        return best_week_info
+        week_info = WeekInfo(matches[0].started, matches)
+        if week_info.games_played > 5:
+            return week_info
+        return None
 
     @property
     def civs(self):
@@ -198,8 +192,8 @@ ORDER BY started
 
 def display():
     """ Returns smurfs from past week."""
-    tuesday = last_time_breakpoint(datetime.now()).timestamp()
-    last_week, _ = timeboxes(tuesday)
+    wednesday = last_time_breakpoint(datetime.now()).timestamp()
+    last_week, _ = timeboxes(wednesday)
     sql = SQL.format(last_week[0])
     smurfs = []
     for row in execute_sql(sql):

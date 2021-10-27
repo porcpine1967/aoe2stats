@@ -11,53 +11,70 @@ class Rank:
         self.category = category
         self.civ_id = row[0]
         self.rank = row[1]
+        self.weeks_at_level = 0
         self.weeks_top_5 = 0
         self.weeks_this_year = 0
         self._set_data()
 
     def __str__(self):
-        return "{:>2}: {:11} ({:>2} weeks above {}, {:>2} weeks top 5)".format(
+        return "{:>2}: {:11} ({:>2} weeks at/above {}, {:>2} weeks top 5, {:2} weeks top 5 this year)".format(
             self.rank,
             civ_map()[self.civ_id],
-            self.weeks_this_year,
+            self.weeks_at_level,
             self.rank,
             self.weeks_top_5,
+            self.weeks_this_year,
         )
 
     def _set_data(self):
         """ set weeks at rank and previous civ """
 
-        sql = """SELECT COUNT(*) FROM results
-WHERE rank <= {}
+        now = datetime.strptime(self.week, "%Y%m%d")
+        sql = """SELECT week FROM results
+WHERE rank > {}
 AND civ_id = {}
 AND metric = "{}"
-AND team_size = 1
+AND team_size = "1v1"
 AND methodology = "player"
 AND map_category = "{}"
-GROUP BY civ_id""".format(
+ORDER BY week DESC
+LIMIT 1""".format(
             self.rank, self.civ_id, self.metric, self.category
         )
-        for (count,) in execute_sql(sql):
-            self.weeks_this_year = count
-        sql = """SELECT COUNT(*) FROM results
+        for (week,) in execute_sql(sql):
+            then = datetime.strptime(week, "%Y%m%d")
+            self.weeks_at_level = int((now - then).days / 7)
+        sql = """SELECT week FROM results
 WHERE rank <= 5
 AND civ_id = {}
 AND metric = "{}"
-AND team_size = 1
+AND team_size = "1v1"
 AND methodology = "player"
 AND map_category = "{}"
 AND week > "20210101"
-GROUP BY civ_id""".format(
+ORDER BY week DESC""".format(
             self.civ_id, self.metric, self.category
         )
-        for (count,) in execute_sql(sql):
-            self.weeks_top_5 = count
+        continuous_week_ctr = 0
+        week_ctr = 0
+        last_week = now
+        continuous = True
+        for (week,) in execute_sql(sql):
+            week_ctr += 1
+            this_week = datetime.strptime(week, "%Y%m%d")
+            if continuous and (last_week - this_week).days <= 7:
+                continuous_week_ctr += 1
+                last_week = this_week
+            else:
+                continuous = False
+        self.weeks_top_5 = continuous_week_ctr
+        self.weeks_this_year = week_ctr
 
 
 def run():
     """ Flow control"""
-    last_tuesday = last_time_breakpoint(datetime.now())
-    this_week = (last_tuesday - timedelta(days=7)).strftime("%Y%m%d")
+    last_wednesday = last_time_breakpoint(datetime.now())
+    this_week = (last_wednesday - timedelta(days=7)).strftime("%Y%m%d")
     print(this_week)
     for metric in ("popularity", "winrate"):
         print("*" * len(metric))
@@ -65,9 +82,9 @@ def run():
         print("*" * len(metric))
         for category in ("All", "Arabia", "Arena", "Others"):
             sql = """SELECT civ_id, rank FROM results
-WHERE rank < 6
+WHERE rank < 7
 and metric = "{}"
-and team_size = 1
+and team_size = "1v1"
 and methodology = "player"
 and map_category = "{}"
 and week = {}""".format(

@@ -2,13 +2,13 @@
 """ Save weekly calculations of popularity, win rates, rank, and sample_size."""
 
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 import sqlite3
 import statistics
 from statsmodels.stats.proportion import proportion_confint
 
 from utils.models import Player
-from utils.tools import all_tuesdays, batch, DB, execute_sql, SEVEN_DAYS_OF_SECONDS
+from utils.tools import all_wednesdays, batch, DB, execute_sql, SEVEN_DAYS_OF_SECONDS
 
 CREATE_RESULTS_TABLE = """CREATE TABLE IF NOT EXISTS results (
 id integer PRIMARY KEY,
@@ -113,27 +113,29 @@ class CivDict(defaultdict):
         return self[str_key]
 
 
-def build_category_filters(start, end):
+def build_category_filters():
     """ Generate category_filters because easier."""
     category_filters = {}
-    for i in range(start, end + 1):
+    for name, condition in (("1v1", "= 1",), ("2v2", "= 2",), ("team", "> 1",)):
         category_filters[
-            "All{}".format(i)
-        ] = "AND game_type = 0 AND team_size = {}".format(i)
+            "All {}".format(name)
+        ] = "AND game_type = 0 AND team_size {}".format(condition)
         category_filters[
-            "Arabia{}".format(i)
-        ] = "AND game_type = 0 AND team_size = {} AND map_type = 9".format(i)
+            "Arabia {}".format(name)
+        ] = "AND game_type = 0 AND team_size {} AND map_type = 9".format(condition)
 
         category_filters[
-            "Arena{}".format(i)
-        ] = "AND game_type = 0 AND team_size = {} AND map_type = 29".format(i)
+            "Arena {}".format(name)
+        ] = "AND game_type = 0 AND team_size {} AND map_type = 29".format(condition)
         category_filters[
-            "Others{}".format(i)
-        ] = "AND game_type = 0 AND team_size = {} AND map_type NOT IN (9,29)".format(i)
+            "Others {}".format(name)
+        ] = "AND game_type = 0 AND team_size {} AND map_type NOT IN (9,29)".format(
+            condition
+        )
     return category_filters
 
 
-CATEGORY_FILTERS = build_category_filters(1, 4)
+CATEGORY_FILTERS = build_category_filters()
 
 
 class Civilization:
@@ -204,7 +206,7 @@ class PopularCivilization(Civilization):
     @property
     def pct(self):
         """ Percentage of plays in this category this week. """
-        return self.times_used / (self.total or 1.0)
+        return round(self.times_used / (self.total or 1.0), 3)
 
     @property
     def metric(self):
@@ -250,7 +252,7 @@ class WinrateCivilization(Civilization):
         """ Percentage of games won by this civ. """
         if self.cached_winrate_pct is None:
             try:
-                self.cached_winrate_pct = statistics.mean(self.win_results)
+                self.cached_winrate_pct = round(statistics.mean(self.win_results), 3)
             except statistics.StatisticsError:
                 self.cached_winrate_pct = 0
         return self.cached_winrate_pct
@@ -272,7 +274,7 @@ class BottomWinrateCivilization(WinrateCivilization):
                 wins = sum(self.win_results)
                 total = len(self.win_results)
                 low_confidence, _ = proportion_confint(wins, total)
-                self.cached_winrate_pct = low_confidence
+                self.cached_winrate_pct = round(low_confidence, 3)
             except statistics.StatisticsError:
                 self.cached_winrate_pct = 0
         return self.cached_winrate_pct
@@ -280,12 +282,12 @@ class BottomWinrateCivilization(WinrateCivilization):
 
 def filters(category, size):
     """ Generates additional "where" conditions for query """
-    return CATEGORY_FILTERS[category + str(size)]
+    return CATEGORY_FILTERS["{} {}".format(category, size)]
 
 
 def most_popular_match(timebox, size, map_category, basic):
     """ Returns civs with most popular by match for given week. """
-    if not basic and size < 2:
+    if not basic and size != "2v2":
         return []
     key = "match_popularity_basic" if basic else "match_popularity"
     sql = QUERIES[key].format(*timebox, filters(map_category, size))
@@ -306,7 +308,7 @@ def most_popular_match(timebox, size, map_category, basic):
 
 def most_popular_player(timebox, size, map_category, basic):
     """ Returns civs with most popular by player for given week. """
-    if not basic and size < 2:
+    if not basic and size != "2v2":
         return []
     key = "player_popularity_basic" if basic else "player_popularity"
     sql = QUERIES[key].format(*timebox, filters(map_category, size))
@@ -391,12 +393,12 @@ def winrate_player(timebox, size, map_category):
 def timeboxes_to_update():
     """ Returns array of timebox tuples that need to be updated."""
     timeboxes = []
-    for tuesday in all_tuesdays():
+    for wednesday in all_wednesdays():
         old_count = None
-        week = tuesday.strftime("%Y%m%d")
+        week = wednesday.strftime("%Y%m%d")
         for (count,) in execute_sql(WEEK_COUNT_SQL_TEMPLATE.format(week)):
             old_count = count
-        timestamp = datetime.timestamp(tuesday)
+        timestamp = datetime.timestamp(wednesday)
         timebox = (
             timestamp,
             timestamp + SEVEN_DAYS_OF_SECONDS,
@@ -421,8 +423,8 @@ def save_civs(civs, timebox):
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    tuesday = datetime.fromtimestamp(timebox[0])
-    week = tuesday.strftime("%Y%m%d")
+    wednesday = datetime.fromtimestamp(timebox[0], tz=timezone.utc)
+    week = wednesday.strftime("%Y%m%d")
     print("Saving", week, len(civs))
     for match_batch in batch(civs, 300):
         cur.execute("BEGIN")
@@ -443,11 +445,14 @@ def save_civs(civs, timebox):
 
 def generate_results():
     """ Generate all the results"""
-    categories = {x[:-1] for x in CATEGORY_FILTERS}
+    categories = {x.split()[0] for x in CATEGORY_FILTERS}
     for timebox in timeboxes_to_update():
+        wednesday = datetime.fromtimestamp(timebox[0], tz=timezone.utc)
+        print("Generating Results for {}".format(wednesday.strftime("%Y%m%d")))
         civs = []
         for map_category in categories:
-            for team_size in range(1, 5):
+            for team_size in ("1v1", "2v2", "team"):
+                print("  {} {}".format(team_size, map_category))
                 civs.extend(most_popular_match(timebox, team_size, map_category, True))
                 civs.extend(most_popular_match(timebox, team_size, map_category, False))
                 civs.extend(winrate_match(timebox, team_size, map_category))

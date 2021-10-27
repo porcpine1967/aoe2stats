@@ -27,8 +27,8 @@ RANKED_MAP_POOLS = {
         "20210824": [9, 29, 33, 67, 75, 139, 167],
         "20210907": [9, 17, 21, 29, 72, 149, 161],
         "20210921": [9, 23, 29, 71, 77, 140, 167],
-        "20211005": [9, 10, 29, 32, 67, 87, 162],
-        "20211019": [9, 17, 19, 29, 33, 167, 168],
+        "20211006": [9, 10, 29, 32, 67, 87, 162],
+        "20211020": [9, 17, 19, 29, 33, 167, 168],
     },
     "team": {
         "20210427": [9, 12, 19, 25, 29, 73, 77, 140, 141],
@@ -43,8 +43,8 @@ RANKED_MAP_POOLS = {
         "20210824": [9, 12, 29, 32, 76, 77, 149, 158, 165],
         "20210907": [9, 12, 29, 31, 33, 77, 114, 140, 166],
         "20210921": [9, 11, 12, 29, 33, 72, 74, 77, 167],
-        "20211005": [9, 12, 19, 25, 29, 33, 73, 76, 77],
-        "20211019": [9, 12, 23, 29, 33, 71, 72, 148, 171],
+        "20211006": [9, 12, 19, 25, 29, 33, 73, 76, 77],
+        "20211020": [9, 12, 23, 29, 33, 71, 72, 148, 171],
     },
 }
 
@@ -97,9 +97,9 @@ def last_wednesday_pool(team_size=1, now=None):
     """ Using last Wednesday as a reference,
     what maps were played in ranked?"""
     _now = now or datetime.now()
-    last_tuesday = last_time_breakpoint(_now)
-    start = last_tuesday.strftime("%Y%m%d")
-    timestamp = (last_tuesday + timedelta(days=2)).timestamp()
+    last_wednesday = last_time_breakpoint(_now)
+    start = last_wednesday.strftime("%Y%m%d")
+    timestamp = (last_wednesday + timedelta(days=2)).timestamp()
     lookup = map_name_lookup()
     sql = """SELECT map_type, COUNT(*) FROM matches
         WHERE started BETWEEN {:0.0f} AND {:0.0f}

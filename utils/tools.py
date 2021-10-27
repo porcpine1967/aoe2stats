@@ -5,8 +5,9 @@ from collections import defaultdict
 import csv
 from datetime import datetime, timedelta, timezone
 import json
-import requests
+
 import sqlite3
+import requests
 
 DB = "data/ranked.db"
 SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
@@ -91,16 +92,17 @@ def timeboxes(breakp):
 
 
 def last_time_breakpoint(now):
-    """ Returns datetime of most recent Tuesday at 20:00.\
-    If it is Tuesday, it just uses today at 20:00
+    """ Returns datetime of most recent Wednesday at 1:00.\
     n.b.: Monday.weekday() == 0 """
-    day_of_week = now.weekday() or 7  # move Monday to 7
-    last_tuesday = now - timedelta(days=day_of_week - 1)
+    day_of_week = now.weekday()
+    if day_of_week < 2:
+        day_of_week += 7
+    last_wednesday = now - timedelta(days=day_of_week - 2)
     return datetime(
-        last_tuesday.year,
-        last_tuesday.month,
-        last_tuesday.day,
-        20,
+        last_wednesday.year,
+        last_wednesday.month,
+        last_wednesday.day,
+        1,
         tzinfo=timezone.utc,
     )
 
@@ -124,17 +126,17 @@ def execute_sql(sql):
     conn.close()
 
 
-def all_tuesdays():
-    """ All tuesdays in the database."""
+def all_wednesdays():
+    """ All wednesdays in the database."""
     sql = """SELECT DISTINCT date(started, "unixepoch") AS ymd, started FROM matches
     GROUP BY ymd ORDER BY started"""
-    tuesdays = set()
+    wednesdays = set()
     for _, started in execute_sql(sql):
         now = datetime.fromtimestamp(started)
-        tuesdays.add(last_time_breakpoint(now))
-    return sorted(list(tuesdays))
+        wednesdays.add(last_time_breakpoint(now))
+    return sorted(list(wednesdays))
 
 
 if __name__ == "__main__":
-    for tuesday in all_tuesdays():
-        print(tuesday)
+    for wednesday in all_wednesdays():
+        print(wednesday)
