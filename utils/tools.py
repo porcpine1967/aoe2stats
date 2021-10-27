@@ -2,12 +2,39 @@
 """ Useful functions. """
 
 from collections import defaultdict
+import csv
 from datetime import datetime, timedelta, timezone
 import json
+import requests
 import sqlite3
 
 DB = "data/ranked.db"
 SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
+
+API_TEMPLATE = "https://aoe2.net/api/player/lastmatch?game=aoe2de&profile_id={}"
+
+
+def user_info(profile_id):
+    """ Fetches last match info from aoe2.net"""
+    try:
+        response = requests.get(API_TEMPLATE.format(profile_id))
+        if response.status_code != 200:
+            return defaultdict(lambda: "UNKNOWN")
+        return json.loads(response.text)
+    except:
+        return defaultdict(lambda: "UNKNOWN")
+
+
+def country_map():
+    """ Generates a dict for mapping two-letter country codes
+to Country names"""
+    cmap = {}
+    with open("data/countries.csv") as open_file:
+        data = csv.reader(open_file)
+        for name, code in data:
+            cmap[code] = name
+
+    return cmap
 
 
 def batch(iterable, size=1):

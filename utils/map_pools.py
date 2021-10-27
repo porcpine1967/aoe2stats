@@ -28,6 +28,7 @@ RANKED_MAP_POOLS = {
         "20210907": [9, 17, 21, 29, 72, 149, 161],
         "20210921": [9, 23, 29, 71, 77, 140, 167],
         "20211005": [9, 10, 29, 32, 67, 87, 162],
+        "20211019": [9, 17, 19, 29, 33, 167, 168],
     },
     "team": {
         "20210427": [9, 12, 19, 25, 29, 73, 77, 140, 141],
@@ -43,6 +44,7 @@ RANKED_MAP_POOLS = {
         "20210907": [9, 12, 29, 31, 33, 77, 114, 140, 166],
         "20210921": [9, 11, 12, 29, 33, 72, 74, 77, 167],
         "20211005": [9, 12, 19, 25, 29, 33, 73, 76, 77],
+        "20211019": [9, 12, 23, 29, 33, 71, 72, 148, 171],
     },
 }
 
@@ -109,5 +111,16 @@ def last_wednesday_pool(team_size=1, now=None):
     return '"{}": [{}],'.format(start, ", ".join([str(r) for r, _ in execute_sql(sql)]))
 
 
+def run():
+    mmap = map_name_lookup()
+    for i in (1, 2):
+        print("{}v{}".format(i, i))
+        key = "1v1" if i < 2 else "team"
+        last = latest(key)
+        print([mmap[x] for x in last.split(",")])
+        print(last)
+        print(last_wednesday_pool(i))
+
+
 if __name__ == "__main__":
-    print(last_wednesday_pool(2))
+    run()

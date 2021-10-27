@@ -2,14 +2,14 @@
 """ Basic info on the data available. """
 from argparse import ArgumentParser
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import json
 
-from analyze import latest_version, week_before_last_rating
+from analyze import latest_version
 
 import utils.map_pools
 from utils.models import Player
-from utils.tools import execute_sql
+from utils.tools import execute_sql, last_time_breakpoint
 
 
 def map_map():
@@ -163,17 +163,27 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     version = args.v or latest_version()
-    where_list = ["version in ({})".format(version)]
+    where_list = []
 
     if args.w:
-        where_list.append("started > {}".format(week_before_last_rating()))
+        last_tuesday = last_time_breakpoint(datetime.now())
+        start = (last_tuesday - timedelta(days=7)).timestamp()
+        end = last_tuesday.timestamp()
+        where_list.append("started BETWEEN {:0.0f} AND {:0.0f}".format(start, end))
     if args.r and args.pool:
         if args.pool == "latest":
             pool_list = utils.map_pools.latest(args.r)
         else:
             pool_list = utils.map_pools.pool(args.r, args.pool)
         where_list.append("map_type in ({})".format(pool_list))
-
+        if not args.w:
+            start = last_time_breakpoint(datetime.strptime(args.pool, "%Y%m%d"))
+            end = start + timedelta(days=14)
+            where_list.append(
+                "started BETWEEN {:0.0f} AND {:0.0f}".format(
+                    start.timestamp(), end.timestamp()
+                )
+            )
     if args.r == "1v1":
         where_list.append("rating_type = 2")
     elif args.r == "1v1":
