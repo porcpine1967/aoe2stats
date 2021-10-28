@@ -74,12 +74,12 @@ QUERIES = {
                            AND started BETWEEN {:0.0f} AND {:0.0f}
                            {}
                            GROUP BY civ_id, won""",
-    "win_rates_player": """ SELECT player_id, civ_id, won, COUNT(*) AS cnt FROM matches
+    "win_rates_player": """ SELECT civ_id, avg(won) FROM matches
                             WHERE civ_id IS NOT NULL
                             AND mirror = 0
                             AND started BETWEEN {:0.0f} AND {:0.0f}
                             {}
-                            GROUP BY player_id, civ_id, won""",
+                            GROUP BY player_id, civ_id""",
 }
 
 
@@ -227,6 +227,9 @@ class WinrateCivilization(Civilization):
         self.win_results = []
         self.cached_winrate_pct = None
 
+    def __str__(self):
+        return "{:2}: {:.3f}".format(self.civ_id, self.pct)
+
     @property
     def sample_size(self):
         """ How many data points."""
@@ -372,16 +375,13 @@ def winrate_match(timebox, size, map_category):
 def winrate_player(timebox, size, map_category):
     """ Returns civs with winrate data based on player percentage. """
     sql = QUERIES["win_rates_player"].format(*timebox, filters(map_category, size))
-    players = defaultdict(Player)
-    for player_id, civ_id, won, count in execute_sql(sql):
-        players[player_id].add_civ_win(civ_id, won, count)
-
     civs = CivDict(WinrateCivilization, size, map_category, "player")
-    total = len(players)
-    for player in players.values():
-        for civ_id in player.civ_wins:
-            civ = civs[civ_id]
-            civ.win_results.append(player.win_percentage(civ_id))
+
+    total = 0
+    for civ_id, won_avg in execute_sql(sql):
+        total += 1
+        civ = civs[civ_id]
+        civ.win_results.append(won_avg)
 
     def sort_win_pct(civ):
         return -1 * civ.pct
