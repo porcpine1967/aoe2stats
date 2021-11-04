@@ -43,6 +43,8 @@ BATCH_SIZE = 300
 
 MAX_STARTED_DIFFERENCE = 1200
 
+BACKWARD_JUMP = -14400  # 4 hours
+
 
 def latest_version():
     """ Returns latest version available in db. """
@@ -109,8 +111,10 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
     conn.close()
 
 
-def fetch_matches(start):
+def fetch_matches(start, changeby=0):
     """ Fetches match data via one api call starting at start_time.
+        start: unix timestamp to start
+        changeby: for explicit jumps from start; 0 for next batch
         Returns number of matches, latest start time, and
         array of values ready for sql insert. """
 
@@ -192,6 +196,8 @@ def fetch_matches(start):
     if next_start <= start:
         print("NEXT START HAS NOT CHANGED")
         next_start += MAX_STARTED_DIFFERENCE
+    if changeby:
+        next_start = start + changeby
     return len(data), next_start, ranked_match_data, unranked_match_data
 
 
@@ -246,31 +252,48 @@ def fetch_and_save(start, end_ts):
     print("Starting at {}".format(int(script_start)))
     fetch_start = start
     data_length = MAX_DOWNLOAD
-
-    for (cnt,) in execute_sql("SELECT COUNT(*) FROM matches"):
+    changeby = BACKWARD_JUMP
+    zero_count = 0
+    forward_start = 0
+    for (cnt,) in execute_sql("SELECT COUNT(DISTINCT match_id) FROM matches"):
         last_count = cnt
     while True:
-        data_length, fetch_start, ranked, unranked = fetch_matches(fetch_start)
+        data_length, fetch_start, ranked, unranked = fetch_matches(
+            fetch_start, changeby
+        )
         save_matches(ranked, RANKED_DB)
         save_matches(unranked, UNRANKED_DB)
-        for (cnt,) in execute_sql("SELECT COUNT(*) FROM matches"):
-            print("Ranked change:", cnt - last_count)
+        for (cnt,) in execute_sql("SELECT COUNT(DISTINCT match_id) FROM matches"):
+            print("Ranked match change:", cnt - last_count)
+            if cnt - last_count == 0:
+                zero_count += 1
+            elif zero_count > 0:
+                zero_count = 0
             last_count = cnt
 
+        if zero_count > 1 and changeby == BACKWARD_JUMP:
+            print(28 * "*")
+            print("REVERSING...")
+            print(28 * "*")
+            fetch_start = fetch_start + 2 * BACKWARD_JUMP + 1
+            forward_start = fetch_start
+            changeby = 0
         if data_length < MAX_DOWNLOAD or (end_ts and fetch_start > end_ts):
             break
         print("Next start:", fetch_start)
         print("sleeping...")
         time.sleep(10)
-        if end_ts:
-            expected_end = end_ts
-        else:
-            expected_end = datetime.timestamp(datetime.now())
-        pct = float(fetch_start - start) / (expected_end - start)
-        print(time_left(script_start, pct))
-        print(
-            "Time left to cover:", timedelta(seconds=(int(expected_end - fetch_start)))
-        )
+        if forward_start and forward_start != fetch_start:
+            if end_ts:
+                expected_end = end_ts
+            else:
+                expected_end = datetime.timestamp(datetime.now())
+            pct = float(fetch_start - forward_start) / (expected_end - start)
+            print(time_left(script_start, pct))
+            print(
+                "Time left to cover:",
+                timedelta(seconds=(int(expected_end - fetch_start))),
+            )
     print("Ending at {}".format(datetime.now().strftime("%H:%M")))
 
 

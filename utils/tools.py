@@ -107,6 +107,17 @@ def last_time_breakpoint(now):
     )
 
 
+def weekend(now):
+    """ Returns timebox of weekend (FRI-MON) before "now" """
+    now_midnight = datetime(now.year, now.month, now.day, tzinfo=timezone.utc)
+    day_of_week = now_midnight.weekday()
+
+    friday = now_midnight - timedelta(days=day_of_week + 3)
+    friday_ts = friday.timestamp()
+    monday_ts = (friday + timedelta(days=3)).timestamp()
+    return (friday_ts, monday_ts)
+
+
 def execute_transaction(sql):
     """ Wrap sql in commit."""
     conn = sqlite3.connect(DB, timeout=20)
@@ -117,9 +128,9 @@ def execute_transaction(sql):
     cur.execute("COMMIT")
 
 
-def execute_sql(sql):
+def execute_sql(sql, db_path=DB):
     """ Generator for an sql statement and database. """
-    conn = sqlite3.connect(DB, timeout=20)
+    conn = sqlite3.connect(db_path, timeout=20)
     cur = conn.cursor()
     for row in cur.execute(sql).fetchall():
         yield row
@@ -128,11 +139,12 @@ def execute_sql(sql):
 
 def all_wednesdays():
     """ All wednesdays in the database."""
-    sql = """SELECT DISTINCT date(started, "unixepoch") AS ymd, started FROM matches
+    sql = """SELECT DISTINCT date(started, "unixepoch") AS ymd, max(started) FROM matches
+where started > 1635603919
     GROUP BY ymd ORDER BY started"""
     wednesdays = set()
     for _, started in execute_sql(sql):
-        now = datetime.fromtimestamp(started)
+        now = datetime.utcfromtimestamp(started)
         wednesdays.add(last_time_breakpoint(now))
     return sorted(list(wednesdays))
 

@@ -39,15 +39,27 @@ class Match:
         self.won = row[4]
 
 
+def sort_started(match):
+    """ Function for sorting matches by started."""
+    return match.started
+
+
 class WeekInfo:
     def __init__(self, start, matches):
         self.start = start
-        self.end = start + WEEK_IN_SECONDS
-        self.matches = [
-            match
-            for match in matches
-            if match.started > start and match.started < self.end
-        ]
+        end = start + WEEK_IN_SECONDS
+        matches = [match for match in matches if start < match.started < end]
+        self.max_rating = max([match.rating for match in matches])
+        self.matches = []
+        self.start_time = None
+        self.end_time = None
+        for match in sorted(matches, key=sort_started):
+            if not self.start_time:
+                self.start_time = datetime.utcfromtimestamp(match.started)
+            self.matches.append(match)
+            if match.rating == self.max_rating:
+                self.end_time = datetime.utcfromtimestamp(match.started)
+                break
 
     @property
     def win_pct(self):
@@ -56,10 +68,6 @@ class WeekInfo:
             * len([match for match in self.matches if match.won])
             / len(self.matches)
         )
-
-    @property
-    def max_rating(self):
-        return max([match.rating for match in self.matches])
 
     @property
     def diff(self):
@@ -77,14 +85,6 @@ class WeekInfo:
     @property
     def games_played(self):
         return len(self.matches)
-
-    @property
-    def start_time(self):
-        return datetime.fromtimestamp(min([match.started for match in self.matches]))
-
-    @property
-    def end_time(self):
-        return datetime.fromtimestamp(max([match.started for match in self.matches]))
 
     def __str__(self):
         return "\n   ".join(

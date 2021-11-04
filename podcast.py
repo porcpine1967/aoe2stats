@@ -37,9 +37,10 @@ AND metric = "{}"
 AND team_size = "1v1"
 AND methodology = "player"
 AND map_category = "{}"
+and week < {}
 ORDER BY week DESC
 LIMIT 1""".format(
-            self.rank, self.civ_id, self.metric, self.category
+            self.rank, self.civ_id, self.metric, self.category, self.week
         )
         for (week,) in execute_sql(sql):
             then = datetime.strptime(week, "%Y%m%d")
