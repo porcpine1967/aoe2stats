@@ -114,7 +114,7 @@ def weekend(now):
 
     friday = now_midnight - timedelta(days=day_of_week + 3)
     friday_ts = friday.timestamp()
-    monday_ts = (friday + timedelta(days=3)).timestamp()
+    monday_ts = (friday + timedelta(days=3, hours=7)).timestamp()
     return (friday_ts, monday_ts)
 
 

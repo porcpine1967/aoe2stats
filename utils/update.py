@@ -252,9 +252,13 @@ def fetch_and_save(start, end_ts):
     print("Starting at {}".format(int(script_start)))
     fetch_start = start
     data_length = MAX_DOWNLOAD
-    changeby = BACKWARD_JUMP
+    if end_ts:
+        changeby = 0
+        forward_start = start
+    else:
+        forward_start = 0
+        changeby = BACKWARD_JUMP
     zero_count = 0
-    forward_start = 0
     for (cnt,) in execute_sql("SELECT COUNT(DISTINCT match_id) FROM matches"):
         last_count = cnt
     while True:
@@ -275,25 +279,26 @@ def fetch_and_save(start, end_ts):
             print(28 * "*")
             print("REVERSING...")
             print(28 * "*")
-            fetch_start = fetch_start + 2 * BACKWARD_JUMP + 1
+            fetch_start = fetch_start + (-2 * BACKWARD_JUMP) + 1
             forward_start = fetch_start
             changeby = 0
+            script_start = datetime.now().timestamp()
         if data_length < MAX_DOWNLOAD or (end_ts and fetch_start > end_ts):
             break
         print("Next start:", fetch_start)
-        print("sleeping...")
-        time.sleep(10)
         if forward_start and forward_start != fetch_start:
             if end_ts:
                 expected_end = end_ts
             else:
                 expected_end = datetime.timestamp(datetime.now())
-            pct = float(fetch_start - forward_start) / (expected_end - start)
+            pct = float(fetch_start - forward_start) / (expected_end - forward_start)
             print(time_left(script_start, pct))
             print(
                 "Time left to cover:",
                 timedelta(seconds=(int(expected_end - fetch_start))),
             )
+        print("sleeping...")
+        time.sleep(10)
     print("Ending at {}".format(datetime.now().strftime("%H:%M")))
 
 
