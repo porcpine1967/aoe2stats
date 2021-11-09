@@ -35,7 +35,7 @@ def test_weekend():
     """ Tests weekend method. """
     now = datetime(2021, 11, 8, tzinfo=timezone.utc)
     expected_friday = datetime(2021, 11, 5, tzinfo=timezone.utc).timestamp()
-    expected_monday = datetime(2021, 11, 8, tzinfo=timezone.utc).timestamp()
+    expected_monday = datetime(2021, 11, 8, 7, tzinfo=timezone.utc).timestamp()
     for offset in range(7):
         test_day = now + timedelta(days=offset)
         friday, monday = utils.tools.weekend(test_day)
