@@ -9,6 +9,7 @@ SQL = """SELECT map_type, COUNT(*) as cnt
 FROM matches
 WHERE started BETWEEN {:0.0f} AND {:0.0f}
 {}
+AND team_size = {}
 GROUP BY map_type
 ORDER BY cnt DESC"""
 
@@ -28,7 +29,7 @@ def run():
             start = last_time_breakpoint(datetime(year, month, day))
             end = start + timedelta(days=14)
             sql = SQL.format(
-                start.timestamp(), end.timestamp(), map_type_filter(week, size)
+                start.timestamp(), end.timestamp(), map_type_filter(week, size), size
             )
             total = 0
             for map_type, count in execute_sql(sql):
