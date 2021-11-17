@@ -14,7 +14,8 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-from utils.tools import batch, execute_sql
+from utils.tools import batch, execute_sql, last_time_breakpoint
+from utils.tools import SEVEN_DAYS_OF_SECONDS
 from utils.versions import version_for_timestamp
 
 RANKED_DB = "data/ranked.db"
@@ -320,6 +321,8 @@ def run():
         "--end-ts", type=int, help="End time as UNIX timestamp",
     )
 
+    parser.add_argument("--lw", action="store_true", help="Reload the last week")
+
     args = parser.parse_args()
     if args.start:
         start_date = datetime.strptime(args.start, "%Y-%m-%d")
@@ -335,6 +338,11 @@ def run():
         end_timestamp = args.end_ts
     else:
         end_timestamp = None
+
+    if args.lw:
+        end_date = last_time_breakpoint(datetime.now())
+        end_timestamp = int(end_date.timestamp())
+        start_timestamp = end_timestamp - SEVEN_DAYS_OF_SECONDS
 
     fetch_and_save(start_timestamp, end_timestamp)
 
