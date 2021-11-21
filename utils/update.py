@@ -29,6 +29,7 @@ civ_id integer,
 map_type integer,
 rating_type integer,
 started integer,
+finished integer,
 version text,
 won integer,
 mirror integer,
@@ -97,10 +98,10 @@ def last_match_time():
 def save_matches(matches, database):
     """ Inserts each match value into the database. """
     sql = """ INSERT OR IGNORE INTO matches
-(match_id, map_type, rating_type, version, started,
+(match_id, map_type, rating_type, version, started, finished,
 team_size, game_type,
 player_id, civ_id, rating, won, mirror)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
     conn = sqlite3.connect(database, timeout=20)
     cur = conn.cursor()
     for match_batch in batch(matches, BATCH_SIZE):
@@ -158,6 +159,7 @@ def fetch_matches(start, changeby=0):
             match["rating_type"],
             match["version"] or version_for_timestamp(match["started"]),
             match["started"],
+            match["finished"],
             match["num_players"] / 2,
             match["game_type"],
         ]
