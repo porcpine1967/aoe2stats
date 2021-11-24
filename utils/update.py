@@ -235,17 +235,36 @@ def validate_player_info(match):
         raise PlayerInfoException("Wins not evenly divided")
 
 
-def time_left(script_start, pct):
-    """ Returns string version of hours:minutes:seconds probably left. """
+def print_time_left(script_start, fetch_start, next_start, end_ts=None):
+    """ Prints info on time left. """
     now = datetime.now()
     now_ts = now.timestamp()
-    seconds_to_run = (now_ts - script_start) / pct
-    estimated_end_ts = script_start + seconds_to_run
-    seconds_left = int(estimated_end_ts - now_ts)
+    time_lapsed = now_ts - script_start
+    completed_coverage = float(next_start - fetch_start)
+
+    if end_ts:
+        fetch_end = end_ts
+    else:
+        # estimate
+        fetch_end = now_ts
+
+    total_coverage = fetch_end - fetch_start
+    pct_complete = completed_coverage / total_coverage
+    script_end = (time_lapsed / pct_complete) + script_start
+    # recalculate if dynamic fetch_end
+    if not end_ts:
+        fetch_end = script_end
+        total_coverage = fetch_end - fetch_start
+        pct_complete = completed_coverage / total_coverage
+        script_end = (time_lapsed / pct_complete) + script_start
+
+    seconds_left = int(script_end - now_ts)
     time_remaining = timedelta(seconds=seconds_left)
     estimated_end = now + time_remaining
-    return "Time Remaining: {}\nEstimated end: {}".format(
-        str(time_remaining), estimated_end.strftime("%H:%M")
+    print("Time Remaining: {}".format(str(time_remaining)))
+    print("Estimated end: {}".format(estimated_end.strftime("%H:%M")))
+    print(
+        "Time left to cover:", timedelta(seconds=(int(fetch_end - next_start))),
     )
 
 
@@ -282,26 +301,17 @@ def fetch_and_save(start, end_ts):
             print(28 * "*")
             print("REVERSING...")
             print(28 * "*")
-            fetch_start = fetch_start + (-2 * BACKWARD_JUMP) + 1
+            fetch_start = fetch_start + (-3 * BACKWARD_JUMP) + 1
             forward_start = fetch_start
             changeby = 0
             script_start = datetime.now().timestamp()
         if data_length < MAX_DOWNLOAD or (end_ts and fetch_start > end_ts):
             break
         print("Next start:", fetch_start)
-        if forward_start and forward_start != fetch_start:
-            if end_ts:
-                expected_end = end_ts
-            else:
-                expected_end = datetime.timestamp(datetime.now())
-            pct = float(fetch_start - forward_start) / (expected_end - forward_start)
-            print(time_left(script_start, pct))
-            print(
-                "Time left to cover:",
-                timedelta(seconds=(int(expected_end - fetch_start))),
-            )
         print("sleeping...")
         time.sleep(10)
+        if forward_start and forward_start != fetch_start:
+            print_time_left(script_start, forward_start, fetch_start, end_ts)
     print("Ending at {}".format(datetime.now().strftime("%H:%M")))
 
 
@@ -331,8 +341,7 @@ def run():
         start_timestamp = int(start_date.timestamp())
     elif args.start_ts:
         start_timestamp = args.start_ts
-    else:
-        start_timestamp = last_match_time()
+
     if args.end:
         end_date = datetime.strptime(args.end, "%Y-%m-%d")
         end_timestamp = int(end_date.timestamp())
@@ -344,7 +353,11 @@ def run():
     if args.lw:
         end_date = last_time_breakpoint(datetime.now())
         end_timestamp = int(end_date.timestamp())
-        start_timestamp = end_timestamp - SEVEN_DAYS_OF_SECONDS
+        if not start_timestamp:
+            start_timestamp = end_timestamp - SEVEN_DAYS_OF_SECONDS
+
+    if not start_timestamp:
+        start_timestamp = last_match_time()
 
     fetch_and_save(start_timestamp, end_timestamp)
 
