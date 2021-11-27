@@ -37,9 +37,9 @@ def run():
                 total += count
             hold = []
             for name, count in week_info:
-                hold.append("{:15}: {:4.1f}%".format(name, 100.0 * count / total))
+                hold.append("{:17}: {:4.1f}%".format(name, 100.0 * count / total))
             week_infos.append(hold)
-        print("{:^22}     {:^22}".format(*weeks))
+        print("{:^24}     {:^24}".format(*weeks))
         for idx in range(len(week_infos[0])):
             print("{}      {}".format(week_infos[0][idx], week_infos[1][idx]))
 
