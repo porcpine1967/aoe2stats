@@ -109,12 +109,15 @@ def fetch_and_save():
     """ Fetches up to one week of data from start. """
     page_count = 2
     page = 1
-    ctr = 3519
+    ctr = 0
     while page < page_count:
         total, users = fetch_users(page)
         for user in users:
             ctr += 1
-            print("{:10}".format(ctr), end="\r")
+            print(
+                "{:10} (page {}, users in page {})".format(ctr, page, len(users)),
+                end="\r",
+            )
             profile_id = user["profile_id"]
             matches = fetch_matches(profile_id)
             ratings = fetch_ratings_history(profile_id)
