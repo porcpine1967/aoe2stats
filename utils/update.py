@@ -208,7 +208,7 @@ class PlayerInfoException(Exception):
     """ Exception thrown when match player info invalid."""
 
 
-def validate_player_info(match):
+def validate_player_info(match, validate_wins=True):
     """ Raises PlayerInfoException if player info makes match invalid for analysis."""
     if match["num_players"] != len(match["players"]):
         raise PlayerInfoException("num_players not match number of players")
@@ -227,12 +227,13 @@ def validate_player_info(match):
         raise PlayerInfoException("Unusual number of teams: {}".format(len(teams)))
     if len(set(teams.values())) != 1:
         raise PlayerInfoException("Teams not evenly divided")
-    if len(wins) != 2:
-        raise PlayerInfoException(
-            "Unreasonable number of win conditions: {}".format(len(wins))
-        )
-    if len(set(wins.values())) != 1:
-        raise PlayerInfoException("Wins not evenly divided")
+    if validate_wins:
+        if len(wins) != 2:
+            raise PlayerInfoException(
+                "Unreasonable number of win conditions: {}".format(len(wins))
+            )
+        if len(set(wins.values())) != 1:
+            raise PlayerInfoException("Wins not evenly divided")
 
 
 def print_time_left(script_start, fetch_start, next_start, end_ts=None):

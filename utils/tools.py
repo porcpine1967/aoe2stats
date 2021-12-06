@@ -118,9 +118,9 @@ def weekend(now):
     return (friday_ts, monday_ts)
 
 
-def execute_transaction(sql):
+def execute_transaction(sql, db_path=DB):
     """ Wrap sql in commit."""
-    conn = sqlite3.connect(DB, timeout=20)
+    conn = sqlite3.connect(db_path, timeout=20)
     cur = conn.cursor()
     cur.execute("BEGIN")
 
