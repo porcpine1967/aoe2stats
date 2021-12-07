@@ -110,8 +110,10 @@ def fetch_and_save():
     page_count = 2
     page = 1
     ctr = 0
+    page_totals = {}
     while page < page_count:
         total, users = fetch_users(page)
+        page_totals[page] = total
         for user in users:
             ctr += 1
             print(
@@ -130,6 +132,9 @@ def fetch_and_save():
             execute_transaction(sql, UNRANKED_DB)
         page_count = 1 + total / LB_MAX
         page += 1
+    print("Total users: {}".format(ctr))
+    for page in sorted(page_totals):
+        print("Page {}: {:5}".format(page, page_totals[page]))
 
 
 def run():
