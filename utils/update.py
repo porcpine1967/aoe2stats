@@ -14,6 +14,7 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
+from utils.results_cacher import generate_results
 from utils.tools import batch, execute_sql, last_time_breakpoint
 from utils.tools import SEVEN_DAYS_OF_SECONDS
 from utils.versions import version_for_timestamp
@@ -335,7 +336,7 @@ def run():
     )
 
     parser.add_argument("--lw", action="store_true", help="Reload the last week")
-
+    start_timestamp = None
     args = parser.parse_args()
     if args.start:
         start_date = datetime.strptime(args.start, "%Y-%m-%d")
@@ -361,6 +362,10 @@ def run():
         start_timestamp = last_match_time()
 
     fetch_and_save(start_timestamp, end_timestamp)
+
+    if args.lw:
+        print("CACHING RESULTS")
+        generate_results()
 
 
 if __name__ == "__main__":

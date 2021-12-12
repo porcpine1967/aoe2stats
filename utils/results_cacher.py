@@ -10,6 +10,14 @@ from statsmodels.stats.proportion import proportion_confint
 from utils.models import Player
 from utils.tools import all_wednesdays, batch, DB, execute_sql, SEVEN_DAYS_OF_SECONDS
 
+DBS = {"current": DB}
+
+
+def db_path():
+    """ The path to the database."""
+    return DBS["current"]
+
+
 CREATE_RESULTS_TABLE = """CREATE TABLE IF NOT EXISTS results (
 id integer PRIMARY KEY,
 week text,
@@ -85,8 +93,8 @@ QUERIES = {
 
 def prepare_database():
     """ Creates tables if not exists. """
-    execute_sql(CREATE_RESULTS_TABLE)
-    execute_sql(CREATE_WEEKCOUNTS_TABLE)
+    execute_sql(CREATE_RESULTS_TABLE, db_path())
+    execute_sql(CREATE_WEEKCOUNTS_TABLE, db_path())
 
 
 class CivDict(defaultdict):
@@ -296,7 +304,7 @@ def most_popular_match(timebox, size, map_category, basic):
     sql = QUERIES[key].format(*timebox, filters(map_category, size))
     total = 0
     civs = CivDict(PopularCivilization, size, map_category, "match")
-    for civ_id, count in execute_sql(sql):
+    for civ_id, count in execute_sql(sql, db_path()):
         total += count
         civ = civs[civ_id]
         civ.times_used += count
@@ -316,7 +324,7 @@ def most_popular_player(timebox, size, map_category, basic):
     key = "player_popularity_basic" if basic else "player_popularity"
     sql = QUERIES[key].format(*timebox, filters(map_category, size))
     players = defaultdict(Player)
-    for player_id, civ_id, count in execute_sql(sql):
+    for player_id, civ_id, count in execute_sql(sql, db_path()):
         players[player_id].add_civ_use(civ_id, count)
 
     civs = CivDict(PopularCivilization, size, map_category, "player")
@@ -355,7 +363,7 @@ def winrate_match(timebox, size, map_category):
     civs = CivDict(WinrateCivilization, size, map_category, "match")
     bottom_civs = CivDict(BottomWinrateCivilization, size, map_category, "match")
     total = 0
-    for civ_id, won, count in execute_sql(sql):
+    for civ_id, won, count in execute_sql(sql, db_path()):
         total += count
         wins = [won for _ in range(count)]
         civ = civs[civ_id]
@@ -378,7 +386,7 @@ def winrate_player(timebox, size, map_category):
     civs = CivDict(WinrateCivilization, size, map_category, "player")
 
     total = 0
-    for civ_id, won_avg in execute_sql(sql):
+    for civ_id, won_avg in execute_sql(sql, db_path()):
         total += 1
         civ = civs[civ_id]
         civ.win_results.append(won_avg)
@@ -396,7 +404,7 @@ def timeboxes_to_update():
     for wednesday in all_wednesdays():
         old_count = None
         week = wednesday.strftime("%Y%m%d")
-        for (count,) in execute_sql(WEEK_COUNT_SQL_TEMPLATE.format(week)):
+        for (count,) in execute_sql(WEEK_COUNT_SQL_TEMPLATE.format(week), db_path()):
             old_count = count
         timestamp = datetime.timestamp(wednesday)
         timebox = (
@@ -405,7 +413,9 @@ def timeboxes_to_update():
         )
         if old_count:
             new_count = None
-            for (count,) in execute_sql(MATCHES_SQL_TEMPLATE.format(*timebox)):
+            for (count,) in execute_sql(
+                MATCHES_SQL_TEMPLATE.format(*timebox), db_path()
+            ):
                 new_count = count
             if old_count == new_count:
                 print("Skipping", week)
@@ -421,7 +431,7 @@ def save_civs(civs, timebox):
     (week, civ_id, team_size, map_category, methodology, metric,
     compound, rank, pct, sample_size)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(db_path())
     cur = conn.cursor()
     wednesday = datetime.fromtimestamp(timebox[0], tz=timezone.utc)
     week = wednesday.strftime("%Y%m%d")
@@ -433,7 +443,7 @@ def save_civs(civs, timebox):
             cur.execute(results_sql, [week] + civ.info())
         cur.execute("COMMIT")
     match_count = None
-    for (count,) in execute_sql(MATCHES_SQL_TEMPLATE.format(*timebox)):
+    for (count,) in execute_sql(MATCHES_SQL_TEMPLATE.format(*timebox), db_path()):
         match_count = count
     week_counts_sql = """INSERT OR REPLACE INTO week_counts
     (week, match_count) VALUES (?, ?)"""

@@ -86,6 +86,13 @@ class WeekInfo:
     def games_played(self):
         return len(self.matches)
 
+    def valid(self, end_cutoff):
+        return (
+            self.games_played > 5
+            and self.end_time.timestamp() > end_cutoff
+            and self.max_rating > 1700
+        )
+
     def __str__(self):
         return "\n   ".join(
             [
@@ -101,9 +108,9 @@ class WeekInfo:
 class Smurf:
     """ Data holder for smurf-like player"""
 
-    def __init__(self, row):
+    def __init__(self, row, end_cutoff):
         self.player_id = row[0]
-        week_info = self._best_week()
+        week_info = self._best_week(end_cutoff)
         if week_info:
             self.valid = True
             self.timebox = "{} - {}".format(
@@ -125,7 +132,7 @@ class Smurf:
         else:
             self.valid = False
 
-    def _best_week(self):
+    def _best_week(self, end_cutoff):
         sql = """
 SELECT rating, civ_id, map_type, started, won
 FROM matches
@@ -141,7 +148,7 @@ ORDER BY started
             if row[0]:
                 matches.append(Match(row))
         week_info = WeekInfo(matches[0].started, matches)
-        if week_info.games_played > 5:
+        if week_info.valid(end_cutoff):
             return week_info
         return None
 
@@ -197,7 +204,7 @@ def display():
     sql = SQL.format(last_week[0])
     smurfs = []
     for row in execute_sql(sql):
-        smurf = Smurf(row)
+        smurf = Smurf(row, last_week[1])
         if smurf.valid:
             smurfs.append(smurf)
     for smurf in sorted(smurfs, key=lambda x: x.max_rating, reverse=True):

@@ -31,6 +31,7 @@ RANKED_MAP_POOLS = {
         "20211020": [9, 17, 19, 29, 33, 167, 168],
         "20211103": [9, 29, 71, 72, 76, 87, 140],
         "20211117": [9, 29, 77, 149, 150, 165, 167],
+        "20211201": [9, 16, 21, 29, 140, 167, 170],
     },
     "team": {
         "20210428": [9, 12, 19, 25, 29, 73, 77, 140, 141],
@@ -49,6 +50,7 @@ RANKED_MAP_POOLS = {
         "20211020": [9, 12, 23, 29, 33, 71, 72, 148, 171],
         "20211103": [9, 12, 29, 32, 33, 67, 73, 74, 77],
         "20211117": [9, 12, 16, 21, 29, 31, 33, 77, 167],
+        "20211201": [9, 12, 17, 29, 33, 77, 141, 147, 165],
     },
 }
 
@@ -103,7 +105,7 @@ def last_wednesday_pool(team_size=1, now=None):
     _now = now or datetime.now()
     last_wednesday = last_time_breakpoint(_now)
     start = last_wednesday.strftime("%Y%m%d")
-    timestamp = (last_wednesday + timedelta(hours=12)).timestamp()
+    timestamp = (last_wednesday - timedelta(hours=12)).timestamp()
     lookup = map_name_lookup()
     sql = """SELECT map_type, COUNT(*) FROM matches
         WHERE started BETWEEN {:0.0f} AND {:0.0f}
