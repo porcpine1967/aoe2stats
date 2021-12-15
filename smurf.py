@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """ Finds the new users with big jumps in elo """
 from argparse import ArgumentParser
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from utils.tools import (
     civ_map,
@@ -20,12 +20,15 @@ min(started) as min_started, min(rating) as min_rating
 FROM matches
 WHERE civ_id IS NOT NULL
 AND game_type = 0 AND team_size = 1
+AND started < {:0.0f}
 GROUP BY player_id
 HAVING min_started > {:0.0f} and cnt > 5 and max_rating > 1699 and min_rating < 1500
 """
 
 WEEK_IN_SECONDS = 7 * 24 * 60 * 60
 COUNTRIES = country_map()
+
+RATING_CUTOFF = 1700
 
 
 class Match:
@@ -45,7 +48,7 @@ def sort_started(match):
 
 
 class WeekInfo:
-    def __init__(self, start, matches):
+    def __init__(self, start, matches, end_cutoff):
         self.start = start
         end = start + WEEK_IN_SECONDS
         matches = [match for match in matches if start < match.started < end]
@@ -54,6 +57,10 @@ class WeekInfo:
         self.start_time = None
         self.end_time = None
         for match in sorted(matches, key=sort_started):
+            if match.started < end_cutoff and match.rating > RATING_CUTOFF:
+                self.end_time = datetime.fromtimestamp(match.started, tz=timezone.utc)
+                break
+
             if not self.start_time:
                 self.start_time = datetime.utcfromtimestamp(match.started)
             self.matches.append(match)
@@ -90,7 +97,7 @@ class WeekInfo:
         return (
             self.games_played > 5
             and self.end_time.timestamp() > end_cutoff
-            and self.max_rating > 1700
+            and self.max_rating > RATING_CUTOFF
         )
 
     def __str__(self):
@@ -147,7 +154,7 @@ ORDER BY started
         for row in execute_sql(sql):
             if row[0]:
                 matches.append(Match(row))
-        week_info = WeekInfo(matches[0].started, matches)
+        week_info = WeekInfo(matches[0].started, matches, end_cutoff)
         if week_info.valid(end_cutoff):
             return week_info
         return None
@@ -201,7 +208,7 @@ def display():
     """ Returns smurfs from past week."""
     wednesday = last_time_breakpoint(datetime.now()).timestamp()
     last_week, _ = timeboxes(wednesday)
-    sql = SQL.format(last_week[0])
+    sql = SQL.format(wednesday, last_week[0])
     smurfs = []
     for row in execute_sql(sql):
         smurf = Smurf(row, last_week[1])
