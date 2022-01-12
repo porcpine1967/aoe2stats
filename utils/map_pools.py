@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """ Map Pool Data. """
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 import sys
 from utils.tools import (
@@ -11,7 +11,6 @@ from utils.tools import (
     map_name_lookup,
     timeboxes,
 )
-
 
 RANKED_MAP_POOLS = {
     "1v1": {
@@ -33,6 +32,7 @@ RANKED_MAP_POOLS = {
         "20211117": [9, 29, 77, 149, 150, 165, 167],
         "20211201": [9, 16, 21, 29, 140, 167, 170],
         "20211215": [9, 23, 29, 71, 141, 167, 172],
+        "20220112": [33, 29, 9, 77, 140, 72, 87],
     },
     "team": {
         "20210428": [9, 12, 19, 25, 29, 73, 77, 140, 141],
@@ -53,6 +53,7 @@ RANKED_MAP_POOLS = {
         "20211117": [9, 12, 16, 21, 29, 31, 33, 77, 167],
         "20211201": [9, 12, 17, 29, 33, 77, 141, 147, 165],
         "20211215": [9, 11, 12, 29, 33, 74, 77, 164, 167],
+        "20220112": [149, 9, 29, 77, 33, 12, 72, 71, 19],
     },
 }
 
@@ -101,33 +102,56 @@ def pool(rating, pool_name):
     return ",".join([str(i) for i in RANKED_MAP_POOLS[rating][pool_name]])
 
 
-def last_wednesday_pool(team_size=1, now=None):
-    """ Using last Wednesday as a reference,
-    what maps were played in ranked?"""
-    _now = now or datetime.now()
-    last_wednesday = last_time_breakpoint(_now)
-    start = last_wednesday.strftime("%Y%m%d")
-    timestamp = (last_wednesday - timedelta(hours=12)).timestamp()
+def current_pool(team_size=1):
+    """ Determines current pool and cutoff date for adding to RANKED_MAP_POOLS"""
+    pool_key = "team" if team_size > 1 else "1v1"
+    last_pool_s = max(RANKED_MAP_POOLS[pool_key].keys())
+    last_cutoff = datetime(
+        int(last_pool_s[:4]),
+        int(last_pool_s[4:6]),
+        int(last_pool_s[6:]),
+        1,
+        tzinfo=timezone.utc,
+    ).timestamp()
+    last_wednesday = last_time_breakpoint(datetime.now()) + timedelta(hours=6)
+    last_wednesday_ts = last_wednesday.timestamp()
+
     lookup = map_name_lookup()
-    sql = """SELECT map_type, COUNT(*) FROM matches
-        WHERE started BETWEEN {:0.0f} AND {:0.0f}
-        AND game_type = 0 AND team_size = {}
-        GROUP BY map_type
-        ORDER BY map_type""".format(
-        timestamp, timestamp + 3 * 60 * 60, team_size
+    sql = """SELECT map_type, max(started) as s
+             FROM matches
+             WHERE started > {:0.0f}
+             AND game_type = 0 AND team_size = {}
+             GROUP BY map_type
+             ORDER BY s DESC""".format(
+        last_cutoff, team_size
     )
-    return '"{}": [{}],'.format(start, ", ".join([str(r) for r, _ in execute_sql(sql)]))
+    week_key = ""
+    ids = []
+    names = []
+    for map_type, start in execute_sql(sql):
+        if start < last_wednesday_ts:
+            break_day = datetime.utcfromtimestamp(start)
+            week_key = break_day.strftime("%Y%m%d")
+            break
+        ids.append(str(map_type))
+        names.append(lookup[map_type])
+    if not week_key or week_key == last_pool_s:
+        return "{} up to date".format(pool_key)
+    returnables = []
+    returnables.append("KEY: {}".format(pool_key))
+    returnables.append('"{}": [{}],'.format(week_key, ", ".join(ids)))
+    returnables.append("({})".format(", ".join(names)))
+    return "\n".join(returnables)
 
 
 def run():
-    mmap = map_name_lookup()
-    for i in (1, 2):
-        print("{}v{}".format(i, i))
-        key = "1v1" if i < 2 else "team"
-        last = latest(key)
-        print([mmap[x] for x in last.split(",")])
-        print(last)
-        print(last_wednesday_pool(i))
+    """ Do what is necessary."""
+    for size in (
+        1,
+        2,
+    ):
+        print(current_pool(size))
+        print("")
 
 
 if __name__ == "__main__":
