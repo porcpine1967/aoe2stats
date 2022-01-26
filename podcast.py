@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 """ Info for podcast."""
 from datetime import datetime, timedelta
+
+from map_report import run as run_map_report
+from smurf import run as run_smurf
 from utils.tools import civ_map, execute_sql, last_time_breakpoint
 
 
@@ -27,7 +30,7 @@ class Rank:
         )
 
     def _set_data(self):
-        """ set weeks at rank and previous civ """
+        """set weeks at rank and previous civ"""
 
         now = datetime.strptime(self.week, "%Y%m%d")
         sql = """SELECT week FROM results
@@ -42,6 +45,10 @@ ORDER BY week DESC
 LIMIT 1""".format(
             self.rank, self.civ_id, self.metric, self.category, self.week
         )
+
+        last_year_dt = now - timedelta(days=365)
+        last_year = last_year_dt.strftime("%Y%m%d")
+
         for (week,) in execute_sql(sql):
             then = datetime.strptime(week, "%Y%m%d")
             self.weeks_at_level = int((now - then).days / 7)
@@ -52,9 +59,10 @@ AND metric = "{}"
 AND team_size = "1v1"
 AND methodology = "player"
 AND map_category = "{}"
-AND week > "20210101"
+AND week > "{}"
+AND week <= "{}"
 ORDER BY week DESC""".format(
-            self.civ_id, self.metric, self.category
+            self.civ_id, self.metric, self.category, last_year, self.week
         )
         continuous_week_ctr = 0
         week_ctr = 0
@@ -73,7 +81,7 @@ ORDER BY week DESC""".format(
 
 
 def run():
-    """ Flow control"""
+    """Flow control"""
     last_wednesday = last_time_breakpoint(datetime.now())
     this_week = (last_wednesday - timedelta(days=7)).strftime("%Y%m%d")
     print(this_week)
@@ -81,7 +89,9 @@ def run():
         print("*" * len(metric))
         print(metric)
         print("*" * len(metric))
-        for category in ("All", "Arabia", "Arena", "Others"):
+        for category in ("All", "Arabia", "Arena"):
+            if metric == "winrate" and category == "All":
+                continue
             sql = """SELECT civ_id, rank FROM results
 WHERE rank < 7
 and metric = "{}"
@@ -102,3 +112,11 @@ and week = {}""".format(
 
 if __name__ == "__main__":
     run()
+    print("****************************")
+    print("MAP REPORT")
+    print("****************************")
+    run_map_report()
+    print("****************************")
+    print("SMURF")
+    print("****************************")
+    run_smurf()

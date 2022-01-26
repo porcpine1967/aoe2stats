@@ -115,8 +115,12 @@ class WeekInfo:
 class Smurf:
     """ Data holder for smurf-like player"""
 
-    def __init__(self, row, end_cutoff):
+    def __init__(self, row, timebox):
+        start_cutoff, end_cutoff = timebox
         self.player_id = row[0]
+        self.validate(start_cutoff)
+        if not self.valid:
+            return
         week_info = self._best_week(end_cutoff)
         if week_info:
             self.valid = True
@@ -132,12 +136,23 @@ class Smurf:
             self.civ_ids = week_info.civ_ids
             data = user_info(self.player_id)
             self.username = data["name"]
-            if data["country"] in COUNTRIES:
-                self.country = COUNTRIES[data["country"]]
-            else:
-                self.country = data["country"]
+            try:
+                if data["country"] in COUNTRIES:
+                    self.country = COUNTRIES[data["country"]]
+                else:
+                    self.country = data["country"]
+            except KeyError:
+                self.country = ""
         else:
             self.valid = False
+
+    def validate(self, start_cutoff):
+        sql = """
+SELECT min(started)
+FROM matches
+WHERE player_id = {}""".format(self.player_id)
+        for started, in execute_sql(sql):
+            self.valid = started >= start_cutoff
 
     def _best_week(self, end_cutoff):
         sql = """
@@ -204,26 +219,24 @@ ORDER BY started
         )
 
 
-def display():
+def display(date_reference):
     """ Returns smurfs from past week."""
-    wednesday = last_time_breakpoint(datetime.now()).timestamp()
+    wednesday = last_time_breakpoint(date_reference).timestamp()
     last_week, _ = timeboxes(wednesday)
     sql = SQL.format(wednesday, last_week[0])
     smurfs = []
     for row in execute_sql(sql):
-        smurf = Smurf(row, last_week[1])
+        smurf = Smurf(row, last_week)
         if smurf.valid:
             smurfs.append(smurf)
     for smurf in sorted(smurfs, key=lambda x: x.max_rating, reverse=True):
         print(smurf)
 
-
 def run():
     """ Flow control function."""
     parser = ArgumentParser()
     _ = parser.parse_args()
-    display()
-
+    display(datetime.now())
 
 if __name__ == "__main__":
     run()

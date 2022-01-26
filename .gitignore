@@ -134,3 +134,4 @@ dmypy.json
 # Local db
 data/*.db
 tmp/*
+*/tournament_info.txt
