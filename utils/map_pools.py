@@ -33,6 +33,7 @@ RANKED_MAP_POOLS = {
         "20211201": [9, 16, 21, 29, 140, 167, 170],
         "20211215": [9, 23, 29, 71, 141, 167, 172],
         "20220112": [33, 29, 9, 77, 140, 72, 87],
+        "20220126": [9, 149, 10, 29, 27, 174, 17],
     },
     "team": {
         "20210428": [9, 12, 19, 25, 29, 73, 77, 140, 141],
@@ -54,6 +55,7 @@ RANKED_MAP_POOLS = {
         "20211201": [9, 12, 17, 29, 33, 77, 141, 147, 165],
         "20211215": [9, 11, 12, 29, 33, 74, 77, 164, 167],
         "20220112": [149, 9, 29, 77, 33, 12, 72, 71, 19],
+        "20220126": [73, 9, 31, 12, 77, 148, 29, 33, 23],
     },
 }
 
@@ -128,11 +130,14 @@ def current_pool(team_size=1):
     week_key = ""
     ids = []
     names = []
+    last_start = 0
     for map_type, start in execute_sql(sql):
+        print(lookup[map_type], map_type, datetime.utcfromtimestamp(start))
         if start < last_wednesday_ts:
-            break_day = datetime.utcfromtimestamp(start)
+            break_day = datetime.utcfromtimestamp(last_start)
             week_key = break_day.strftime("%Y%m%d")
             break
+        last_start = start
         ids.append(str(map_type))
         names.append(lookup[map_type])
     if not week_key or week_key == last_pool_s:

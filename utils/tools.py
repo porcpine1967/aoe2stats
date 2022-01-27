@@ -6,7 +6,7 @@ import csv
 from datetime import datetime, timedelta, timezone
 import json
 
-import sqlite3
+import psycopg2
 import requests
 
 DB = "data/ranked.db"
@@ -120,7 +120,7 @@ def weekend(now):
 
 def execute_transaction(sql, db_path=DB):
     """ Wrap sql in commit."""
-    conn = sqlite3.connect(db_path, timeout=20)
+    conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
     cur.execute("BEGIN")
 
@@ -130,18 +130,20 @@ def execute_transaction(sql, db_path=DB):
 
 def execute_sql(sql, db_path=DB):
     """ Generator for an sql statement and database. """
-    conn = sqlite3.connect(db_path, timeout=20)
+    conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
-    for row in cur.execute(sql).fetchall():
+    cur.execute(sql)
+    for row in cur.fetchall():
         yield row
+    cur.close()
     conn.close()
 
 
 def all_wednesdays():
     """ All wednesdays in the database."""
-    sql = """SELECT DISTINCT date(started, "unixepoch") AS ymd, max(started) FROM matches
+    sql = """SELECT DISTINCT to_timestamp(started)::date AS ymd, max(started) FROM matches
 where started > 1635603919
-    GROUP BY ymd ORDER BY started"""
+    GROUP BY ymd ORDER BY ymd"""
     wednesdays = set()
     for _, started in execute_sql(sql):
         now = datetime.utcfromtimestamp(started)

@@ -35,12 +35,12 @@ class Rank:
         now = datetime.strptime(self.week, "%Y%m%d")
         sql = """SELECT week FROM results
 WHERE rank > {}
-AND civ_id = {}
-AND metric = "{}"
-AND team_size = "1v1"
-AND methodology = "player"
-AND map_category = "{}"
-and week < {}
+AND civ_id = '{}'
+AND metric = '{}'
+AND team_size = '1v1'
+AND methodology = 'player'
+AND map_category = '{}'
+and week < '{}'
 ORDER BY week DESC
 LIMIT 1""".format(
             self.rank, self.civ_id, self.metric, self.category, self.week
@@ -54,13 +54,13 @@ LIMIT 1""".format(
             self.weeks_at_level = int((now - then).days / 7)
         sql = """SELECT week FROM results
 WHERE rank <= 5
-AND civ_id = {}
-AND metric = "{}"
-AND team_size = "1v1"
-AND methodology = "player"
-AND map_category = "{}"
-AND week > "{}"
-AND week <= "{}"
+AND civ_id = '{}'
+AND metric = '{}'
+AND team_size = '1v1'
+AND methodology = 'player'
+AND map_category = '{}'
+AND week > '{}'
+AND week <= '{}'
 ORDER BY week DESC""".format(
             self.civ_id, self.metric, self.category, last_year, self.week
         )
@@ -94,11 +94,11 @@ def run():
                 continue
             sql = """SELECT civ_id, rank FROM results
 WHERE rank < 7
-and metric = "{}"
-and team_size = "1v1"
-and methodology = "player"
-and map_category = "{}"
-and week = {}""".format(
+and metric = '{}'
+and team_size = '1v1'
+and methodology = 'player'
+and map_category = '{}'
+and week = '{}'""".format(
                 metric, category, this_week
             )
             print("*" * 28)

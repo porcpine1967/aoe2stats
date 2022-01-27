@@ -3,7 +3,9 @@
 
 from collections import defaultdict
 from datetime import datetime, timezone
-import sqlite3
+import psycopg2
+import psycopg2.extras
+
 import statistics
 from statsmodels.stats.proportion import proportion_confint
 
@@ -39,31 +41,31 @@ match_count integer,
 UNIQUE(week))"""
 
 WEEK_COUNT_SQL_TEMPLATE = """ SELECT match_count FROM week_counts
-WHERE week = "{}" """
+WHERE week = '{}' """
 
 MATCHES_SQL_TEMPLATE = """SELECT count(*) FROM matches
                           WHERE started BETWEEN {:0.0f} AND {:0.0f}"""
 QUERIES = {
     "match_popularity": """SELECT civ, COUNT(*) AS cnt FROM
-                           (SELECT GROUP_CONCAT(civ_id, ":") AS civ FROM
+                           (SELECT STRING_AGG(CAST(civ_id AS TEXT), ':') AS civ FROM
                             (SELECT match_id, civ_id, won
                              FROM matches
                              WHERE civ_id IS NOT NULL
                              AND started BETWEEN {:0.0f} AND {:0.0f}
                              {}
-                             ORDER BY match_id, won, civ_id)
-                            GROUP BY match_id, won)
+                             ORDER BY match_id, won, civ_id) AS t1
+                            GROUP BY match_id, won) AS t2
                            GROUP BY civ""",
     "player_popularity": """SELECT player, civ, COUNT(*) AS cnt FROM
-                            (SELECT GROUP_CONCAT(player_id, ":") as player,
-                             GROUP_CONCAT(civ_id, ":") AS civ FROM
+                            (SELECT STRING_AGG(CAST(player_id AS TEXT), ':') as player,
+                             STRING_AGG(CAST(civ_id AS TEXT), ':') AS civ FROM
                              (SELECT player_id, match_id, civ_id, won
                               FROM matches
                               WHERE civ_id IS NOT NULL
                               AND started BETWEEN {:0.0f} AND {:0.0f}
                               {}
-                              ORDER BY player_id, won, civ_id)
-                             GROUP BY match_id, won)
+                              ORDER BY player_id, won, civ_id) AS t1
+                             GROUP BY match_id, won) AS t2
                             GROUP BY player, civ""",
     "match_popularity_basic": """SELECT cast(civ_id as text), COUNT(*) AS cnt FROM matches
                                  WHERE civ_id IS NOT NULL
@@ -78,23 +80,17 @@ QUERIES = {
                                   GROUP BY player_id, civ_id""",
     "win_rates_match": """ SELECT civ_id, won, COUNT(*) as cnt FROM matches
                            WHERE civ_id IS NOT NULL
-                           AND mirror = 0
+                           AND mirror = false
                            AND started BETWEEN {:0.0f} AND {:0.0f}
                            {}
                            GROUP BY civ_id, won""",
-    "win_rates_player": """ SELECT civ_id, avg(won) FROM matches
+    "win_rates_player": """ SELECT civ_id, AVG(CAST(won AS INT)) FROM matches
                             WHERE civ_id IS NOT NULL
-                            AND mirror = 0
+                            AND mirror = false
                             AND started BETWEEN {:0.0f} AND {:0.0f}
                             {}
                             GROUP BY player_id, civ_id""",
 }
-
-
-def prepare_database():
-    """ Creates tables if not exists. """
-    execute_sql(CREATE_RESULTS_TABLE, db_path())
-    execute_sql(CREATE_WEEKCOUNTS_TABLE, db_path())
 
 
 class CivDict(defaultdict):
@@ -188,7 +184,6 @@ class Civilization:
             self.compound,
             self.rank,
             self.pct,
-            self.sample_size,
         ]
 
 
@@ -427,26 +422,28 @@ def timeboxes_to_update():
 
 def save_civs(civs, timebox):
     """ Calls saves on the civs and updates week_counts."""
-    results_sql = """INSERT OR REPLACE INTO results
+    results_sql = """INSERT INTO results
     (week, civ_id, team_size, map_category, methodology, metric,
-    compound, rank, pct, sample_size)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
-    conn = sqlite3.connect(db_path())
+    compound, rank, pct)
+    VALUES %s
+ON CONFLICT DO NOTHING"""
+    conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
     wednesday = datetime.fromtimestamp(timebox[0], tz=timezone.utc)
     week = wednesday.strftime("%Y%m%d")
     print("Saving", week, len(civs))
     for match_batch in batch(civs, 300):
         cur.execute("BEGIN")
-
-        for civ in match_batch:
-            cur.execute(results_sql, [week] + civ.info())
+        civ_batch = [[week] + civ.info() for civ in match_batch]
+        psycopg2.extras.execute_values(cur, results_sql, civ_batch)
         cur.execute("COMMIT")
     match_count = None
     for (count,) in execute_sql(MATCHES_SQL_TEMPLATE.format(*timebox), db_path()):
         match_count = count
-    week_counts_sql = """INSERT OR REPLACE INTO week_counts
-    (week, match_count) VALUES (?, ?)"""
+    week_counts_sql = """INSERT INTO week_counts
+    (week, match_count) VALUES (%s, %s)
+    ON CONFLICT (week) DO UPDATE SET match_count=EXCLUDED.match_count
+"""
     cur.execute("BEGIN")
     cur.execute(week_counts_sql, (week, match_count))
     cur.execute("COMMIT")
@@ -476,7 +473,6 @@ def generate_results():
 
 def run():
     """ Basic functioning of app."""
-    prepare_database()
     generate_results()
 
 

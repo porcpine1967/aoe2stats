@@ -15,14 +15,14 @@ from utils.tools import (
 
 
 SQL = """
-SELECT player_id, COUNT(*) as cnt, max(rating) as max_rating,
-min(started) as min_started, min(rating) as min_rating
+SELECT player_id, COUNT(*) as cnt, MAX(rating) AS max_rating,
+MIN(started) AS min_started, MIN(rating) AS min_rating
 FROM matches
 WHERE civ_id IS NOT NULL
 AND game_type = 0 AND team_size = 1
 AND started < {:0.0f}
 GROUP BY player_id
-HAVING min_started > {:0.0f} and cnt > 5 and max_rating > 1699 and min_rating < 1500
+HAVING min(started) > {:0.0f} and COUNT(*) > 5 and max(rating) > 1699
 """
 
 WEEK_IN_SECONDS = 7 * 24 * 60 * 60
@@ -35,7 +35,7 @@ class Match:
     """ Holder of match info."""
 
     def __init__(self, row):
-        self.rating = row[0]
+        self.rating = row[0] or 0
         self.civ_id = row[1]
         self.map_type = row[2]
         self.started = row[3]
@@ -78,7 +78,7 @@ class WeekInfo:
 
     @property
     def diff(self):
-        ratings = [match.rating for match in self.matches]
+        ratings = [match.rating for match in self.matches if match.rating]
         return max(ratings) - min(ratings)
 
     @property
@@ -167,8 +167,7 @@ ORDER BY started
         )
         matches = []
         for row in execute_sql(sql):
-            if row[0]:
-                matches.append(Match(row))
+            matches.append(Match(row))
         week_info = WeekInfo(matches[0].started, matches, end_cutoff)
         if week_info.valid(end_cutoff):
             return week_info

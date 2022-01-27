@@ -1,1 +1,2 @@
 liqui-aoe
+psycopg2

@@ -6,7 +6,8 @@ from argparse import ArgumentParser
 from collections import Counter
 from datetime import datetime, timedelta
 import json
-import sqlite3
+import psycopg2
+import psycopg2.extras
 import sys
 import time
 
@@ -51,7 +52,7 @@ BACKWARD_JUMP = -14400  # 4 hours
 
 def latest_version():
     """ Returns latest version available in db. """
-    conn = sqlite3.connect(RANKED_DB)
+    conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
     version = 0
     for (current_version,) in cur.execute(
@@ -75,21 +76,12 @@ def one_week_ago():
     return int(datetime.timestamp((datetime.now() - week)))
 
 
-def prepare_database():
-    """ Creates the db file if not exists. Creates table if not exists. """
-    for database in (RANKED_DB, UNRANKED_DB):
-        conn = sqlite3.connect(database)
-        cur = conn.cursor()
-        cur.execute(CREATE_MATCH_TABLE)
-        conn.close()
-
-
 def last_match_time():
     """ Returns the time of the last match retrieved or one week ago. """
-    conn = sqlite3.connect(RANKED_DB)
+    conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
-    query = cur.execute("SELECT MAX(started) FROM matches")
-    result = query.fetchone()[0]
+    cur.execute("SELECT MAX(started) FROM matches")
+    result = cur.fetchone()[0]
     conn.close()
     cutoff = one_week_ago()
     # results trickle in, so start 90 minutes before end of last run
@@ -98,18 +90,18 @@ def last_match_time():
 
 def save_matches(matches, database):
     """ Inserts each match value into the database. """
-    sql = """ INSERT OR IGNORE INTO matches
+    sql = """ INSERT INTO matches
 (match_id, map_type, rating_type, version, started, finished,
 team_size, game_type,
 player_id, civ_id, rating, won, mirror)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
-    conn = sqlite3.connect(database, timeout=20)
+VALUES %s
+ON CONFLICT DO NOTHING"""
+    conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
     for match_batch in batch(matches, BATCH_SIZE):
         cur.execute("BEGIN")
 
-        for match in match_batch:
-            cur.execute(sql, match)
+        psycopg2.extras.execute_values(cur, sql, match_batch)
         cur.execute("COMMIT")
     conn.close()
 
@@ -172,7 +164,7 @@ def fetch_matches(start, changeby=0):
                 player["profile_id"],
                 player["civ"],
                 player["rating"],
-                player["won"] or 0,
+                player["won"] or False,
             ]
             match_rows.append(row + player_row)
             civs.add(player["civ"])
@@ -282,16 +274,20 @@ def fetch_and_save(start, end_ts):
     else:
         forward_start = 0
         changeby = BACKWARD_JUMP
-    zero_count = 0
-    for (cnt,) in execute_sql("SELECT COUNT(DISTINCT match_id) FROM matches"):
+    baseline = zero_count = 0
+    for max_id, in execute_sql("SELECT MAX(id) FROM matches"):
+        baseline = max_id
+    count_sql = """
+SELECT COUNT(DISTINCT match_id) FROM matches
+WHERE id > {}""".format(baseline)
+    for (cnt,) in execute_sql(count_sql):
         last_count = cnt
     while True:
         data_length, fetch_start, ranked, unranked = fetch_matches(
             fetch_start, changeby
         )
         save_matches(ranked, RANKED_DB)
-        save_matches(unranked, UNRANKED_DB)
-        for (cnt,) in execute_sql("SELECT COUNT(DISTINCT match_id) FROM matches"):
+        for (cnt,) in execute_sql(count_sql):
             print("Ranked match change:", cnt - last_count)
             if cnt - last_count == 0:
                 zero_count += 1
@@ -311,7 +307,7 @@ def fetch_and_save(start, end_ts):
             break
         print("Next start:", fetch_start)
         print("sleeping...")
-        time.sleep(10)
+        time.sleep(5)
         if forward_start and forward_start != fetch_start:
             print_time_left(script_start, forward_start, fetch_start, end_ts)
     print("Ending at {}".format(datetime.now().strftime("%H:%M")))
@@ -319,7 +315,6 @@ def fetch_and_save(start, end_ts):
 
 def run():
     """ Parses arguments and runs the appropriate functions. """
-    prepare_database()
     parser = ArgumentParser()
     parser.add_argument(
         "--start", help="Start time in YYYY-MM-DD format",
