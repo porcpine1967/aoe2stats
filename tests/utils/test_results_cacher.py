@@ -56,7 +56,7 @@ def test_winrate_player():
     civs = winrate_player(timebox, team_size, map_category)
     assert len(civs) == len(expected)
     for civ in civs:
-        assert civ.pct == expected[civ.civ_id]
+        assert float(civ.pct) == expected[civ.civ_id]
 
 
 def test_most_popular_player_compound():

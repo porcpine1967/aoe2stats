@@ -80,6 +80,12 @@ def map_id_lookup():
 
     return mmap
 
+def tournament_timeboxes(now):
+    breakpoint = last_time_breakpoint(now).date()
+    return (
+        (breakpoint - timedelta(days=7), breakpoint - timedelta(days=1),),
+        (breakpoint, breakpoint + timedelta(days=6),),
+        )
 
 def timeboxes(breakp):
     """ Returns two timebox tuples:
@@ -89,7 +95,6 @@ def timeboxes(breakp):
         (breakp - 2 * SEVEN_DAYS_OF_SECONDS, breakp - SEVEN_DAYS_OF_SECONDS),
         (breakp - SEVEN_DAYS_OF_SECONDS, breakp),
     )
-
 
 def last_time_breakpoint(now):
     """ Returns datetime of most recent Wednesday at 1:00.\
@@ -106,7 +111,6 @@ def last_time_breakpoint(now):
         tzinfo=timezone.utc,
     )
 
-
 def weekend(now):
     """ Returns timebox of weekend (FRI-MON) before "now" """
     now_midnight = datetime(now.year, now.month, now.day, tzinfo=timezone.utc)
@@ -117,7 +121,6 @@ def weekend(now):
     monday_ts = (friday + timedelta(days=3, hours=7)).timestamp()
     return (friday_ts, monday_ts)
 
-
 def execute_transaction(sql, db_path=DB):
     """ Wrap sql in commit."""
     conn = psycopg2.connect(database="aoe2stats")
@@ -126,7 +129,6 @@ def execute_transaction(sql, db_path=DB):
 
     cur.execute(sql)
     cur.execute("COMMIT")
-
 
 def execute_sql(sql, db_path=DB):
     """ Generator for an sql statement and database. """
