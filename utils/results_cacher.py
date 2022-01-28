@@ -320,7 +320,9 @@ def most_popular_player(timebox, size, map_category, basic):
     sql = QUERIES[key].format(*timebox, filters(map_category, size))
     players = defaultdict(Player)
     for player_id, civ_id, count in execute_sql(sql, db_path()):
-        players[player_id].add_civ_use(civ_id, count)
+        pair = [int(x) for x in str(player_id).split(":")]
+        sorted_player_id = ":".join([str(x) for x in sorted(pair)])
+        players[sorted_player_id].add_civ_use(civ_id, count)
 
     civs = CivDict(PopularCivilization, size, map_category, "player")
     for player in players.values():

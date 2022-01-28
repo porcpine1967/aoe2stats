@@ -551,11 +551,10 @@ def test_most_popular_player_compound():
     )
     team_size = "2v2"
     map_category = "Arena"
-    print()
     civs = most_popular_player(timebox, team_size, map_category, False)
     assert len(civs) == len(expected)
     for civ in civs:
-        assert civ.score == expected[civ.civ_id]
+        assert pytest.approx(civ.score) == expected[civ.civ_id]
 
 
 def test_most_popular_player_basic():
@@ -605,7 +604,6 @@ def test_most_popular_player_basic():
     )
     team_size = "1v1"
     map_category = "Arena"
-    print()
     civs = most_popular_player(timebox, team_size, map_category, True)
     assert len(civs) == len(expected)
     for civ in civs:
