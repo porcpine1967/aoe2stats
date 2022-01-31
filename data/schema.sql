@@ -56,3 +56,14 @@ CREATE TABLE public.tournaments (
     team boolean,
     runners_up text
 );
+
+CREATE TABLE public.player_results (
+    id serial primary key,
+	player_url text,
+	player_place text,
+	player_prize text,
+	tournament_url text
+);
+
+CREATE UNIQUE INDEX player_results_player_tournament
+ON player_results(player_url, tournament_url);
