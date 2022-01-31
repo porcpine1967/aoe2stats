@@ -47,10 +47,11 @@ def completed_tournament_lines(tournament):
             if fpt["date"].year != hold_year:
                 hold_year = fpt["date"].year
                 lines.append("      {} {} {}".format("*"*25, hold_year, "*"*25))
-            lines.append("      {}  {}  {:^9} {} {}".format(fpt["game"][-2:],
+            lines.append("      {}  {}  {:^9} {} {} {}".format(fpt["game"][-2:],
                                                             fpt["tier"][0],
                                                             fpt["place"],
                                                             fpt["date"].strftime("%b %d"),
+                                                            "team" if fpt["team"] else "    ",
                                                             fpt["name"]))
     else:
         if tournament.start == tournament.end:

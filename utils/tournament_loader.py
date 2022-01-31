@@ -79,7 +79,8 @@ tournaments.game,
 tournaments.tier,
 results.player_place,
 tournaments.end_date,
-tournaments.first_place
+tournaments.first_place,
+tournaments.team
 FROM tournaments
 JOIN
 player_results AS results ON tournaments.url = results.tournament_url
@@ -253,10 +254,12 @@ class Tournament:
                     'place': row[3],
                     'date': row[4],
                     'winner': row[5],
+                    'team': row[6]
                 }
                 self.first_place_tournaments.append(result)
 
     def _verify(self, loader):
+        first_place_check = self.first_place == self.api_tournament.first_place or (self.first_place and self.team)
         if not all((
                 self.name == self.api_tournament.name,
                 self.tier == self.api_tournament.tier,
@@ -264,7 +267,7 @@ class Tournament:
                 self.end == self.api_tournament.end,
                 self.prize == self.api_tournament.prize,
                 self.participant_count == self.api_tournament.participant_count,
-                self.first_place == self.api_tournament.first_place,
+                first_place_check,
                 self.first_place_url == self.api_tournament.first_place_url,
         )):
             if DEBUG:
