@@ -428,7 +428,7 @@ def save_civs(civs, timebox):
     (week, civ_id, team_size, map_category, methodology, metric,
     compound, rank, pct)
     VALUES %s
-ON CONFLICT DO NOTHING"""
+ON CONFLICT (week, civ_id, team_size, map_category, methodology, metric, compound) DO UPDATE SET rank=Excluded.rank, pct=Excluded.pct"""
     conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
     wednesday = datetime.fromtimestamp(timebox[0], tz=timezone.utc)
@@ -444,8 +444,7 @@ ON CONFLICT DO NOTHING"""
         match_count = count
     week_counts_sql = """INSERT INTO week_counts
     (week, match_count) VALUES (%s, %s)
-    ON CONFLICT (week) DO UPDATE SET match_count=EXCLUDED.match_count
-"""
+    ON CONFLICT (week) DO UPDATE SET match_count=EXCLUDED.match_count"""
     cur.execute("BEGIN")
     cur.execute(week_counts_sql, (week, match_count))
     cur.execute("COMMIT")

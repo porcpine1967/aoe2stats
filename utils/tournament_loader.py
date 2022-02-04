@@ -53,10 +53,11 @@ runners_up=%s
 WHERE url = %s
 """
 
-PLAYER_RESULTS_COUNT_SQL = """
-SELECT COUNT(*) FROM player_results
+PLAYER_RESULTS_EXIST_SQL = """
+SELECT id FROM player_results
 WHERE player_url = '{}'
 AND tournament_url = '{}'
+LIMIT 1
 """
 
 TOURNAMENT_COUNT_SQL = """
@@ -106,12 +107,12 @@ class TournamentLoader:
         """ Fetch information on all upcoming tournaments."""
         return self._tournament_dict(self.tournament_manager.starting(timebox).items())
 
-    def ongoing(self, timebox):
-        """ Fetch information on all upcoming tournaments."""
-        return self._tournament_dict(self.tournament_manager.ongoing(timebox).items())
+    def ongoing(self, timestamp):
+        """ Fetch information on all ongoing tournaments."""
+        return self._tournament_dict(self.tournament_manager.ongoing(timestamp).items())
 
     def completed(self, timebox):
-        """ Fetch information on all upcoming tournaments."""
+        """ Fetch information on all completed tournaments."""
         return self._tournament_dict(self.tournament_manager.completed(timebox).items())
 
     def _tournament_dict(self, items):
@@ -121,7 +122,7 @@ class TournamentLoader:
                 continue
             tournament_dict[game] = self._db_tournaments(tournaments)
         return tournament_dict
-        
+
     def _db_tournaments(self, tournaments):
         db_tournaments = []
         for api_tournament in tournaments:
@@ -138,7 +139,7 @@ def execute_transaction(sql, values):
 
     cur.execute(sql, values)
     cur.execute("COMMIT")
-    
+
 def save_tournament(api_tournament):
     """ Persists api_tournament to db."""
     row = (
@@ -200,12 +201,28 @@ def save_player(player_url, loader):
             if count < 1:
                 save_tournament(api_tournament)
 
+def placement_results(url):
+    results = []
+    sql = PLAYER_RESULTS_SQL.format(*((url,) + TIERS + GAMES))
+    for row in execute_sql(sql):
+        result = {
+            'name': row[0],
+            'game': row[1],
+            'tier': row[2],
+            'place': row[3],
+            'date': row[4],
+            'winner': row[5],
+            'team': row[6]
+        }
+        results.append(result)
+    return results
+
 class Tournament:
     def __init__(self, api_tournament, loader):
         self.api_tournament = api_tournament
         self.url = api_tournament.url
         self._load(loader)
-        
+
     def _load(self, loader):
         sql = FROM_SQL.format(self.api_tournament.url)
         in_db = False
@@ -234,29 +251,28 @@ class Tournament:
             self.api_tournament.load_advanced(loader)
             save_tournament(self.api_tournament)
             self._load(loader)
-        self._load_first_place_results(loader)
+        self._load_placement_results(loader)
 
-    def _load_first_place_results(self, loader):
+    def _verify_participant_placements(self, loader):
+        if self.first_place:
+            self.api_tournament.load_advanced(loader)
+            for name, url, placed in self.api_tournament.participants:
+                if url and placed:
+                    sql = PLAYER_RESULTS_EXIST_SQL.format(url, self.url)
+                    sql = "SELECT id FROM player_results WHERE tournament_url = '{}' AND player_url = '{}'".format(self.url, url)
+                    for _ in execute_sql(sql):
+                        break
+                    else:
+                        save_player(url, loader)
+
+
+    def _load_placement_results(self, loader):
         self.first_place_tournaments = []
+        self._verify_participant_placements(loader)
 
         if self.api_tournament.first_place_url:
-            sql = PLAYER_RESULTS_COUNT_SQL.format(self.api_tournament.first_place_url,
-                                                  self.api_tournament.url)
-            for count, in execute_sql(sql):
-                if count < 1:
-                    save_player(self.api_tournament.first_place_url, loader)
-            load_sql = PLAYER_RESULTS_SQL.format(*((self.api_tournament.first_place_url,) + TIERS + GAMES))
-            for row in execute_sql(load_sql):
-                result = {
-                    'name': row[0],
-                    'game': row[1],
-                    'tier': row[2],
-                    'place': row[3],
-                    'date': row[4],
-                    'winner': row[5],
-                    'team': row[6]
-                }
-                self.first_place_tournaments.append(result)
+            self.first_place_tournaments = placement_results(self.api_tournament.first_place_url)
+
 
     def _verify(self, loader):
         first_place_check = self.first_place == self.api_tournament.first_place or (self.first_place and self.team)
@@ -280,16 +296,18 @@ class Tournament:
                                                              "first_place",
                                                              "first_place_url",
                 ))
+                return True
             self.api_tournament.load_advanced(loader)
             update_tournament(self.api_tournament)
             self._load(loader)
+
 def print_inequality(t1, t2, attributes):
     for attribute in attributes:
         a = getattr(t1, attribute)
         b = getattr(t2, attribute)
         if a != b:
             print("{}: {} vs {}".format(attribute, a, b))
-    
+
 def arguments():
     parser = ArgumentParser()
     parser.add_argument("--date", help="Custom date to start processing in YYYYmmdd")
@@ -301,7 +319,7 @@ def run():
     last_week, this_week = tournament_timeboxes(now)
     loader = TournamentLoader()
     loader.starting(this_week)
-    loader.ongoing(last_week)
+    loader.ongoing(now.date())
     loader.completed(last_week)
 
 if __name__ == "__main__":
