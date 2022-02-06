@@ -97,6 +97,7 @@
     - '3077860'
     - '5602224'
     - '6109694'
+    - '9414010'
     voobly:
     - '123493096'
     - '123303397'
@@ -302,7 +303,7 @@
 - aoeelo: 79
   country: pl
   id: 14
-  liquipedia: _Barles_
+  liquipedia: Barles
   name: Barles
   notability:
     aoe2: true
@@ -439,8 +440,8 @@
     - '125129982'
   team: 2
   twitch:
-  - https://www.twitch.tv/theaccm
   - https://www.twitch.tv/accm_vn
+  - https://www.twitch.tv/theaccm
   twitter:
   - https://twitter.com/IamACCM
   youtube:
@@ -753,9 +754,9 @@
   twitter:
   - https://twitter.com/TheViperAOE
   youtube:
-  - https://www.youtube.com/user/TheViperAOC
   - https://www.youtube.com/channel/UC2JGnVDJ1WZ_RdqCJX-kK1A
   - https://www.youtube.com/channel/UCjUwIOOs3FwLeK0zqo_m4FQ
+  - https://www.youtube.com/user/TheViperAOC
 - aoeelo: 32
   country: ca
   esportsearnings: 12253
@@ -1428,7 +1429,9 @@
     - '127645'
     zone:
     - blade
-- aoeelo: 13
+- aka:
+  - SpringTV
+  aoeelo: 13
   country: us
   discord:
   - https://discord.gg/MrNwsQB
@@ -2252,9 +2255,9 @@
     - '123916446'
   team: 8
 - aka:
-  - Kongen_42
-  - Kongen
   - KongeQrnen
+  - Kongen
+  - Kongen_42
   aoeelo: 132
   country: dk
   id: 115
@@ -2563,8 +2566,8 @@
     - '124281975'
   team: 34
   twitch:
-  - https://www.twitch.tv/dragonstar_aoe
   - https://www.twitch.tv/100dragonstar
+  - https://www.twitch.tv/dragonstar_aoe
   twitter:
   - https://twitter.com/The_Dragonstar
   youtube:
@@ -3346,7 +3349,7 @@
     - '4682069'
     voobly:
     - '123374407'
-  team: 18
+  team: 21
   twitch:
   - https://www.twitch.tv/sunodaywalker
 - country: gb
@@ -3852,10 +3855,12 @@
   - https://www.twitch.tv/uzzi_aoe
   youtube:
   - http://www.youtube.com/channel/UCvzCDwMm2unSNpW-PGnmTZA
-- aoeelo: 722
+- aka:
+  - Bloodless
+  aoeelo: 722
   country: us
   id: 242
-  liquipedia: The Bloodless
+  liquipedia: The_Bloodless
   name: The Bloodless
   notability:
     aoe2: true
@@ -4195,6 +4200,7 @@
   discord:
   - https://discord.gg/Vhm4gS4fyx
   id: 264
+  liquipedia: Lavie_Head
   name: Lavie Head
   notability:
     aoe2: true
@@ -4994,7 +5000,9 @@
   platforms:
     rl:
     - '4632681'
-- aoeelo: 936
+- aka:
+  - Sebastion2002
+  aoeelo: 936
   country: uy
   id: 324
   liquipedia: Sebastian2002
@@ -5204,6 +5212,8 @@
     rl:
     - '2944434'
     - '5829363'
+    voobly:
+    - '133845'
 - country: tr
   id: 340
   name: TurkEycof
@@ -5428,7 +5438,9 @@
     - '1200049'
   steam:
   - 76561199013132475
-- aoeelo: 1059
+- aka:
+  - The Illusionst
+  aoeelo: 1059
   country: sk
   id: 357
   name: The Illusionist
@@ -5555,6 +5567,7 @@
   - https://www.twitch.tv/salted_pepper
 - country: ro
   id: 368
+  liquipedia: Mihai06
   name: Mihai
   notability:
     aoe2: true
@@ -5939,7 +5952,9 @@
   - https://www.twitch.tv/twestaoe
   twitter:
   - https://twitter.com/TravisWestura
-- aoeelo: 908
+- aka:
+  - PhillipHJS
+  aoeelo: 908
   country: de
   id: 404
   name: PhilippHJS
@@ -6270,6 +6285,7 @@
     - '5975282'
     voobly:
     - '72549'
+    - '124485265'
   twitch:
   - https://www.twitch.tv/virus_pulse
 - aoeelo: 1095
@@ -6343,8 +6359,8 @@
     voobly:
     - '125373585'
   twitch:
-  - https://www.twitch.tv/AirCooL_xR
   - https://twitch.tv/peagonmayo
+  - https://www.twitch.tv/AirCooL_xR
 - country: hu
   id: 437
   name: dave_hun
@@ -6532,3 +6548,14 @@
     - '1550842'
     voobly:
     - '123161922'
+- country: cn
+  esportsearnings: 14741
+  id: 455
+  name: Myx4ever
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '4265625'
+    voobly:
+    - '114188'
