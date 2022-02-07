@@ -67,3 +67,13 @@ CREATE TABLE public.player_results (
 
 CREATE UNIQUE INDEX player_results_player_tournament
 ON player_results(player_url, tournament_url);
+
+CREATE TABLE public.scores (
+id serial primary key,
+evaluation_date date,
+player_url text,
+score int,
+scorer text
+);
+CREATE UNIQUE INDEX player_score_index
+ON scores(player_url, scorer, evaluation_date);

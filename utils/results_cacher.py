@@ -4,13 +4,13 @@
 from collections import defaultdict
 from datetime import datetime, timezone
 import psycopg2
-import psycopg2.extras
 
 import statistics
 from statsmodels.stats.proportion import proportion_confint
 
 from utils.models import Player
-from utils.tools import all_wednesdays, batch, DB, execute_sql, SEVEN_DAYS_OF_SECONDS
+from utils.tools import all_wednesdays, batch, DB, SEVEN_DAYS_OF_SECONDS
+from utils.tools import execute_sql, execute_bulk_insert, execute_transaction
 
 DBS = {"current": DB}
 
@@ -429,26 +429,19 @@ def save_civs(civs, timebox):
     compound, rank, pct)
     VALUES %s
 ON CONFLICT (week, civ_id, team_size, map_category, methodology, metric, compound) DO UPDATE SET rank=Excluded.rank, pct=Excluded.pct"""
-    conn = psycopg2.connect(database="aoe2stats")
-    cur = conn.cursor()
     wednesday = datetime.fromtimestamp(timebox[0], tz=timezone.utc)
     week = wednesday.strftime("%Y%m%d")
     print("Saving", week, len(civs))
     for match_batch in batch(civs, 300):
-        cur.execute("BEGIN")
         civ_batch = [[week] + civ.info() for civ in match_batch]
-        psycopg2.extras.execute_values(cur, results_sql, civ_batch)
-        cur.execute("COMMIT")
+        execute_bulk_insert(results_sql, civ_batch)
     match_count = None
     for (count,) in execute_sql(MATCHES_SQL_TEMPLATE.format(*timebox), db_path()):
         match_count = count
     week_counts_sql = """INSERT INTO week_counts
     (week, match_count) VALUES (%s, %s)
     ON CONFLICT (week) DO UPDATE SET match_count=EXCLUDED.match_count"""
-    cur.execute("BEGIN")
-    cur.execute(week_counts_sql, (week, match_count))
-    cur.execute("COMMIT")
-    conn.close()
+    execute_transaction(week_counts_sql, (week, match_count))
 
 
 def generate_results():

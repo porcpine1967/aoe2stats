@@ -2,7 +2,6 @@
 """ Information on different versions of DE."""
 
 from datetime import datetime, timezone
-from utils.tools import execute_sql, execute_transaction
 
 VERSIONS = {
     54684: {"date": "20211007", "civs": []},

@@ -193,7 +193,7 @@
   country: br
   esportsearnings: 12250
   id: 9
-  liquipedia: dogao
+  liquipedia: Dogao
   name: dogao
   notability:
     aoe2: true
@@ -323,7 +323,7 @@
   country: vn
   esportsearnings: 14724
   id: 15
-  liquipedia: saymyname
+  liquipedia: Saymyname
   name: saymyname
   notability:
     aoe2: true
@@ -346,7 +346,7 @@
 - aoeelo: 68
   country: jp
   id: 16
-  liquipedia: chart
+  liquipedia: Chart
   name: Chart
   notability:
     aoe2: true
@@ -523,7 +523,7 @@
   facebook_gaming:
   - https://www.facebook.com/gaming/Aoecloud
   id: 24
-  liquipedia: Cloud
+  liquipedia: Cloud_(Taiwanese_player)
   name: Cloud
   notability:
     aoe2: true
@@ -628,7 +628,7 @@
   - https://discordapp.com/invite/pQG8txM
   esportsearnings: 41832
   id: 28
-  liquipedia: Nili_AoE
+  liquipedia: Nili
   name: Nili
   notability:
     aoe2: true
@@ -761,7 +761,7 @@
   country: ca
   esportsearnings: 12253
   id: 33
-  liquipedia: slam
+  liquipedia: Slam
   name: slam
   notability:
     aoe2: true
@@ -985,7 +985,7 @@
   country: br
   esportsearnings: 15928
   id: 43
-  liquipedia: miguel
+  liquipedia: Miguel
   name: miguel
   notability:
     aoe2: true
@@ -1668,7 +1668,7 @@
 - aoeelo: 129
   country: it
   id: 82
-  liquipedia: Vodka_L_
+  liquipedia: Vodka_L
   name: Vodka
   notability:
     aoe2: true
@@ -1842,7 +1842,7 @@
 - aoeelo: 99
   country: ua
   id: 91
-  liquipedia: classicpro
+  liquipedia: Classicpro
   name: classicpro
   notability:
     aoe2: true
@@ -2737,7 +2737,7 @@
 - aoeelo: 445
   country: tw
   id: 154
-  liquipedia: Sora Kuma
+  liquipedia: Sora_Kuma
   name: Sora Kuma
   notability:
     aoe2: true
@@ -3293,7 +3293,7 @@
     - kick
 - country: us
   id: 204
-  liquipedia: UNLeAsHeD__
+  liquipedia: UNLeAsHeD
   name: LeAsH
   notability:
     aoe2: true
@@ -3354,7 +3354,7 @@
   - https://www.twitch.tv/sunodaywalker
 - country: gb
   id: 208
-  liquipedia: I2aGE
+  liquipedia: I2aGe
   name: l2aGe
   notability:
     aoe2: true
@@ -6007,7 +6007,7 @@
 - aoeelo: 1139
   country: ar
   id: 408
-  liquipedia: uno1
+  liquipedia: Uno1
   name: uno1
   notability:
     aoe2: true

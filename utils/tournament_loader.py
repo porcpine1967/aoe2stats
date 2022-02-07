@@ -9,9 +9,9 @@ import psycopg2
 from liquiaoe.loaders import HttpsLoader as Loader
 from liquiaoe.managers import PlayerManager, TournamentManager
 
-from utils.tools import execute_sql, tournament_timeboxes
+from utils.tools import execute_sql, execute_transaction, tournament_timeboxes
 
-DEBUG = False
+DEBUG = True
 
 GAMES = ("Age of Empires II", "Age of Empires IV",)
 TIERS = ("S-Tier", "A-Tier", "B-Tier",)
@@ -131,14 +131,6 @@ class TournamentLoader:
             tournament = Tournament(api_tournament, self.loader)
             db_tournaments.append(tournament)
         return db_tournaments
-
-def execute_transaction(sql, values):
-    conn = psycopg2.connect(database="aoe2stats")
-    cur = conn.cursor()
-    cur.execute("BEGIN")
-
-    cur.execute(sql, values)
-    cur.execute("COMMIT")
 
 def save_tournament(api_tournament):
     """ Persists api_tournament to db."""

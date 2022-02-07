@@ -9,18 +9,15 @@ import os
 import requests
 import yaml
 
+from utils.tools import PLAYERS_YAML, player_yaml, save_yaml
+
 SE_PLAYERS = "https://raw.githubusercontent.com/SiegeEngineers/aoc-reference-data/master/data/players.yaml"
 AOE_ELO_PLAYERS = "https://aoe-elo.com/api/?request=players"
 
-PLAYERS_YAML = "data/players.yaml"
 AOE_ELO_JSON = "tmp/aoe_elo_players.json"
-def save_yaml(players):
-    with open(PLAYERS_YAML, "w") as f:
-        yaml.dump(players, f)
 
 def local_player_yaml():
-    with open(PLAYERS_YAML) as f:
-        return yaml.safe_load(f)
+    return player_yaml()
 
 def aoe_elo_json():
     players = []
@@ -28,7 +25,7 @@ def aoe_elo_json():
         for player in json.load(f):
             players.append(defaultdict(str, player))
     return players
-    
+
 def remote_player_yaml(local=True):
     local_file = "tmp/players.yaml"
     if local and os.path.exists(local_file):
@@ -60,12 +57,11 @@ def consolidate_yamls():
                 break
         else:
             players.append(remote_player)
-    with open(PLAYERS_YAML, "w") as f:
-        yaml.dump(players, f)
+    save_yaml(players)
 
 def update_aoe_elo():
     players = local_player_yaml()
-    
+
     with open("tmp/aoe_elo_players.json") as f:
         elo_players = json.load(f)
     found_ctr = Counter()
@@ -85,7 +81,7 @@ def update_aoe_elo():
             print(elo_player['name'], '|',  player['name'])
 def standard_name(name):
     return name.replace('_', ' ').lower().strip()
-    
+
 def test_robo_atp():
     players = local_player_yaml()
     elo_players = aoe_elo_json()

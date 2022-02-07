@@ -7,13 +7,30 @@ from datetime import datetime, timedelta, timezone
 import json
 
 import psycopg2
+import psycopg2.extras
 import requests
+import yaml
 
 DB = "data/ranked.db"
 SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
 
 API_TEMPLATE = "https://aoe2.net/api/player/lastmatch?game=aoe2de&profile_id={}"
+PLAYERS_YAML = "data/players.yaml"
 
+def save_yaml(players):
+    with open(PLAYERS_YAML, "w") as f:
+        yaml.dump(players, f)
+
+def player_yaml():
+    with open(PLAYERS_YAML) as f:
+        return yaml.safe_load(f)
+
+def safe_player_yaml():
+    """ Like player yaml but with str as default"""
+    players = []
+    for player in player_yaml():
+        players.append(defaultdict(str,player))
+    return players
 
 def user_info(profile_id):
     """ Fetches last match info from aoe2.net"""
@@ -121,14 +138,22 @@ def weekend(now):
     monday_ts = (friday + timedelta(days=3, hours=7)).timestamp()
     return (friday_ts, monday_ts)
 
-def execute_transaction(sql, db_path=DB):
+def execute_bulk_insert(sql, values):
+    conn = psycopg2.connect(database="aoe2stats")
+    cur = conn.cursor()
+    cur.execute("BEGIN")
+    psycopg2.extras.execute_values(cur, sql, values)
+    cur.execute("COMMIT")
+
+def execute_transaction(sql, values):
     """ Wrap sql in commit."""
     conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
     cur.execute("BEGIN")
 
-    cur.execute(sql)
+    cur.execute(sql, values)
     cur.execute("COMMIT")
+    conn.close()
 
 def execute_sql(sql, db_path=DB):
     """ Generator for an sql statement and database. """
