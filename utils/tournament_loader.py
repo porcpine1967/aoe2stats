@@ -209,6 +209,12 @@ def placement_results(url):
         results.append(result)
     return results
 
+def player_result_present(player_url, tournament_url):
+    sql = PLAYER_RESULTS_EXIST_SQL.format(player_url, tournament_url)
+    for _ in execute_sql(sql):
+        return True
+    return False
+
 class Tournament:
     def __init__(self, api_tournament, loader):
         self.api_tournament = api_tournament
@@ -246,17 +252,21 @@ class Tournament:
         self._load_placement_results(loader)
 
     def _verify_participant_placements(self, loader):
-        if self.first_place:
+        load_all = False
+        if self.first_place_url:
+            if player_result_present(self.url, self.first_place_url):
+                return
+            else:
+                load_all = True
+        if load_all:
             self.api_tournament.load_advanced(loader)
             for name, url, placed in self.api_tournament.participants:
                 if url and placed:
                     sql = PLAYER_RESULTS_EXIST_SQL.format(url, self.url)
-                    sql = "SELECT id FROM player_results WHERE tournament_url = '{}' AND player_url = '{}'".format(self.url, url)
                     for _ in execute_sql(sql):
                         break
                     else:
                         save_player(url, loader)
-
 
     def _load_placement_results(self, loader):
         self.first_place_tournaments = []

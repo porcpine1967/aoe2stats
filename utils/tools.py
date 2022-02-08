@@ -5,6 +5,9 @@ from collections import defaultdict
 import csv
 from datetime import datetime, timedelta, timezone
 import json
+import logging
+import logging.handlers
+import os
 
 import psycopg2
 import psycopg2.extras
@@ -16,6 +19,25 @@ SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
 
 API_TEMPLATE = "https://aoe2.net/api/player/lastmatch?game=aoe2de&profile_id={}"
 PLAYERS_YAML = "data/players.yaml"
+LOGGER_NAME = "aoe2stats"
+
+def setup_logging(level=logging.WARNING):
+    logger = logging.getLogger(LOGGER_NAME)
+    if logger.hasHandlers():
+        logger.handlers.clear()
+    logger.setLevel(level)
+
+    # always write everything to the rotating log files
+    if not os.path.exists('logs'): os.mkdir('logs')
+    log_file_handler = logging.handlers.TimedRotatingFileHandler('logs/basic.log', when='M', interval=2, backupCount=1)
+    log_file_handler.setFormatter( logging.Formatter('%(asctime)s [%(levelname)s](%(name)s:%(funcName)s:%(lineno)d): %(message)s') )
+    log_file_handler.setLevel(logging.DEBUG)
+    logger.addHandler(log_file_handler)
+    if level == logging.DEBUG:
+        console_handler = logging.StreamHandler() # sys.stderr
+        console_handler.setLevel(level)
+        console_handler.setFormatter( logging.Formatter('[%(levelname)s](%(name)s): %(message)s') )
+        logger.addHandler(console_handler)
 
 def save_yaml(players):
     with open(PLAYERS_YAML, "w") as f:
