@@ -21,6 +21,7 @@
 - aka:
   - TheMbL
   aoeelo: 24
+  aoeelo_updated: 2022-02-08
   country: 'no'
   discord:
   - https://discord.gg/5cHqGMx
@@ -195,6 +196,7 @@
   twitch:
   - https://www.twitch.tv/lan_aoe
 - aoeelo: 4
+  aoeelo_updated: 2022-02-08
   country: br
   esportsearnings: 12250
   id: 9
@@ -277,6 +279,7 @@
   youtube:
   - http://www.youtube.com/channel/UCm3BAnotyqfdvm6sO5bs18g
 - aoeelo: 598
+  aoeelo_updated: 2022-02-08
   country: si
   id: 12
   liquipedia: Modri
@@ -409,6 +412,7 @@
     - '124489527'
   team: 8
 - aoeelo: 5
+  aoeelo_updated: 2022-02-08
   country: br
   esportsearnings: 14714
   id: 19
@@ -529,6 +533,7 @@
   youtube:
   - https://www.youtube.com/channel/UCaggQmp9gAuB7xYeci26VWA
 - aoeelo: 94
+  aoeelo_updated: 2022-02-08
   country: tw
   discord:
   - https://discord.gg/dKzquZB
@@ -637,6 +642,7 @@
   youtube:
   - https://www.youtube.com/channel/UCeqc9aYVAZcRQq9Ey0x26AQ
 - aoeelo: 11
+  aoeelo_updated: 2022-02-08
   country: de
   discord:
   - https://discordapp.com/invite/pQG8txM
@@ -687,6 +693,7 @@
   youtube:
   - https://www.youtube.com/channel/UCtLQsBrf-ugm0g1XitneyIw
 - aoeelo: 50
+  aoeelo_updated: 2022-02-08
   country: fi
   esportsearnings: 15934
   id: 30
@@ -866,6 +873,7 @@
     - '180548'
   team: 8
 - aoeelo: 27
+  aoeelo_updated: 2022-02-08
   country: ar
   discord:
   - https://discord.gg/quRrGhV
@@ -978,6 +986,7 @@
   twitch:
   - https://www.twitch.tv/villese
 - aoeelo: 3
+  aoeelo_updated: 2022-02-08
   country: br
   esportsearnings: 12244
   id: 42
@@ -1044,6 +1053,7 @@
   twitch:
   - https://www.twitch.tv/twiggaoe
 - aoeelo: 101
+  aoeelo_updated: 2022-02-08
   country: il
   id: 45
   liquipedia: JonSlow
@@ -1153,6 +1163,7 @@
   twitch:
   - https://www.twitch.tv/angelina_jolie
 - aoeelo: 458
+  aoeelo_updated: 2022-02-08
   country: se
   discord:
   - https://discord.gg/rtpCfgE
@@ -1220,6 +1231,7 @@
     - '123642997'
     - '124576519'
 - aoeelo: 459
+  aoeelo_updated: 2022-02-08
   country: cl
   id: 53
   liquipedia: Noisick
@@ -1237,6 +1249,7 @@
   twitch:
   - https://www.twitch.tv/noisick_aoe
 - aoeelo: 323
+  aoeelo_updated: 2022-02-08
   country: us
   id: 54
   liquipedia: Inc
@@ -1461,6 +1474,7 @@
 - aka:
   - SpringTV
   aoeelo: 13
+  aoeelo_updated: 2022-02-08
   country: us
   discord:
   - https://discord.gg/MrNwsQB
@@ -1543,6 +1557,7 @@
     zone:
     - ruso
 - aoeelo: 142
+  aoeelo_updated: 2022-02-08
   country: br
   esportsearnings: 12947
   id: 73
@@ -1656,6 +1671,7 @@
     - '125091165'
   team: 1
 - aoeelo: 7
+  aoeelo_updated: 2022-02-08
   country: br
   esportsearnings: 14715
   id: 80
@@ -1695,6 +1711,7 @@
   twitch:
   - https://www.twitch.tv/pikeaoc
 - aoeelo: 129
+  aoeelo_updated: 2022-02-08
   country: it
   id: 82
   liquipedia: Vodka_L
@@ -2716,6 +2733,7 @@
     aoe2: true
   platforms: {}
 - aoeelo: 616
+  aoeelo_updated: 2022-02-08
   country: de
   id: 150
   liquipedia: Running
@@ -2743,6 +2761,7 @@
     - '4959296'
     - '5687096'
 - aoeelo: 611
+  aoeelo_updated: 2022-02-08
   country: tw
   id: 152
   liquipedia: DemonSheep
@@ -2771,6 +2790,7 @@
     voobly:
     - '124499797'
 - aoeelo: 445
+  aoeelo_updated: 2022-02-08
   country: tw
   id: 154
   liquipedia: Sora_Kuma
@@ -2875,6 +2895,7 @@
     - '2976'
   team: 4
 - aoeelo: 622
+  aoeelo_updated: 2022-02-08
   country: gr
   esportsearnings: 15926
   id: 161
@@ -3405,6 +3426,7 @@
   twitch:
   - https://www.twitch.tv/i2age_
 - aoeelo: 149
+  aoeelo_updated: 2022-02-08
   country: br
   id: 209
   liquipedia: BruH
@@ -3496,6 +3518,7 @@
   twitch:
   - https://www.twitch.tv/gluttony_aoe
 - aoeelo: 619
+  aoeelo_updated: 2022-02-08
   country: it
   id: 214
   liquipedia: Rise
@@ -3790,7 +3813,9 @@
     - '123145914'
   twitch:
   - https://www.twitch.tv/babaorum_aoe
-- aoeelo: 504
+- aka:
+  - Mexican Psycho
+  aoeelo: 504
   country: mx
   id: 234
   liquipedia: Mexican_Psycho
@@ -3875,6 +3900,7 @@
     rl:
     - '1788064'
 - aoeelo: 502
+  aoeelo_updated: 2022-02-08
   country: mx
   id: 241
   liquipedia: Uzzi
@@ -3975,6 +4001,7 @@
     voobly:
     - z40305125
 - aoeelo: 899
+  aoeelo_updated: 2022-02-08
   country: cz
   id: 247
   liquipedia: Dratek
@@ -4068,6 +4095,7 @@
   twitch:
   - https://www.twitch.tv/lobodelanieve
 - aoeelo: 118
+  aoeelo_updated: 2022-02-08
   country: ru
   id: 254
   liquipedia: WaRRioR
@@ -4141,7 +4169,10 @@
     - '124725130'
   twitch:
   - https://www.twitch.tv/adam_aoe
-- aoeelo: 448
+- aka:
+  - _Pela_
+  aoeelo: 448
+  aoeelo_updated: 2022-02-08
   country: nz
   id: 259
   liquipedia: Flightlessbird
@@ -4155,6 +4186,7 @@
     voobly:
     - '124284205'
 - aoeelo: 784
+  aoeelo_updated: 2022-02-08
   country: ar
   id: 260
   liquipedia: Pela
@@ -4325,6 +4357,7 @@
 - aka:
   - SamayanKay
   aoeelo: 178
+  aoeelo_updated: 2022-02-08
   country: gb
   esportsearnings: 1846
   id: 269
@@ -4343,6 +4376,7 @@
   twitter:
   - https://twitter.com/BlinGAOE
 - aoeelo: 872
+  aoeelo_updated: 2022-02-08
   country: ru
   esportsearnings: 86209
   id: 270
@@ -4357,6 +4391,7 @@
   twitch:
   - https://www.twitch.tv/salzz_good_game
 - aoeelo: 969
+  aoeelo_updated: 2022-02-08
   country: tr
   id: 271
   liquipedia: Alperen
@@ -4459,6 +4494,7 @@
   twitter:
   - https://twitter.com/RoxyC_Stream
 - aoeelo: 67
+  aoeelo_updated: 2022-02-08
   country: cl
   id: 279
   liquipedia: Whitecourt
@@ -4517,6 +4553,7 @@
   twitch:
   - https://www.twitch.tv/d3rp276
 - aoeelo: 601
+  aoeelo_updated: 2022-02-08
   country: de
   id: 283
   liquipedia: Andorin
@@ -4569,6 +4606,7 @@
     - '509112'
   team: 12
 - aoeelo: 629
+  aoeelo_updated: 2022-02-08
   country: ca
   id: 287
   liquipedia: PaladiNz
@@ -4615,6 +4653,7 @@
 - aka:
   - Cl3m3nT_AoE
   aoeelo: 605
+  aoeelo_updated: 2022-02-08
   country: fr
   id: 291
   liquipedia: Cl3m3nT
@@ -4672,6 +4711,7 @@
   twitch:
   - https://www.twitch.tv/freakinandy
 - aoeelo: 654
+  aoeelo_updated: 2022-02-08
   country: at
   id: 295
   liquipedia: FreakinChris
@@ -4827,6 +4867,7 @@
   twitch:
   - https://www.twitch.tv/major_kd
 - aoeelo: 651
+  aoeelo_updated: 2022-02-08
   country: fr
   id: 308
   liquipedia: Margougou
@@ -4957,6 +4998,7 @@
   twitch:
   - https://www.twitch.tv/ningning995
 - aoeelo: 606
+  aoeelo_updated: 2022-02-08
   country: by
   id: 317
   liquipedia: OLADUSHEK
@@ -5068,6 +5110,7 @@
   twitch:
   - https://www.twitch.tv/sebastian2002
 - aoeelo: 642
+  aoeelo_updated: 2022-02-08
   country: de
   id: 325
   liquipedia: StonePleaseAoE
@@ -5093,6 +5136,7 @@
   twitch:
   - https://www.twitch.tv/the_queen_aoe
 - aoeelo: 627
+  aoeelo_updated: 2022-02-08
   country: fr
   id: 327
   liquipedia: TheSniper_AOE
@@ -5172,6 +5216,7 @@
   twitch:
   - https://www.twitch.tv/wakko_aoe
 - aoeelo: 900
+  aoeelo_updated: 2022-02-08
   country: tr
   id: 333
   liquipedia: Ubetnir
@@ -5379,6 +5424,7 @@
   twitter:
   - https://twitter.com/chrazini
 - aoeelo: 744
+  aoeelo_updated: 2022-02-08
   country: pl
   id: 349
   liquipedia: RediRodion
@@ -5503,6 +5549,7 @@
     - '4122888'
     - '3232791'
 - aoeelo: 831
+  aoeelo_updated: 2022-02-08
   country: de
   discord:
   - https://discord.gg/HXFSj2R
@@ -5724,7 +5771,9 @@
     rl:
     - '3446882'
     - '6426678'
-- aoeelo: 636
+- aka:
+  - emalius2
+  aoeelo: 636
   country: fi
   id: 378
   name: emalius
@@ -6105,7 +6154,9 @@
   platforms:
     rl:
     - '230475'
-- country: ar
+- aka:
+  - Nahuel05_
+  country: ar
   id: 412
   name: Nahuel05
   notability:
@@ -6584,6 +6635,7 @@
   twitter:
   - https://twitter.com/wraith_aoe
 - aoeelo: 1141
+  aoeelo_updated: 2022-02-08
   country: au
   id: 453
   liquipedia: Tulendeena

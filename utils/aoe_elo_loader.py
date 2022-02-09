@@ -11,7 +11,7 @@ import time
 from bs4 import BeautifulSoup
 import requests
 
-from liquiaoe.loaders import VcrLoader, RequestsException, THROTTLE
+from liquiaoe.loaders import HttpsLoader, RequestsException, THROTTLE
 from liquiaoe.managers import Tournament
 
 from utils.tools import execute_sql, execute_bulk_insert, player_yaml, save_yaml
@@ -56,7 +56,10 @@ class AoeEloLoader:
                 with open(load_file) as f:
                     data = json.load(f)
             else:
-                data = json.loads(self.response_text(self._player_list_url))
+                text = self.response_text(self._player_list_url)
+                with open(PLAYERS_CACHE, 'w') as f:
+                    f.write(text)
+                data = json.loads(text)
             for player in data:
                 self._player_dict[player['id']] = player['url']
         return self._player_dict
@@ -64,7 +67,10 @@ class AoeEloLoader:
     def response_text(self, url):
         LOGGER.warning("Calling aoe-elo url {}".format(url))
         if self.last_call + THROTTLE > time.time():
+            LOGGER.debug(" throttle start")
             time.sleep(self.last_call + THROTTLE - time.time())
+            LOGGER.debug(" throttle done")
+
         response = requests.get(url, headers=self._headers)
         self.last_call = time.time()
         if response.status_code == 200:
@@ -121,16 +127,19 @@ def update_player(loader, player):
         execute_bulk_insert(SAVE_SCORES_SQL, rows)
         set_aoeelo_updated(player)
 
-def players_to_update(tournament_url):
+def players_to_update(loader, tournament_url):
     players = []
     lookup = player_lookup()
     tournament = Tournament(tournament_url)
-    tournament.load_advanced(VcrLoader())
+    tournament.load_advanced(loader)
     for name, url, _ in tournament.participants:
         if not url:
             continue
         url_name = url.split('/')[-1]
-        player = lookup[url_name]
+        try:
+            player = lookup[url_name]
+        except KeyError:
+            LOGGER.warning("No player {}".format(url_name))
         if 'aoeelo' not in player:
             LOGGER.warning("No aoeelo for {}".format(url_name))
             continue
@@ -156,10 +165,22 @@ def arguments():
 
 def run():
     args = arguments()
+    tournament_loader = HttpsLoader()
+
     loader = AoeEloLoader()
-    players = players_to_update(args.tournament_url)
-    for player in players:
-        update_player(loader, player)
+    tournament_urls = (
+        "/ageofempires/Death_Match_World_Cup/4",
+        "/ageofempires/King_of_the_Desert/4",
+        "/ageofempires/Holy_Cup",
+        "/ageofempires/The_Open_Classic",
+        "/ageofempires/Red_Bull_Wololo/4",
+        "/ageofempires/Hidden_Cup/4",
+        )
+    for tournament_url in tournament_urls:
+        players = players_to_update(tournament_loader, tournament_url)
+        print("{:25}: {:2} players".format(tournament_url, len(players)))
+        for player in players:
+            update_player(loader, player)
 
 if __name__ == '__main__':
     run()
