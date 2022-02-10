@@ -3,6 +3,7 @@
 from argparse import ArgumentParser
 
 from datetime import datetime
+import logging
 
 import psycopg2
 
@@ -10,8 +11,9 @@ from liquiaoe.loaders import HttpsLoader as Loader
 from liquiaoe.managers import PlayerManager, TournamentManager
 
 from utils.tools import execute_sql, execute_transaction, tournament_timeboxes
+from utils.tools import setup_logging, LOGGER_NAME
 
-DEBUG = True
+LOGGER = logging.getLogger(LOGGER_NAME)
 
 GAMES = ("Age of Empires II", "Age of Empires IV",)
 TIERS = ("S-Tier", "A-Tier", "B-Tier",)
@@ -57,6 +59,12 @@ PLAYER_RESULTS_EXIST_SQL = """
 SELECT id FROM player_results
 WHERE player_url = '{}'
 AND tournament_url = '{}'
+LIMIT 1
+"""
+
+PLAYER_EXISTS_SQL = """
+SELECT id FROM player_results
+WHERE player_url = '{}'
 LIMIT 1
 """
 
@@ -180,7 +188,18 @@ def update_tournament(api_tournament):
     )
     execute_transaction(UPDATE_SQL, row)
 
-def save_player(player_url, loader):
+def save_player(tournament_url, player_url, placement, prize, loader):
+    if player_result_present(player_url, tournament_url):
+        return
+    for _ in execute_sql(PLAYER_EXISTS_SQL.format(player_url)):
+        row = (player_url,
+               placement,
+               prize,
+               tournament_url,)
+        LOGGER.debug("SAVING PLAYER {} {} {} {}".format(*row))
+        execute_transaction(SAVE_PLAYER_RESULTS_SQL, row)
+        return
+
     player_manager = PlayerManager(loader)
     for api_tournament in player_manager.tournaments(player_url):
         row = (player_url,
@@ -252,21 +271,13 @@ class Tournament:
         self._load_placement_results(loader)
 
     def _verify_participant_placements(self, loader):
-        load_all = False
-        if self.first_place_url:
-            if player_result_present(self.url, self.first_place_url):
-                return
-            else:
-                load_all = True
-        if load_all:
+        if not self.first_place_url:
+            return
+        if not player_result_present(self.first_place_url, self.url):
             self.api_tournament.load_advanced(loader)
-            for name, url, placed in self.api_tournament.participants:
-                if url and placed:
-                    sql = PLAYER_RESULTS_EXIST_SQL.format(url, self.url)
-                    for _ in execute_sql(sql):
-                        break
-                    else:
-                        save_player(url, loader)
+            for name, player_url, placement, prize in self.api_tournament.participants:
+                if player_url and placement:
+                    save_player(self.url, player_url, placement, prize, loader)
 
     def _load_placement_results(self, loader):
         self.first_place_tournaments = []
@@ -288,32 +299,31 @@ class Tournament:
                 first_place_check,
                 self.first_place_url == self.api_tournament.first_place_url,
         )):
-            if DEBUG:
-                print_inequality(self, self.api_tournament, ("name",
-                                                             "tier",
-                                                             "start",
-                                                             "end",
-                                                             "prize",
-                                                             "participant_count",
-                                                             "first_place",
-                                                             "first_place_url",
-                ))
-                return True
+            self.log_inequality()
             self.api_tournament.load_advanced(loader)
             update_tournament(self.api_tournament)
             self._load(loader)
 
-def print_inequality(t1, t2, attributes):
-    for attribute in attributes:
-        a = getattr(t1, attribute)
-        b = getattr(t2, attribute)
-        if a != b:
-            print("{}: {} vs {}".format(attribute, a, b))
+    def log_inequality(self):
+        inequalities = []
+        for attribute in ("name", "tier", "start", "end", "prize", "participant_count", "first_place", "first_place_url", ):
+            a = getattr(self, attribute)
+            b = getattr(self.api_tournament, attribute)
+            if a != b:
+                inequalities.append("{}: {} vs {}".format(attribute, a, b))
+        LOGGER.debug("Updating {} because of inequalities: {}".format(self.name, ", ".join(inequalities)))
 
 def arguments():
     parser = ArgumentParser()
     parser.add_argument("--date", help="Custom date to start processing in YYYYmmdd")
-    return parser.parse_args()
+    parser.add_argument('--debug', action='store_true', help="Set logger to debug")
+    args = parser.parse_args()
+    if args.debug:
+        setup_logging(logging.DEBUG)
+    else:
+        setup_logging()
+
+    return args
 
 def run():
     args = arguments()

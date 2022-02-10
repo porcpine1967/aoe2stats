@@ -11,7 +11,8 @@ import time
 from bs4 import BeautifulSoup
 import requests
 
-from liquiaoe.loaders import HttpsLoader, RequestsException, THROTTLE
+from liquiaoe.loaders import RequestsException, THROTTLE
+from liquiaoe.loaders import HttpsLoader as Loader
 from liquiaoe.managers import Tournament
 
 from utils.tools import execute_sql, execute_bulk_insert, player_yaml, save_yaml
@@ -132,7 +133,7 @@ def players_to_update(loader, tournament_url):
     lookup = player_lookup()
     tournament = Tournament(tournament_url)
     tournament.load_advanced(loader)
-    for name, url, _ in tournament.participants:
+    for name, url, _, _ in tournament.participants:
         if not url:
             continue
         url_name = url.split('/')[-1]
@@ -165,22 +166,13 @@ def arguments():
 
 def run():
     args = arguments()
-    tournament_loader = HttpsLoader()
+    tournament_loader = Loader()
 
     loader = AoeEloLoader()
-    tournament_urls = (
-        "/ageofempires/Death_Match_World_Cup/4",
-        "/ageofempires/King_of_the_Desert/4",
-        "/ageofempires/Holy_Cup",
-        "/ageofempires/The_Open_Classic",
-        "/ageofempires/Red_Bull_Wololo/4",
-        "/ageofempires/Hidden_Cup/4",
-        )
-    for tournament_url in tournament_urls:
-        players = players_to_update(tournament_loader, tournament_url)
-        print("{:25}: {:2} players".format(tournament_url, len(players)))
-        for player in players:
-            update_player(loader, player)
+    players = players_to_update(tournament_loader, args.tournament_url)
+    print("{:25}: {:2} players".format(args.tournament_url, len(players)))
+    for player in players:
+        update_player(loader, player)
 
 if __name__ == '__main__':
     run()
