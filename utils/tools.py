@@ -21,6 +21,20 @@ API_TEMPLATE = "https://aoe2.net/api/player/lastmatch?game=aoe2de&profile_id={}"
 PLAYERS_YAML = "data/players.yaml"
 LOGGER_NAME = "aoe2stats"
 
+def cache_file(local_file, url):
+    local_ready = False
+    if os.path.exists(local_file):
+        mtime = datetime.fromtimestamp(os.stat(local_file).st_mtime)
+        if mtime > datetime.now() - timedelta(days=1):
+            local_ready = True
+    if not local_ready:
+        response = requests.get(url)
+        data = response.text
+        with open(local_file, "w") as f:
+            for l in data:
+                f.write(l)
+    return local_file
+
 def setup_logging(level=logging.WARNING):
     logger = logging.getLogger(LOGGER_NAME)
     if logger.hasHandlers():

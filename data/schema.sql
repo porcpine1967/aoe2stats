@@ -62,11 +62,15 @@ CREATE TABLE public.player_results (
 	player_url text,
 	player_place text,
 	player_prize text,
-	tournament_url text
+	tournament_url text,
+	player_name text
 );
 
 CREATE UNIQUE INDEX player_results_player_tournament
 ON player_results(player_url, tournament_url);
+
+CREATE UNIQUE INDEX player_results_player_name_tournament
+ON player_results(player_name, tournament_url);
 
 CREATE TABLE public.scores (
 id serial primary key,

@@ -12,6 +12,9 @@ from liquiaoe.managers import PlayerManager, TournamentManager
 
 from utils.tools import execute_sql, execute_transaction, tournament_timeboxes
 from utils.tools import setup_logging, LOGGER_NAME
+from utils.tools import player_yaml, save_yaml
+
+PLAYERS = player_yaml()
 
 LOGGER = logging.getLogger(LOGGER_NAME)
 
@@ -188,9 +191,21 @@ def update_tournament(api_tournament):
     )
     execute_transaction(UPDATE_SQL, row)
 
-def save_player(tournament_url, player_url, placement, prize, loader):
+def save_player(tournament, player_url, placement, prize, loader):
+    tournament_url = tournament.url
+    # add canonical name or name from url if aoeii
     if player_result_present(player_url, tournament_url):
         return
+    if tournament.game == 'Age of Empires II':
+        liquipedia_name = player_url.split('/')[-1]
+        for player in PLAYERS:
+            if player.get('liquipedia') == liquipedia_name:
+                break
+        else:
+            PLAYERS.append({'name': liquipedia_name,
+                            'canonical_name': liquipedia_name,
+                            'liquipedia': liquipedia_name,})
+
     for _ in execute_sql(PLAYER_EXISTS_SQL.format(player_url)):
         row = (player_url,
                placement,
@@ -241,7 +256,7 @@ class Tournament:
         self._load(loader)
 
     def _load(self, loader):
-        sql = FROM_SQL.format(self.api_tournament.url)
+        sql = FROM_SQL.format(self.url)
         in_db = False
         for row in execute_sql(sql):
             in_db = True
@@ -277,7 +292,7 @@ class Tournament:
             self.api_tournament.load_advanced(loader)
             for name, player_url, placement, prize in self.api_tournament.participants:
                 if player_url and placement:
-                    save_player(self.url, player_url, placement, prize, loader)
+                    save_player(self.api_tournament, player_url, placement, prize, loader)
 
     def _load_placement_results(self, loader):
         self.first_place_tournaments = []
@@ -333,6 +348,7 @@ def run():
     loader.starting(this_week)
     loader.ongoing(now.date())
     loader.completed(last_week)
+    save_yaml(PLAYERS)
 
 if __name__ == "__main__":
     run()
