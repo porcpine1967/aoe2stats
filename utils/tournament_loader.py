@@ -78,8 +78,8 @@ WHERE url = '{}'
 
 SAVE_PLAYER_RESULTS_SQL = """
 INSERT INTO player_results
-(player_url, player_place, player_prize, tournament_url)
-VALUES (%s, %s, %s, %s)
+(player_url, player_place, player_prize, player_name, tournament_url)
+VALUES (%s, %s, %s, %s, %s)
 ON CONFLICT (player_url, tournament_url) DO UPDATE SET
 player_place=Excluded.player_place,
 player_prize=Excluded.player_prize
@@ -196,22 +196,25 @@ def save_player(tournament, player_url, placement, prize, loader):
     # add canonical name or name from url if aoeii
     if player_result_present(player_url, tournament_url):
         return
+    name = ''
     if tournament.game == 'Age of Empires II':
         liquipedia_name = player_url.split('/')[-1]
         for player in PLAYERS:
             if player.get('liquipedia') == liquipedia_name:
+                name = player['canonical_name']
                 break
         else:
+            name = liquipedia_name
             PLAYERS.append({'name': liquipedia_name,
                             'canonical_name': liquipedia_name,
                             'liquipedia': liquipedia_name,})
-
     for _ in execute_sql(PLAYER_EXISTS_SQL.format(player_url)):
         row = (player_url,
                placement,
                prize,
+               name,
                tournament_url,)
-        LOGGER.debug("SAVING PLAYER {} {} {} {}".format(*row))
+        LOGGER.debug("SAVING PLAYER {} {} {} {} {}".format(*row))
         execute_transaction(SAVE_PLAYER_RESULTS_SQL, row)
         return
 
