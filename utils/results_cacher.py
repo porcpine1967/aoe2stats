@@ -35,7 +35,7 @@ sample_size integer,
 UNIQUE(week, civ_id, team_size, map_category, methodology, metric, compound))"""
 
 CREATE_WEEKCOUNTS_TABLE = """CREATE TABLE IF NOT EXISTS week_counts (
-id integer PRIMARY KEY, 
+id integer PRIMARY KEY,
 week text,
 match_count integer,
 UNIQUE(week))"""

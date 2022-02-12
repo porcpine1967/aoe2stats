@@ -15,8 +15,10 @@ from liquiaoe.loaders import RequestsException, THROTTLE
 from liquiaoe.loaders import HttpsLoader as Loader
 from liquiaoe.managers import Tournament
 
-from utils.tools import execute_sql, execute_bulk_insert, player_yaml, save_yaml
+from utils.identity import player_yaml, save_yaml
+from utils.tools import execute_sql, execute_bulk_insert
 from utils.tools import LOGGER_NAME, setup_logging
+from utils.tools import cache_file
 
 SAVE_SCORES_SQL = """INSERT INTO scores
 (evaluation_date, player_url, score, scorer)
@@ -35,7 +37,6 @@ class AoeEloLoader:
         self.last_call = 0
         self._player_list_url = "https://aoe-elo.com/api?request=players"
         self._headers = {"User-Agent": "aoe2stats/0.1 (feroc.felix@gmail.com)","Accept-Encoding": "gzip"}
-        self._base_url = "https://liquipedia.net/ageofempires/api.php?redirects=true&action=parse&format=json&page={}"
         self._player_dict = None
 
     def player_page(self, player_id):
@@ -49,18 +50,11 @@ class AoeEloLoader:
         if not self._player_dict:
             load_file = None
             self._player_dict = {}
-            if os.path.exists(PLAYERS_CACHE):
-                mtime = datetime.fromtimestamp(os.stat(PLAYERS_CACHE).st_mtime)
-                if mtime > datetime.now() - timedelta(days=1):
-                    load_file = PLAYERS_CACHE
-            if load_file:
-                with open(load_file) as f:
-                    data = json.load(f)
-            else:
-                text = self.response_text(self._player_list_url)
-                with open(PLAYERS_CACHE, 'w') as f:
-                    f.write(text)
-                data = json.loads(text)
+            use_cache = cache_file(PLAYERS_CACHE, self._player_list_url)
+            if not use_cache:
+                self.last_call = time.time()
+            with open(PLAYERS_CACHE) as f:
+                data = json.load(f)
             for player in data:
                 self._player_dict[player['id']] = player['url']
         return self._player_dict

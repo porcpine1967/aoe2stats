@@ -12,7 +12,7 @@ from liquiaoe.managers import PlayerManager, TournamentManager
 
 from utils.tools import execute_sql, execute_transaction, tournament_timeboxes
 from utils.tools import setup_logging, LOGGER_NAME
-from utils.tools import player_yaml, save_yaml
+from utils.identity import player_yaml, save_yaml, canonical_identifiers
 
 PLAYERS = player_yaml()
 
@@ -60,20 +60,22 @@ WHERE url = %s
 
 PLAYER_RESULTS_EXIST_SQL = """
 SELECT id FROM player_results
-WHERE player_url = '{}'
+WHERE (player_name = '{}' OR player_url = '{}')
 AND tournament_url = '{}'
 LIMIT 1
 """
 
 PLAYER_EXISTS_SQL = """
 SELECT id FROM player_results
-WHERE player_url = '{}'
+WHERE player_name = '{}'
+OR player_url = '{}'
 LIMIT 1
 """
 
-TOURNAMENT_COUNT_SQL = """
-SELECT COUNT(*) FROM tournaments
+TOURNAMENT_EXISTS_SQL = """
+SELECT id FROM tournaments
 WHERE url = '{}'
+LIMIT 1
 """
 
 SAVE_PLAYER_RESULTS_SQL = """
@@ -191,44 +193,33 @@ def update_tournament(api_tournament):
     )
     execute_transaction(UPDATE_SQL, row)
 
-def save_player(tournament, player_url, placement, prize, loader):
-    tournament_url = tournament.url
-    # add canonical name or name from url if aoeii
+
+def save_player(tournament_url, player_name, player_url, placement, prize, loader):
     if player_result_present(player_url, tournament_url):
         return
-    name = ''
-    if tournament.game == 'Age of Empires II':
-        liquipedia_name = player_url.split('/')[-1]
-        for player in PLAYERS:
-            if player.get('liquipedia') == liquipedia_name:
-                name = player['canonical_name']
-                break
-        else:
-            name = liquipedia_name
-            PLAYERS.append({'name': liquipedia_name,
-                            'canonical_name': liquipedia_name,
-                            'liquipedia': liquipedia_name,})
-    for _ in execute_sql(PLAYER_EXISTS_SQL.format(player_url)):
-        row = (player_url,
-               placement,
-               prize,
-               name,
-               tournament_url,)
-        LOGGER.debug("SAVING PLAYER {} {} {} {} {}".format(*row))
-        execute_transaction(SAVE_PLAYER_RESULTS_SQL, row)
-        return
-
-    player_manager = PlayerManager(loader)
-    for api_tournament in player_manager.tournaments(player_url):
-        row = (player_url,
-               api_tournament.loader_place,
-               api_tournament.loader_prize,
-               api_tournament.url,)
-        execute_transaction(SAVE_PLAYER_RESULTS_SQL, row)
-        # Only save basic attributes; no updating
-        for count, in execute_sql(TOURNAMENT_COUNT_SQL.format(api_tournament.url)):
-            if count < 1:
-                save_tournament(api_tournament)
+    row = (player_url,
+           placement,
+           prize,
+           name,
+           tournament_url,)
+    LOGGER.debug("SAVING PLAYER {} {} {} {} {}".format(*row))
+    execute_transaction(SAVE_PLAYER_RESULTS_SQL, row)
+    for _ in execute_sql(PLAYER_EXISTS_SQL.format(player_name, player_url)):
+        break
+    else:
+        if player_url:
+            player_manager = PlayerManager(loader)
+            for api_tournament in player_manager.tournaments(player_url):
+                row = (player_url,
+                       api_tournament.loader_place,
+                       api_tournament.loader_prize,
+                       api_tournament.url,)
+                execute_transaction(SAVE_PLAYER_RESULTS_SQL, row)
+                # Only save basic attributes; no updating
+                for _ in execute_sql(TOURNAMENT_EXISTS_SQL.format(api_tournament.url)):
+                    break
+                else:
+                    save_tournament(api_tournament)
 
 def placement_results(url):
     results = []
@@ -246,8 +237,8 @@ def placement_results(url):
         results.append(result)
     return results
 
-def player_result_present(player_url, tournament_url):
-    sql = PLAYER_RESULTS_EXIST_SQL.format(player_url, tournament_url)
+def player_result_present(player_name, player_url, tournament_url):
+    sql = PLAYER_RESULTS_EXIST_SQL.format(player_name, player_url, tournament_url)
     for _ in execute_sql(sql):
         return True
     return False
@@ -289,20 +280,24 @@ class Tournament:
         self._load_placement_results(loader)
 
     def _verify_participant_placements(self, loader):
-        if not self.first_place_url:
+        if not self.first_place:
             return
-        if not player_result_present(self.first_place_url, self.url):
+
+        if not player_result_present(self.first_place, self.first_place_url, self.url):
             self.api_tournament.load_advanced(loader)
-            for name, player_url, placement, prize in self.api_tournament.participants:
+            for player_name, player_url, placement, prize in self.api_tournament.participants:
+                if self.api_tournament.game == 'Age of Empires II' and placement:
+                    name, url = canonical_identifiers(player_name, player_url)
+                    save_player(self.url, name, url, placement, prize, loader)
                 if player_url and placement:
-                    save_player(self.api_tournament, player_url, placement, prize, loader)
+                    save_player(self.url, player_name, player_url, placement, prize, loader)
 
     def _load_placement_results(self, loader):
         self.first_place_tournaments = []
         self._verify_participant_placements(loader)
 
-        if self.api_tournament.first_place_url:
-            self.first_place_tournaments = placement_results(self.api_tournament.first_place_url)
+        if self.first_place_url:
+            self.first_place_tournaments = placement_results(self.first_place_url)
 
 
     def _verify(self, loader):

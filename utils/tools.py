@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ Useful functions. """
 
 from collections import defaultdict
@@ -18,22 +18,23 @@ DB = "data/ranked.db"
 SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
 
 API_TEMPLATE = "https://aoe2.net/api/player/lastmatch?game=aoe2de&profile_id={}"
-PLAYERS_YAML = "data/players.yaml"
 LOGGER_NAME = "aoe2stats"
 
 def cache_file(local_file, url):
-    local_ready = False
+    """ Reloads the file from url. Returns whether used the cached file"""
+    use_cache = True
     if os.path.exists(local_file):
         mtime = datetime.fromtimestamp(os.stat(local_file).st_mtime)
         if mtime > datetime.now() - timedelta(days=1):
-            local_ready = True
-    if not local_ready:
+            local_ready = False
+    if not use_cache:
+        LOGGER.warning("Calling url {}".format(url))
         response = requests.get(url)
         data = response.text
         with open(local_file, "w") as f:
             for l in data:
                 f.write(l)
-    return local_file
+    return use_cache
 
 def setup_logging(level=logging.WARNING):
     logger = logging.getLogger(LOGGER_NAME)
@@ -52,21 +53,7 @@ def setup_logging(level=logging.WARNING):
         console_handler.setLevel(level)
         console_handler.setFormatter( logging.Formatter('[%(levelname)s](%(name)s): %(message)s') )
         logger.addHandler(console_handler)
-
-def save_yaml(players):
-    with open(PLAYERS_YAML, "w") as f:
-        yaml.dump(players, f)
-
-def player_yaml():
-    with open(PLAYERS_YAML) as f:
-        return yaml.safe_load(f)
-
-def safe_player_yaml():
-    """ Like player yaml but with str as default"""
-    players = []
-    for player in player_yaml():
-        players.append(defaultdict(str,player))
-    return players
+    return logger
 
 def user_info(profile_id):
     """ Fetches last match info from aoe2.net"""

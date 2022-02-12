@@ -78,7 +78,7 @@ def setup_and_verify(working_dir):
     working_file = "{}/tournament_info.txt".format(working_dir)
     Path(working_dir).mkdir(exist_ok=True)
     return working_file
-    
+
 def run():
     """ Do the thing"""
     args = arguments()
@@ -110,6 +110,6 @@ def run():
             print(line)
             f.write(line)
             f.write("\n")
-    
+
 if __name__ == "__main__":
     run()

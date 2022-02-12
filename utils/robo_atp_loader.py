@@ -16,7 +16,8 @@ import logging
 import os
 import re
 
-from utils.tools import execute_bulk_insert, player_yaml
+from utils.identity import player_yaml
+from utils.tools import execute_bulk_insert
 from utils.tools import LOGGER_NAME, setup_logging
 
 SAVE_SCORES_SQL = """INSERT INTO scores
@@ -41,7 +42,7 @@ def alias_lookup():
             pass
         try:
             for alias in player['aka']:
-                lookup[alias.lower()] = player                
+                lookup[alias.lower()] = player
         except KeyError:
             pass
     return lookup
@@ -78,7 +79,7 @@ def update_players():
     rows = []
     for filename in os.listdir('tmp'):
         rows.extend(rows_for_file(filename, player_lookup))
-        
+
 
     if rows:
         execute_bulk_insert(SAVE_SCORES_SQL, rows)
