@@ -183,8 +183,11 @@ def execute_sql(sql, db_path=DB):
     conn = psycopg2.connect(database="aoe2stats")
     cur = conn.cursor()
     cur.execute(sql)
-    for row in cur.fetchall():
-        yield row
+    try:
+        for row in cur.fetchall():
+            yield row
+    except GeneratorExit:
+        pass
     cur.close()
     conn.close()
 

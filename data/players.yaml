@@ -1398,6 +1398,7 @@
 - aka:
   - Pain Master
   - Pretty_boy88
+  - jibatong
   aoeelo: 198
   canonical_name: Jibatong
   country: cn
@@ -2690,6 +2691,7 @@
   - https://www.twitch.tv/kongen_42
 - aka:
   - Wudixiaoxiong
+  - xiaoxiong
   aoeelo: 42
   canonical_name: Xiaoxiong
   country: cn
@@ -2751,6 +2753,7 @@
     - mimmox
 - aka:
   - BvirusZilla
+  - bvirus
   aoeelo: 169
   canonical_name: Bvirus
   country: pt
@@ -4092,6 +4095,7 @@
   canonical_name: Rex
   country: pl
   id: 212
+  liquipedia: Rex
   name: Rex
   notability:
     aoe2: true
@@ -4772,6 +4776,8 @@
     - '2622255'
 - aka:
   - LobodeLaNieve
+  - LobodelaNieve
+  aoeelo: 879
   canonical_name: Lobo
   country: mx
   id: 253
@@ -7151,6 +7157,7 @@
     - '230475'
 - aka:
   - Nahuel05_
+  aoeelo: 1049
   canonical_name: Nahuel05
   country: ar
   id: 412
@@ -7538,6 +7545,7 @@
   - https://www.twitch.tv/fury_aoe
 - aka:
   - Sostratus
+  aoeelo: 1072
   canonical_name: DarklyWise
   country: se
   id: 441

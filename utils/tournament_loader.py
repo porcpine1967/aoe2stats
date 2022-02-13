@@ -195,14 +195,13 @@ def update_tournament(api_tournament):
 
 
 def save_player(tournament_url, player_name, player_url, placement, prize, loader):
-    if player_result_present(player_url, tournament_url):
+    if player_result_present(player_name, player_url, tournament_url):
         return
     row = (player_url,
            placement,
            prize,
-           name,
+           player_name,
            tournament_url,)
-    LOGGER.debug("SAVING PLAYER {} {} {} {} {}".format(*row))
     execute_transaction(SAVE_PLAYER_RESULTS_SQL, row)
     for _ in execute_sql(PLAYER_EXISTS_SQL.format(player_name, player_url)):
         break
@@ -213,6 +212,7 @@ def save_player(tournament_url, player_name, player_url, placement, prize, loade
                 row = (player_url,
                        api_tournament.loader_place,
                        api_tournament.loader_prize,
+                       player_name,
                        api_tournament.url,)
                 execute_transaction(SAVE_PLAYER_RESULTS_SQL, row)
                 # Only save basic attributes; no updating

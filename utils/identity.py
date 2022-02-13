@@ -80,9 +80,7 @@ def consolidate_yamls():
     no_id_players = [local_player for local_player in local_players if 'id' not in local_player]
     for se_player in se_players():
         for local_player in local_players:
-            if not 'id' in local_player:
-                continue
-            if se_player["id"] == local_player["id"]:
+            if se_player["id"] == local_player.get("id"):
                 consolidate_player(local_player, se_player)
                 break
         else:
@@ -125,7 +123,6 @@ def verify_name_uniqueness():
     print(bads)
 def run():
     consolidate_yamls()
-    update_aoe_elo()
 
 if __name__ == "__main__":
     run()
