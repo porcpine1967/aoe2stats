@@ -224,7 +224,6 @@
   platforms:
     rl:
     - '232410'
-    - 196366-nac3
     - '1819193'
     - '2602752'
     voobly:
@@ -3227,6 +3226,7 @@
   - S_t_E_f_A_N
   - StefanHD
   aoeelo: 103
+  aoeelo_updated: 2022-02-13
   canonical_name: Stefan
   country: de
   id: 153
@@ -3722,6 +3722,7 @@
   - Aizen
   - SobeK
   aoeelo: 499
+  aoeelo_updated: 2022-02-13
   canonical_name: Sobek
   country: cl
   id: 191
@@ -4244,6 +4245,7 @@
   - Black
   - _BL4CK_
   aoeelo: 93
+  aoeelo_updated: 2022-02-13
   canonical_name: BL4CK
   country: ar
   id: 221
@@ -4960,6 +4962,7 @@
   youtube:
   - https://www.youtube.com/channel/UCO0Gc-6iESBUxe5dvDIEDfg
 - aoeelo: 754
+  aoeelo_updated: 2022-02-13
   canonical_name: Shades
   country: it
   id: 262

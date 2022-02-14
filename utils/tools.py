@@ -20,6 +20,9 @@ SEVEN_DAYS_OF_SECONDS = 7 * 24 * 60 * 60
 API_TEMPLATE = "https://aoe2.net/api/player/lastmatch?game=aoe2de&profile_id={}"
 LOGGER_NAME = "aoe2stats"
 
+def flatten(array):
+    return [item for sublist in array for item in sublist]
+
 def cache_file(local_file, url):
     """ Reloads the file from url. Returns whether used the cached file"""
     use_cache = True
