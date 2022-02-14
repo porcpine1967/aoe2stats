@@ -2,6 +2,9 @@
 """ Info for podcast."""
 from datetime import datetime, timedelta
 
+from liquiaoe.loaders import HttpsLoader as Loader
+from liquiaoe.managers import TransferManager
+
 from map_report import run as run_map_report
 from smurf import run as run_smurf
 from utils.tools import civ_map, execute_sql, last_time_breakpoint
@@ -79,6 +82,27 @@ ORDER BY week DESC""".format(
         self.weeks_top_5 = continuous_week_ctr
         self.weeks_this_year = week_ctr
 
+def run_transfer_report():
+    manager = TransferManager(Loader())
+    transfers = manager.recent_transfers()
+    good_transfers = []
+    for transfer in transfers:
+        if transfer.old != transfer.new:
+            good_transfers.append(transfer)
+    if good_transfers:
+        print("****************************")
+        print("TRANSFERS")
+        print("****************************")
+        for transfer in good_transfers:
+            print("{}: From: {:20} To: {:20} {:20} ({})".format(transfer.date,
+                                                       transfer.old or '',
+                                                       transfer.new or '',
+                                                       transfer.players[0][0],
+                                                                transfer.ref or ''))
+            for player in transfer.players[1:]:
+                print(" "*64 + player[0])
+            print()
+
 
 def run():
     """Flow control"""
@@ -120,3 +144,4 @@ if __name__ == "__main__":
     print("SMURF")
     print("****************************")
     run_smurf()
+    run_transfer_report()
