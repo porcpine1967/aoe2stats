@@ -2,8 +2,9 @@
 """ Writes tournament information for week to file."""
 from datetime import date, datetime, timedelta
 from pathlib import Path
-import os.path
+import os
 
+import utils.previous_podcast
 from utils.tournament_loader import arguments, TournamentLoader
 from utils.tools import tournament_timeboxes
 
@@ -62,7 +63,7 @@ def completed_tournament_lines(tournament):
     lines.append("")
     return lines
 
-def print_info(tournament_dict):
+def print_info(tournament_dict, podcasts):
     lines = []
     for game, tournaments in tournament_dict.items():
         lines.append("*"*25)
@@ -70,6 +71,10 @@ def print_info(tournament_dict):
         lines.append("*"*25)
         for tournament in tournaments:
             lines.extend(completed_tournament_lines(tournament))
+            for podcast in podcasts:
+                for paragraph in podcast.paragraphs:
+                    if tournament.name in paragraph:
+                        lines.append(paragraph)
         lines.append("")
     return lines
 
@@ -92,19 +97,20 @@ def run():
     working_dir = this_week[0].strftime("%Y%m%d")
     working_file = setup_and_verify(working_dir)
     manager = TournamentLoader()
+    podcasts = utils.previous_podcast.podcasts(os.getenv("HOME") + '/Documents/podcasts/aoe2')
     lines = []
     lines.append("="*25)
     lines.append("COMPLETED")
     lines.append("="*25)
-    lines.extend(print_info(manager.completed(last_week)))
+    lines.extend(print_info(manager.completed(last_week), podcasts))
     lines.append("="*25)
     lines.append("ONGOING")
     lines.append("="*25)
-    lines.extend(print_info(manager.ongoing(now.date())))
+    lines.extend(print_info(manager.ongoing(now.date()), podcasts))
     lines.append("="*25)
     lines.append("STARTING")
     lines.append("="*25)
-    lines.extend(print_info(manager.starting(this_week)))
+    lines.extend(print_info(manager.starting(this_week), podcasts))
     with open(working_file, "w") as f:
         for line in lines:
             print(line)

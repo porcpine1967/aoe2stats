@@ -60,7 +60,7 @@ WHERE url = %s
 
 PLAYER_RESULTS_EXIST_SQL = """
 SELECT id FROM player_results
-WHERE (player_name = '{}' OR player_url = '{}')
+WHERE (player_name = '{}' OR player_name = '{}' OR player_url = '{}')
 AND tournament_url = '{}'
 LIMIT 1
 """
@@ -238,7 +238,10 @@ def placement_results(url):
     return results
 
 def player_result_present(player_name, player_url, tournament_url):
-    sql = PLAYER_RESULTS_EXIST_SQL.format(player_name, player_url, tournament_url)
+    sql = PLAYER_RESULTS_EXIST_SQL.format(player_name,
+                                          player_name.capitalize(),
+                                          player_url,
+                                          tournament_url)
     for _ in execute_sql(sql):
         return True
     return False
@@ -248,6 +251,7 @@ class Tournament:
         self.api_tournament = api_tournament
         self.url = api_tournament.url
         self._load(loader)
+        self.first_place_tournaments = []
 
     def _load(self, loader):
         sql = FROM_SQL.format(self.url)
@@ -282,18 +286,17 @@ class Tournament:
     def _verify_participant_placements(self, loader):
         if not self.first_place:
             return
-
-        if not player_result_present(self.first_place, self.first_place_url, self.url):
+        name, url = canonical_identifiers(self.first_place, self.first_place_url, PLAYERS)
+        if not player_result_present(name, url, self.url):
             self.api_tournament.load_advanced(loader)
             for player_name, player_url, placement, prize in self.api_tournament.participants:
                 if self.api_tournament.game == 'Age of Empires II' and placement:
-                    name, url = canonical_identifiers(player_name, player_url)
+                    name, url = canonical_identifiers(player_name, player_url, PLAYERS)
                     save_player(self.url, name, url, placement, prize, loader)
                 if player_url and placement:
                     save_player(self.url, player_name, player_url, placement, prize, loader)
 
     def _load_placement_results(self, loader):
-        self.first_place_tournaments = []
         self._verify_participant_placements(loader)
 
         if self.first_place_url:
