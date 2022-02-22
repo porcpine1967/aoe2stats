@@ -20,9 +20,9 @@ MIN(started) AS min_started, MIN(rating) AS min_rating
 FROM matches
 WHERE civ_id IS NOT NULL
 AND game_type = 0 AND team_size = 1
-AND started < {:0.0f}
+AND started BETWEEN {:0.0f} AND {:0.0f}
 GROUP BY player_id
-HAVING min(started) > {:0.0f} and COUNT(*) > 5 and max(rating) > 1699
+HAVING COUNT(*) > 5 and max(rating) > 1699 AND MAX(rating) - MIN(rating) > 200
 """
 
 WEEK_IN_SECONDS = 7 * 24 * 60 * 60
@@ -116,11 +116,8 @@ class Smurf:
     """ Data holder for smurf-like player"""
 
     def __init__(self, row, timebox):
-        start_cutoff, end_cutoff = timebox
+        self.start_cutoff, end_cutoff = timebox
         self.player_id = row[0]
-        self.validate(start_cutoff)
-        if not self.valid:
-            return
         week_info = self._best_week(end_cutoff)
         if week_info:
             self.valid = True
@@ -161,9 +158,11 @@ FROM matches
 WHERE civ_id IS NOT NULL
 AND game_type = 0 AND team_size = 1
 AND player_id = {}
+AND started > {:0.0f}
 ORDER BY started
         """.format(
-            self.player_id
+            self.player_id,
+            self.start_cutoff
         )
         matches = []
         for row in execute_sql(sql):
@@ -222,7 +221,7 @@ def display(date_reference):
     """ Returns smurfs from past week."""
     wednesday = last_time_breakpoint(date_reference).timestamp()
     last_week, _ = timeboxes(wednesday)
-    sql = SQL.format(wednesday, last_week[0])
+    sql = SQL.format(last_week[0], wednesday)
     smurfs = []
     for row in execute_sql(sql):
         smurf = Smurf(row, last_week)

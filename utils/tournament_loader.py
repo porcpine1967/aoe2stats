@@ -94,7 +94,8 @@ tournaments.tier,
 results.player_place,
 tournaments.end_date,
 tournaments.first_place,
-tournaments.team
+tournaments.team,
+results.player_prize
 FROM tournaments
 JOIN
 player_results AS results ON tournaments.url = results.tournament_url
@@ -232,7 +233,8 @@ def placement_results(url):
             'place': row[3],
             'date': row[4],
             'winner': row[5],
-            'team': row[6]
+            'team': row[6],
+            'prize': row[7],
         }
         results.append(result)
     return results
@@ -250,8 +252,8 @@ class Tournament:
     def __init__(self, api_tournament, loader):
         self.api_tournament = api_tournament
         self.url = api_tournament.url
-        self._load(loader)
         self.first_place_tournaments = []
+        self._load(loader)
 
     def _load(self, loader):
         sql = FROM_SQL.format(self.url)

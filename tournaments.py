@@ -43,16 +43,15 @@ def completed_tournament_lines(tournament):
             lines.append("    Tournament placements for {}".format(tournament.first_place))
         hold_year = datetime.now().year
         for fpt in tournament.first_place_tournaments:
-            if fpt["name"] == tournament.name:
-                continue
             if fpt["date"].year != hold_year:
                 hold_year = fpt["date"].year
                 lines.append("      {} {} {}".format("*"*25, hold_year, "*"*25))
-            lines.append("      {}  {}  {:^9} {} {} {}".format(fpt["game"][-2:],
+            lines.append("      {}  {}  {:^9} {} {} {:>7} {}".format(fpt["game"][-2:],
                                                             fpt["tier"][0],
                                                             fpt["place"],
                                                             fpt["date"].strftime("%b %d"),
                                                             "team" if fpt["team"] else "    ",
+                                                            fpt["prize"],
                                                             fpt["name"]))
     else:
         if tournament.start == tournament.end:
