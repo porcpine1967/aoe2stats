@@ -544,6 +544,8 @@
   aoeelo: 33
   canonical_name: Tim
   country: cn
+  douyu:
+  - https://www.douyu.com/7833734
   esportsearnings: 12949
   id: 21
   liquipedia: Tim
@@ -1267,6 +1269,7 @@
     - '4351237'
     - '5230833'
     - '5845322'
+    - '9254072'
     voobly:
     - '125241102'
     - '124313135'
@@ -2211,6 +2214,8 @@
     - '124240304'
     - '125024125'
   team: 22
+  twitch:
+  - https://www.twitch.tv/salzz_classicpro
 - aka:
   - Devaki
   - Ralber
@@ -2292,6 +2297,8 @@
   - https://twitter.com/IamCapoch
   youtube:
   - http://www.youtube.com/capoch
+  youtube_live:
+  - https://www.youtube.com/channel/UC0bSvZvJdiZCN4V7kOVwKEg/live
 - canonical_name: Rami
   country: il
   esportsearnings: 42063
@@ -4260,6 +4267,7 @@
     - '1756760'
     - '5999674'
     - '9231165'
+    - '9572827'
     voobly:
     - '123624141'
   team: 7
@@ -4977,6 +4985,7 @@
     - '1793493'
     - '4367756'
     - '5722641'
+    - '9603085'
   twitch:
   - https://www.twitch.tv/shadesaoe
   twitter:
@@ -5149,6 +5158,7 @@
     rl:
     - '874604'
     - '5453798'
+    - '448431'
   twitch:
   - https://www.twitch.tv/alperenaoe2
   youtube:
@@ -5182,10 +5192,12 @@
   - Bazan
   - KingstoN_
   - Kingston
+  - Kingstone
   aoeelo: 976
   canonical_name: USb
   country: mx
   id: 274
+  liquipedia: KingstoNe
   name: USb
   notability:
     aoe2: true
@@ -5198,10 +5210,12 @@
   twitch:
   - https://www.twitch.tv/bazan_aoe
   - https://www.twitch.tv/kingston_aoe
+  - https://www.twitch.tv/kingstone_aoe
 - aoeelo: 981
   canonical_name: Annotoph
   country: de
   id: 275
+  liquipedia: Annotoph
   name: Annotoph
   notability:
     aoe2: true
@@ -5234,6 +5248,8 @@
     - '271243'
   twitch:
   - https://www.twitch.tv/grathwrang
+  twitter:
+  - https://twitter.com/grathwrang
   youtube:
   - https://www.youtube.com/channel/UCkoG0-9ndERgBXWVkGJIb-A
 - canonical_name: Roxy
@@ -5967,6 +5983,8 @@
   team: 7
   twitch:
   - https://www.twitch.tv/sebastian2002
+  youtube:
+  - https://www.youtube.com/channel/UCfndZhdX7djV-cwo9bCyEIw
 - aoeelo: 642
   aoeelo_updated: 2022-02-08
   canonical_name: StonePlease
@@ -5982,6 +6000,10 @@
     - '858709'
     - '3654037'
     - '3712481'
+  twitch:
+  - https://www.twitch.tv/StonePleaseAoE
+  youtube:
+  - https://www.youtube.com/channel/UC1GYtCsOfr29vXtB9u4FnWw
 - aka:
   - Qwin
   - the_queen
@@ -6308,6 +6330,7 @@
   platforms:
     rl:
     - '1773197'
+    - '9567625'
     voobly:
     - '124381545'
     - '125033680'
@@ -6740,6 +6763,8 @@
     rl:
     - '516841'
     - '2762038'
+  twitch:
+  - https://www.twitch.tv/emalius2
 - aka:
   - Gergis_
   aoeelo: 929
@@ -6909,6 +6934,8 @@
     - '209228'
   twitch:
   - https://www.twitch.tv/stellarmeesh
+  twitter:
+  - https://twitter.com/stellarmeesh
 - aka:
   - dave
   aoeelo: 1123
@@ -6944,6 +6971,8 @@
     - '228526'
   twitch:
   - https://www.twitch.tv/ogn_empires
+  twitter:
+  - https://twitter.com/OGN_EMPIRES
   youtube:
   - https://www.youtube.com/channel/UCb-8V8oISp0YoLb_-y9kWjA
 - canonical_name: Kerpo
@@ -6956,6 +6985,8 @@
     rl:
     - '3543798'
     - '8033822'
+    - '3543798'
+    - '6161085'
   twitch:
   - https://www.twitch.tv/kerpoaoe
 - canonical_name: Pinch3Terneira
@@ -7036,6 +7067,8 @@
     - '123301799'
   twitch:
   - https://www.twitch.tv/nacho_aoe
+  twitter:
+  - https://twitter.com/NachoAoe
 - canonical_name: TWest
   country: us
   id: 403
@@ -7159,6 +7192,7 @@
   platforms:
     rl:
     - '230475'
+    - '9604749'
 - aka:
   - Nahuel05_
   aoeelo: 1049
@@ -7401,6 +7435,7 @@
   canonical_name: cHELOOO
   country: ar
   id: 429
+  liquipedia: cHELOOO
   name: cHELOOO
   notability:
     aoe2: true
@@ -7545,6 +7580,7 @@
     rl:
     - '4221810'
     - '5303231'
+    - '8448734'
   twitch:
   - https://www.twitch.tv/fury_aoe
 - aka:
@@ -7623,6 +7659,8 @@
     - '289216'
     - '6370127'
   team: 10
+  twitch:
+  - https://www.twitch.tv/bkalphastar
 - canonical_name: deaKer
   country: ar
   id: 447
@@ -7633,6 +7671,7 @@
     rl:
     - '3022245'
     - '5170240'
+    - '2903706'
 - canonical_name: ElMago
   country: ar
   id: 448
@@ -7719,6 +7758,7 @@
   canonical_name: saps
   country: ro
   id: 454
+  liquipedia: Saps
   name: saps
   notability:
     aoe2: true
@@ -7826,3 +7866,32 @@
 - canonical_name: LyRiCs
   liquipedia: LyRiCs
   name: LyRiCs
+- canonical_name: Heisen
+  country: ar
+  id: 460
+  liquipedia: Heisen
+  name: Heisen
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '583791'
+    - '2407064'
+- canonical_name: Loco_Ser
+  country: ar
+  discord:
+  - https://discord.gg/h8Dyrkb
+  id: 461
+  liquipedia: Loco_Ser
+  name: Loco_Ser
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '234479'
+  twitch:
+  - https://www.twitch.tv/locoser
+  youtube:
+  - https://www.youtube.com/c/LocoSer
+  youtube_live:
+  - https://www.youtube.com/channel/UComwgzPCiFJEOvK0wqUChUw/live

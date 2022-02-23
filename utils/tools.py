@@ -25,13 +25,12 @@ def flatten(array):
 
 def cache_file(local_file, url):
     """ Reloads the file from url. Returns whether used the cached file"""
-    use_cache = True
+    use_cache = False
     if os.path.exists(local_file):
         mtime = datetime.fromtimestamp(os.stat(local_file).st_mtime)
         if mtime > datetime.now() - timedelta(days=1):
-            local_ready = False
+            use_cache = True
     if not use_cache:
-        LOGGER.warning("Calling url {}".format(url))
         response = requests.get(url)
         data = response.text
         with open(local_file, "w") as f:

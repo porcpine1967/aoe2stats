@@ -62,7 +62,7 @@ def consolidate_player(player, se_player):
             if key == 'liquipedia':
                 continue
         if isinstance(attr, list):
-            attr = sorted(list(set(player[key] + attr)))
+            attr = sorted(list(set(player.get(key, list()) + attr)))
         player[key] = attr
 
 def player_names(player):
