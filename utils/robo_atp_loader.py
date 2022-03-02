@@ -60,7 +60,7 @@ def rows_for_file(filename, player_lookup):
             if not name:
                 continue
             try:
-                score = int(row[6])
+                score = int(float(row[6]))
                 player = player_lookup[name.lower()]
             except ValueError:
                 continue

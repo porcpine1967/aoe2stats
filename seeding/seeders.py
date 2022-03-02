@@ -105,8 +105,9 @@ class DBSeeder(Seeder):
             for player in players:
                 if liquipedia_name == player.get('liquipedia'):
                     try:
-                        pids = ",".join(player['platforms']['rl'])
-                        sql = self.SQL.format(pids=pids, started=cutoff)
+                        pids = [x for x in player['platforms']['rl'] if 'n' not in x]
+                        pid_str = ",".join(pids)
+                        sql = self.SQL.format(pids=pid_str, started=cutoff)
                         self.lookup[participant] = self.rating_from_sql(sql.strip(), participant)
                     except KeyError:
                         break

@@ -1329,6 +1329,7 @@
   youtube:
   - https://www.youtube.com/channel/UC4mChawns11BR-CFYxhd9zw?view_as=subscriber
 - aoeelo: 121
+  aoeelo_updated: 2022-02-28
   canonical_name: AngelinaJolie
   country: nl
   id: 49
@@ -1974,6 +1975,7 @@
   - Pike
   - PinkiePie
   aoeelo: 44
+  aoeelo_updated: 2022-02-28
   canonical_name: Pike
   country: fi
   esportsearnings: 15935
@@ -3294,6 +3296,7 @@
   twitter:
   - https://twitter.com/komruke
 - aoeelo: 78
+  aoeelo_updated: 2022-02-28
   canonical_name: Scotty
   country: us
   id: 156
@@ -3378,6 +3381,8 @@
     - '123225139'
     - '2976'
   team: 4
+  twitch:
+  - https://www.twitch.tv/nc_skittle_
 - aka:
   - Ciara
   - DriNk
@@ -4372,6 +4377,7 @@
     - '3212404'
     - '6456230'
 - aoeelo: 735
+  aoeelo_updated: 2022-02-28
   canonical_name: Kellar
   country: 'no'
   id: 228
@@ -4963,6 +4969,7 @@
     - '6206234'
     - '6240092'
     - '6150436'
+    - '9599374'
   twitch:
   - https://www.twitch.tv/ertugaoe
   twitter:
@@ -5194,6 +5201,7 @@
   - Kingston
   - Kingstone
   aoeelo: 976
+  aoeelo_updated: 2022-03-01
   canonical_name: USb
   country: mx
   id: 274
@@ -5623,6 +5631,9 @@
   - https://twitter.com/juanperotti_aoe
   youtube:
   - http://www.youtube.com/channel/UCZ4aiIlpiIn0dUTiXTjqDJw
+  - https://www.youtube.com/c/JuanPerottiAoE
+  youtube_live:
+  - http://www.youtube.com/channel/UCZ4aiIlpiIn0dUTiXTjqDJw/live
 - canonical_name: KhaLeN
   country: fr
   id: 303
@@ -5723,6 +5734,7 @@
   - MarineLord
   - Mlord
   aoeelo: 874
+  aoeelo_updated: 2022-02-28
   canonical_name: MarineLorD
   country: fr
   id: 309
@@ -6318,7 +6330,6 @@
     rl:
     - '1820205'
     - '3853480'
-    voobly: null
 - aka:
   - Ange_111
   canonical_name: Morg
@@ -6867,6 +6878,7 @@
   - Snyper
   - User:NC_Andorin/Snyper1
   aoeelo: 509
+  aoeelo_updated: 2022-02-28
   canonical_name: Snyper1
   country: de
   id: 388
@@ -7008,6 +7020,7 @@
 - canonical_name: Mario Ovalle
   country: co
   id: 398
+  liquipedia: Mario_Ovalle
   name: Mario Ovalle
   notability:
     aoe2: true
@@ -7016,6 +7029,10 @@
     - '289249'
   twitch:
   - https://www.twitch.tv/marioovalle_1992
+  youtube:
+  - https://www.youtube.com/c/marioovalle
+  youtube_live:
+  - https://www.youtube.com/channel/UCFcYXw_MXaalvq9KbdpV3SA/live
 - canonical_name: HGB
   country: mx
   id: 399
@@ -7227,6 +7244,7 @@
   team: 10
   twitch:
   - https://www.twitch.tv/paganini_aoc
+  - https://www.twitch.tv/paganini_aoe2
   youtube:
   - https://www.youtube.com/BKPaganini
 - canonical_name: TRM
@@ -7432,6 +7450,7 @@
     rl:
     - '255559'
 - aoeelo: 1037
+  aoeelo_updated: 2022-02-28
   canonical_name: cHELOOO
   country: ar
   id: 429
@@ -7585,7 +7604,7 @@
   - https://www.twitch.tv/fury_aoe
 - aka:
   - Sostratus
-  aoeelo: 1072
+  aoeelo: 1204
   canonical_name: DarklyWise
   country: se
   id: 441
@@ -7755,6 +7774,7 @@
 - aka:
   - saps_
   aoeelo: 607
+  aoeelo_updated: 2022-02-28
   canonical_name: saps
   country: ro
   id: 454
@@ -7895,3 +7915,64 @@
   - https://www.youtube.com/c/LocoSer
   youtube_live:
   - https://www.youtube.com/channel/UComwgzPCiFJEOvK0wqUChUw/live
+- aoeelo: 660
+  canonical_name: Shed
+  country: au
+  id: 462
+  liquipedia: Shed
+  name: Shed
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '208952'
+- aoeelo: 221
+  aoeelo_updated: 2022-02-28
+  canonical_name: Yezris
+  country: cz
+  id: 463
+  liquipedia: Yezris
+  name: Yezris
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '3392442'
+- canonical_name: kelar
+  country: de
+  id: 464
+  liquipedia: kelar
+  name: kelar
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '2048591'
+- canonical_name: ClemoL45
+  country: fr
+  id: 465
+  liquipedia: ClemoL45
+  name: ClemoL45
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '208976'
+  twitch:
+  - https://www.twitch.tv/clemol45
+  youtube:
+  - https://www.youtube.com/channel/UCcW8qpvJJT_eUKo1fRh3NCg
+- canonical_name: LilTrouble
+  country: au
+  id: 466
+  liquipedia: LilTrouble
+  name: LilTrouble
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '272983'
+  twitch:
+  - https://www.twitch.tv/LilTrouble__
+  youtube:
+  - http://www.youtube.com/LilTrouble_AoE

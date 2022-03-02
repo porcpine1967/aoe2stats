@@ -105,7 +105,7 @@ def run():
     lines.append("="*25)
     lines.append("ONGOING")
     lines.append("="*25)
-    lines.extend(print_info(manager.ongoing(now.date()), podcasts))
+    lines.extend(print_info(manager.ongoing(this_week[0]), podcasts))
     lines.append("="*25)
     lines.append("STARTING")
     lines.append("="*25)

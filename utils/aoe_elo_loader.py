@@ -105,7 +105,7 @@ def date_score_pairs(script_text, player_name):
 def set_aoeelo_updated(player):
     players = player_yaml()
     for yaml_player in players:
-        if player['id'] == yaml_player['id']:
+        if player['id'] == yaml_player.get('id'):
             yaml_player[UPDATED_ATTRIBUTE] = datetime.now().date()
             break
     save_yaml(players)
