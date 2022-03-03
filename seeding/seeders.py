@@ -17,8 +17,8 @@ LOGGER = setup_logging()
 SQL_CACHE_FILE = 'tmp/sqlcache'
 STARTING_ROUND = 0
 POINT_SYSTEMS = {
-    'low': [1, 2, 3, 4, 6, 10, 16, 24,],
-    'ncaa': [1, 2, 4, 8, 16, 32, 64, 128,],
+    'little': [1, 2, 3, 4, 6, 10, 16, 24,],
+    'big': [1, 2, 4, 8, 16, 32, 64, 128,],
     }
 
 class Seeder:
@@ -39,7 +39,9 @@ ORDER BY s.score
         self.lookup = defaultdict(int)
         cutoff = tournament.start
         for player_url, score, _ in execute_sql(self.SQL.format(cutoff, self.scorer, self.scorer)):
-            self.lookup[player_url] = score
+            if player_url:
+                self.lookup[player_url] = score
+        self.unranked = None
 
     def score_bracket(self, point_system):
         rounds = self.tournament.rounds[STARTING_ROUND:]
@@ -47,6 +49,8 @@ ORDER BY s.score
         predictions = self.bracket_predictions()
         for idx, round_ in enumerate(rounds):
             winners = {x['winner_url'] for x in round_ if x['winner_url']}
+            if idx == 0:
+                self.unranked = [unranked for unranked in winners if not self.lookup[unranked]]
             correct = len(winners.intersection(predictions[idx]))
             winners = sorted([x[14:] for x in winners if x])
             guesses = sorted([x[14:] for x in predictions[idx]])
@@ -78,8 +82,7 @@ ORDER BY s.score
 
     @property
     def participants(self):
-        round_ = self.tournament.rounds[STARTING_ROUND]
-        return flatten([[x['winner_url'], x['loser_url'],] for x in round_])
+        return round_participants(self.tournament, STARTING_ROUND)
 
 class AoeEloSeeder(Seeder):
     @property
@@ -125,6 +128,11 @@ class DBSeeder(Seeder):
             self.config[self.cache_section] = {}
         self.cache = self.config[self.cache_section]
 
+def round_participants(tournament, round_index):
+    round_ = tournament.rounds[round_index]
+    return flatten([[x['winner_url'], x['loser_url'],] for x in round_])
+
+    
 class JonSlowSeeder(DBSeeder):
     SQL = """
 SELECT m.rating, c.mrating
@@ -198,47 +206,55 @@ class OgnSeeder(JonSlowSeeder):
 
 def run():
     loader = Loader()
-    tournament_urls = (
+    s_tournament_urls = (
         '/ageofempires/King_of_the_Desert/4',
         '/ageofempires/Holy_Cup',
         '/ageofempires/The_Open_Classic',
         '/ageofempires/Hidden_Cup/4',
         '/ageofempires/Wandering_Warriors_Cup',
-        '/ageofempires/History_Hit_Open',
-        '/ageofempires/Masters_of_Arena/6',
-        '/ageofempires/Arabia_Invitational/2',
+        '/ageofempires/Red_Bull_Wololo/3',
+        '/ageofempires/Red_Bull_Wololo/4',
+        '/ageofempires/Red_Bull_Wololo/5',
+        )
+    a_tournament_urls = (
+        '/ageofempires/German_Championship/2021',
         '/ageofempires/Master_of_Socotra/1',
+        '/ageofempires/European_Rumble',
+        '/ageofempires/Arabia_Invitational/2',
+        '/ageofempires/Yolo_Cup',
+        '/ageofempires/Masters_of_Arena/6',
+        '/ageofempires/All-In_Cup',
+        '/ageofempires/Visible_Cup/4',
+        '/ageofempires/Exiled_Heroes',
+        '/ageofempires/History_Hit_Open',
+        '/ageofempires/Rusaoc_Cup/77',
     )
     seeders = (RankedLadderSeeder, OgnSeeder, JonSlowSeeder, AoeEloSeeder, RoboAtpSeeder,)
-    totals = defaultdict(int)
-    for url in tournament_urls:
-        tournament_name = re.sub(r'[/_]', ' ', url[14:])
-        tournament = Tournament(url)
-        tournament.load_advanced(loader)
-        print('*'*28)
-        print(tournament_name)
-        print('*'*28)
-
-        for name, system in POINT_SYSTEMS.items():
-            for seed_class in seeders:
-                seeder = seed_class(tournament)
-                score = seeder.score_bracket(system)
-                key = "{:19} - {:5}".format(seed_class.__name__, name)
-                totals[key] += score
-                print(" {}: {:5}".format(key, score))
-            print()
+    seeder_totals = {}
+    for seeder in seeders:
+        seeder_totals[seeder] = defaultdict(int)
+    for tier, tournament_urls in (('S-Tier', s_tournament_urls,), ('A-Tier', a_tournament_urls,),):
+        for url in tournament_urls:
+            tournament_name = re.sub(r'[/_]', ' ', url[14:])
+            tournament = Tournament(url)
+            tournament.load_advanced(loader)
+            for name, system in POINT_SYSTEMS.items():
+                for seed_class in seeders:
+                    totals = seeder_totals[seed_class]
+                    seeder = seed_class(tournament)
+                    score = seeder.score_bracket(system)
+                    key = "{}:{}".format(tier, name)
+                    all_key = "All:{}".format(name)
+                    totals[key] += score
+                    totals[all_key] += score
 
     print('*'*28)
     print("TOTALS")
     print('*'*28)
-    current_point_system = None
-    for key, score in totals.items():
-        _, point_system = key.split('-')
-        if not current_point_system:
-            current_point_system = point_system
-        elif current_point_system != point_system:
-            current_point_system = point_system
-            print()
-        print(" {}: {:5}".format(key, score))
+    headers = ['S-Tier:little', 'A-Tier:little', 'All:little', 'S-Tier:big', 'A-Tier:big', 'All:big',]
+    template = "{} {} {} {} {} {} {}"
+    print(template.format('System', *headers))
+    for seeder, totals in seeder_totals.items():
+        print(template.format(seeder.__name__, *[totals[key] for key in headers]))
 if __name__ == '__main__':
     run()
