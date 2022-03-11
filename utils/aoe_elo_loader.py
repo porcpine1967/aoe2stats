@@ -9,11 +9,12 @@ import re
 import time
 
 from bs4 import BeautifulSoup
+from dateutil.relativedelta import relativedelta
 import requests
 
 from liquiaoe.loaders import RequestsException, THROTTLE
 from liquiaoe.loaders import HttpsLoader as Loader
-from liquiaoe.managers import Tournament
+from liquiaoe.managers import Tournament, class_in_node
 
 from utils.identity import player_yaml, save_yaml
 from utils.tools import execute_sql, execute_bulk_insert
@@ -31,6 +32,7 @@ PLAYERS_CACHE = "tmp/aoe_elo_players.json"
 UPDATED_ATTRIBUTE = 'aoeelo_updated'
 SCORER = 'aoe-elo'
 LOGGER = logging.getLogger(LOGGER_NAME)
+ELO_PATTERN = re.compile(r'/player/([0-9]+)')
 
 class AoeEloLoader:
     def __init__(self):
@@ -78,6 +80,8 @@ def player_lookup():
     for player in player_yaml():
         if 'liquipedia' in player:
             lookup[player['liquipedia']] = player
+        if 'aoeelo' in player:
+            lookup[player['aoeelo']] = player
     return lookup
 
 def date_score_pairs(script_text, player_name):
@@ -121,6 +125,40 @@ def update_player(loader, player):
     if rows:
         execute_bulk_insert(SAVE_SCORES_SQL, rows)
         set_aoeelo_updated(player)
+    return soup
+
+def aoe_elo_player_per_month():
+    sql_t = """
+SELECT s.player_url, s.score
+FROM
+(SELECT player_url, score, evaluation_date
+FROM scores
+WHERE scorer = 'aoe-elo'
+AND evaluation_date < '{}') as s
+JOIN
+(SELECT player_url, max(evaluation_date) as med
+FROM scores
+WHERE scorer = 'aoe-elo'
+AND evaluation_date < '{}'
+GROUP BY player_url) as d
+ON s.player_url = d.player_url
+WHERE s.evaluation_date = d.med
+ORDER BY s.score DESC
+LIMIT 20
+"""
+    month_players = {}
+    year = 2020
+    month = 1
+    for ctr in range(25):
+        year_plus, month_plus = divmod(ctr, 12)
+        d = date(year + year_plus, month + month_plus, 1)
+        key = d.strftime('%Y-%m')
+        players = []
+        sql = sql_t.format(d, d)
+        for u, s in execute_sql(sql):
+            players.append(u[14:])
+        month_players[key] = players
+    return month_players
 
 def players_to_update(loader, tournament_url):
     players = []
@@ -158,7 +196,40 @@ def arguments():
         setup_logging()
     return args
 
-def run():
+def better_players(soup, player_id, month_match):
+    betters = set()
+    for node in soup.find_all('div', recursive=True):
+        if class_in_node('match-view', node):
+            player_elo = 0
+            opponent = ''
+            opponent_elo = 0
+            month, day, year = [x for x in node.text.split() if x][-3:]
+            try:
+                day = datetime.strptime(" ".join((month, day, year)), '%b %d, %Y')
+            except ValueError:
+                day = datetime.strptime(" ".join((day, year)), '%b %Y')
+            if day.year < 2020: #month_match not in (day.strftime('%Y-%m'), (day - relativedelta(months=1)).strftime('%Y-%m')):
+                continue
+            for player in node.find_all('div', recursive=True):
+                if class_in_node('player', player):
+                    elo = 0
+                    aoe_elo_id = 0
+                    name = ''
+                    for tag in player.descendants:
+                        if tag.name == 'a':
+                           aoe_elo_id = int(ELO_PATTERN.match(tag.attrs['href']).group(1))
+                        elif class_in_node('elo-num', tag):
+                            elo = int(tag.text)
+                    if aoe_elo_id == player_id:
+                        player_elo = elo
+                    else:
+                        opponent_id = aoe_elo_id
+                        opponent_elo = elo
+            if opponent_elo > player_elo:
+                betters.add(opponent_id)
+    return betters
+
+def update_from_tournament():
     args = arguments()
     tournament_loader = Loader()
 
@@ -167,6 +238,30 @@ def run():
     print("{:25}: {:2} players".format(args.tournament_url, len(players)))
     for player in players:
         update_player(loader, player)
+
+def update_from_aoe_players():
+    args = arguments()
+    loader = AoeEloLoader()
+    lookup = player_lookup()
+    soups = {}
+    for month, players in aoe_elo_player_per_month().items():
+        for player in players:
+            player_data = lookup[player]
+            if player not in soups:
+                player_url = "/ageofempires/{}".format(player)
+                soups[player] = update_player(loader, player_data)
+            for better_player_id in better_players(soups[player], player_data['aoeelo'], month):
+                try:
+                    better_player = lookup[better_player_id]
+                    if UPDATED_ATTRIBUTE not in better_player:
+                        LOGGER.debug("NEW PLAYER: {}".format(better_player['canonical_name']))
+                        update_player(loader, better_player)
+                        better_player[UPDATED_ATTRIBUTE] = datetime.now().date()
+                except KeyError:
+                    print("NO ENTRY FOR {}".format(better_player_id))
+
+def run():
+    update_from_tournament()
 
 if __name__ == '__main__':
     run()

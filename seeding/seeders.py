@@ -17,6 +17,7 @@ LOGGER = setup_logging()
 SQL_CACHE_FILE = 'tmp/sqlcache'
 STARTING_ROUND = 0
 POINT_SYSTEMS = {
+    'uniform': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
     'little': [1, 2, 3, 4, 6, 10, 16, 24,],
     'big': [1, 2, 4, 8, 16, 32, 64, 128,],
     }
@@ -42,6 +43,10 @@ ORDER BY s.score
             if player_url:
                 self.lookup[player_url] = score
         self.unranked = None
+        self.others = {}
+
+    def load_others(self, others):
+        pass
 
     def score_bracket(self, point_system):
         rounds = self.tournament.rounds[STARTING_ROUND:]
@@ -84,6 +89,28 @@ ORDER BY s.score
     def participants(self):
         return round_participants(self.tournament, STARTING_ROUND)
 
+class Winner(Seeder):
+    @property
+    def scorer(self):
+        return 'foo'
+    def bracket_predictions(self):
+        predictions = []
+        rounds = self.tournament.rounds[STARTING_ROUND:]
+        for idx, round_ in enumerate(rounds):
+            winners = {x['winner_url'] for x in round_ if x['winner_url']}
+            predictions.append(winners)
+        return predictions
+
+class HolySeeder(Seeder):
+    @property
+    def scorer(self):
+        return 'foo'
+    def load_others(self, others):
+        for participant in self.participants:
+            self.lookup[participant] = others[JonSlowSeeder].lookup[participant]/2
+            self.lookup[participant] += others[AoeEloSeeder].lookup[participant]*4
+            self.lookup[participant] += others[RoboAtpSeeder].lookup[participant]
+
 class AoeEloSeeder(Seeder):
     @property
     def scorer(self):
@@ -93,6 +120,7 @@ class RoboAtpSeeder(Seeder):
     @property
     def scorer(self):
         return 'robo-atp'
+
 class DBSeeder(Seeder):
     def __init__(self, tournament):
         self.load_cache()
@@ -132,7 +160,6 @@ def round_participants(tournament, round_index):
     round_ = tournament.rounds[round_index]
     return flatten([[x['winner_url'], x['loser_url'],] for x in round_])
 
-    
 class JonSlowSeeder(DBSeeder):
     SQL = """
 SELECT m.rating, c.mrating
@@ -222,6 +249,7 @@ def run():
         '/ageofempires/European_Rumble',
         '/ageofempires/Arabia_Invitational/2',
         '/ageofempires/Yolo_Cup',
+        '/ageofempires/Ellie%27s_Charity_Invitational/2',
         '/ageofempires/Masters_of_Arena/6',
         '/ageofempires/All-In_Cup',
         '/ageofempires/Visible_Cup/4',
@@ -229,7 +257,7 @@ def run():
         '/ageofempires/History_Hit_Open',
         '/ageofempires/Rusaoc_Cup/77',
     )
-    seeders = (RankedLadderSeeder, OgnSeeder, JonSlowSeeder, AoeEloSeeder, RoboAtpSeeder,)
+    seeders = (RankedLadderSeeder, OgnSeeder, JonSlowSeeder, AoeEloSeeder, RoboAtpSeeder, HolySeeder, Winner)
     seeder_totals = {}
     for seeder in seeders:
         seeder_totals[seeder] = defaultdict(int)
@@ -238,10 +266,13 @@ def run():
             tournament_name = re.sub(r'[/_]', ' ', url[14:])
             tournament = Tournament(url)
             tournament.load_advanced(loader)
-            for name, system in POINT_SYSTEMS.items():
-                for seed_class in seeders:
+            others = {}
+            for seed_class in seeders:
+                seeder = seed_class(tournament)
+                others[seed_class] = seeder
+                seeder.load_others(others)
+                for name, system in POINT_SYSTEMS.items():
                     totals = seeder_totals[seed_class]
-                    seeder = seed_class(tournament)
                     score = seeder.score_bracket(system)
                     key = "{}:{}".format(tier, name)
                     all_key = "All:{}".format(name)
@@ -251,8 +282,8 @@ def run():
     print('*'*28)
     print("TOTALS")
     print('*'*28)
-    headers = ['S-Tier:little', 'A-Tier:little', 'All:little', 'S-Tier:big', 'A-Tier:big', 'All:big',]
-    template = "{} {} {} {} {} {} {}"
+    headers = ['S-Tier:little', 'A-Tier:little', 'All:little', 'S-Tier:uniform', 'A-Tier:uniform', 'All:uniform', 'S-Tier:big', 'A-Tier:big', 'All:big',]
+    template = "{:20} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3}"
     print(template.format('System', *headers))
     for seeder, totals in seeder_totals.items():
         print(template.format(seeder.__name__, *[totals[key] for key in headers]))
