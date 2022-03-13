@@ -9,7 +9,7 @@ import re
 from liquiaoe.loaders import VcrLoader as Loader
 from liquiaoe.managers import Tournament
 
-from utils.robo_atp import player_ratings
+import utils.robo_atp
 from utils.identity import player_names, player_yaml
 from utils.tools import execute_sql, flatten, setup_logging
 
@@ -124,7 +124,7 @@ class RoboAtpSeeder(Seeder):
     def __init__(self, tournament):
         self.tournament = tournament
         self.lookup = defaultdict(int)
-        for name, rating in player_ratings(tournament.start).items():
+        for name, rating in utils.robo_atp.player_ratings(tournament.start).items():
             try:
                 player = LIQUIPEDIA_LOOKUP[name]
                 self.lookup["/ageofempires/{}".format(player.get('liquipedia'))] = rating
