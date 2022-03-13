@@ -23,7 +23,7 @@ LOGGER_NAME = "aoe2stats"
 def flatten(array):
     return [item for sublist in array for item in sublist]
 
-def cache_file(local_file, url):
+def cache_file(local_file, url, headers=None):
     """ Reloads the file from url. Returns whether used the cached file"""
     use_cache = False
     if os.path.exists(local_file):
@@ -31,7 +31,7 @@ def cache_file(local_file, url):
         if mtime > datetime.now() - timedelta(days=1):
             use_cache = True
     if not use_cache:
-        response = requests.get(url)
+        response = requests.get(url, headers=(headers or {}))
         data = response.text
         with open(local_file, "w") as f:
             for l in data:

@@ -27,6 +27,7 @@ VALUES %s
 ON CONFLICT DO NOTHING
 """
 
+PLAYERS_URL = "https://aoe-elo.com/api?request=players"
 PLAYERS_CACHE = "tmp/aoe_elo_players.json"
 
 UPDATED_ATTRIBUTE = 'aoeelo_updated'
@@ -37,7 +38,7 @@ ELO_PATTERN = re.compile(r'/player/([0-9]+)')
 class AoeEloLoader:
     def __init__(self):
         self.last_call = 0
-        self._player_list_url = "https://aoe-elo.com/api?request=players"
+        self._player_list_url = PLAYERS_URL
         self._headers = {"User-Agent": "aoe2stats/0.1 (feroc.felix@gmail.com)","Accept-Encoding": "gzip"}
         self._player_dict = None
 
@@ -48,15 +49,19 @@ class AoeEloLoader:
         return ''
 
     @property
-    def players(self):
-        if not self._player_dict:
-            load_file = None
-            self._player_dict = {}
+    def current_players(self):
             use_cache = cache_file(PLAYERS_CACHE, self._player_list_url)
             if not use_cache:
                 self.last_call = time.time()
             with open(PLAYERS_CACHE) as f:
-                data = json.load(f)
+                return json.load(f)
+
+    @property
+    def players(self):
+        if not self._player_dict:
+            load_file = None
+            self._player_dict = {}
+            data = self.current_players
             for player in data:
                 self._player_dict[player['id']] = player['url']
         return self._player_dict
@@ -268,10 +273,8 @@ def update_from_liquipedia(urls):
         player = lookup[player_url[14:]]
         update_player(loader, player)
 def run():
-    urls = (
-        '/ageofempires/Dench',
-        )
-    update_from_liquipedia(urls)
-
+    loader = AoeEloLoader()
+    for p in loader.players:
+        print(p)
 if __name__ == '__main__':
     run()

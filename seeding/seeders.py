@@ -9,7 +9,8 @@ import re
 from liquiaoe.loaders import VcrLoader as Loader
 from liquiaoe.managers import Tournament
 
-from utils.identity import player_yaml
+from utils.robo_atp import player_ratings
+from utils.identity import player_names, player_yaml
 from utils.tools import execute_sql, flatten, setup_logging
 
 LOGGER = setup_logging()
@@ -55,7 +56,7 @@ ORDER BY s.score
         for idx, round_ in enumerate(rounds):
             winners = {x['winner_url'] for x in round_ if x['winner_url']}
             if idx == 0:
-                self.unranked = [unranked for unranked in winners if not self.lookup[unranked]]
+                print([(unranked, self.tournament.start) for unranked in winners if not self.lookup[unranked]])
             correct = len(winners.intersection(predictions[idx]))
             winners = sorted([x[14:] for x in winners if x])
             guesses = sorted([x[14:] for x in predictions[idx]])
@@ -117,9 +118,17 @@ class AoeEloSeeder(Seeder):
         return 'aoe-elo'
 
 class RoboAtpSeeder(Seeder):
-    @property
-    def scorer(self):
-        return 'robo-atp'
+    def __init__(self, tournament):
+        self.tournament = tournament
+        self.lookup = defaultdict(int)
+        for name, rating in player_ratings(tournament.start).items():
+            try:
+                player = LIQUIPEDIA_LOOKUP[name]
+                self.lookup["/ageofempires/{}".format(player.get('liquipedia'))] = rating
+            except KeyError:
+                LOGGER.debug("{} not in liquipedia".format(name))
+        self.unranked = None
+        self.others = {}
 
 class DBSeeder(Seeder):
     def __init__(self, tournament):
@@ -248,7 +257,7 @@ def run():
         '/ageofempires/History_Hit_Open',
         '/ageofempires/Rusaoc_Cup/77',
     )
-    seeders = (RankedLadderSeeder, OgnSeeder, JonSlowSeeder, AoeEloSeeder, RoboAtpSeeder, HolySeeder, Winner)
+    seeders = (RoboAtpSeeder,) #RankedLadderSeeder, OgnSeeder, JonSlowSeeder, AoeEloSeeder, RoboAtpSeeder, HolySeeder, Winner)
     seeder_totals = {}
     for seeder in seeders:
         seeder_totals[seeder] = defaultdict(int)
@@ -279,4 +288,11 @@ def run():
     for seeder, totals in seeder_totals.items():
         print(template.format(seeder.__name__, *[totals[key] for key in headers]))
 if __name__ == '__main__':
+    LIQUIPEDIA_LOOKUP = {}
+    for player in player_yaml():
+        for alias in player_names(player):
+            LIQUIPEDIA_LOOKUP[alias] = player
+    MISSING = set()
     run()
+    for m in MISSING:
+        print(m)
