@@ -314,11 +314,7 @@ AND m.started = c.mstarted
     def cache_section(self):
         return 'TeamRankedLadderSeeder'
 
-class OgnSeeder(DBSeeder):
-    SQL = ""
-    def rating_from_sql(self, sql, participant):
-        return 0
-
+class OgnSeeder(Seeder):
     def load_others(self, others):
         for participant in self.participants:
             aoe_elo_score = others[AoeEloSeeder].lookup[participant]

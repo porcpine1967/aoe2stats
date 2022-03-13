@@ -24,28 +24,9 @@ POINT_SYSTEMS = {
     }
 
 class Seeder:
-    SQL = """
-SELECT s.player_url, s.score, s.evaluation_date
-FROM scores as s,
-(SELECT player_url, max(evaluation_date) as eval_date FROM scores
-WHERE evaluation_date <= '{}'
-AND scorer = '{}'
-GROUP BY player_url) as best_date
-WHERE best_date.player_url = s.player_url
-AND best_date.eval_date = s.evaluation_date
-AND scorer = '{}'
-ORDER BY s.score
-"""
     def __init__(self, tournament):
         self.tournament = tournament
         self.lookup = defaultdict(int)
-        cutoff = tournament.start
-        for player_url, score, _ in execute_sql(self.SQL.format(cutoff, self.scorer, self.scorer)):
-            if player_url:
-                self.lookup[player_url] = score
-        self.unranked = None
-        self.others = {}
-
     def load_others(self, others):
         pass
 
@@ -56,7 +37,9 @@ ORDER BY s.score
         for idx, round_ in enumerate(rounds):
             winners = {x['winner_url'] for x in round_ if x['winner_url']}
             if idx == 0:
-                print([(unranked, self.tournament.start) for unranked in winners if not self.lookup[unranked]])
+                missing = [unranked for unranked in winners if not self.lookup[unranked]]
+                if missing:
+                    LOGGER.warning("Missing {} {} {}".format(self.__class__.__name__, self.tournament.url, ", ".join(missing)))
             correct = len(winners.intersection(predictions[idx]))
             winners = sorted([x[14:] for x in winners if x])
             guesses = sorted([x[14:] for x in predictions[idx]])
@@ -91,9 +74,10 @@ ORDER BY s.score
         return round_participants(self.tournament, STARTING_ROUND)
 
 class Winner(Seeder):
-    @property
-    def scorer(self):
-        return 'foo'
+    def __init__(self, tournament):
+        self.tournament = tournament
+        self.lookup = defaultdict(lambda: 1)
+
     def bracket_predictions(self):
         predictions = []
         rounds = self.tournament.rounds[STARTING_ROUND:]
@@ -103,9 +87,6 @@ class Winner(Seeder):
         return predictions
 
 class HolySeeder(Seeder):
-    @property
-    def scorer(self):
-        return 'foo'
     def load_others(self, others):
         for participant in self.participants:
             self.lookup[participant] = others[JonSlowSeeder].lookup[participant]/2
@@ -113,6 +94,28 @@ class HolySeeder(Seeder):
             self.lookup[participant] += others[RoboAtpSeeder].lookup[participant]
 
 class AoeEloSeeder(Seeder):
+    SQL = """
+SELECT s.player_url, s.score, s.evaluation_date
+FROM scores as s,
+(SELECT player_url, max(evaluation_date) as eval_date FROM scores
+WHERE evaluation_date <= '{}'
+AND scorer = '{}'
+GROUP BY player_url) as best_date
+WHERE best_date.player_url = s.player_url
+AND best_date.eval_date = s.evaluation_date
+AND scorer = '{}'
+ORDER BY s.score
+"""
+    def __init__(self, tournament):
+        self.tournament = tournament
+        self.lookup = defaultdict(int)
+        cutoff = tournament.start
+        for player_url, score, _ in execute_sql(self.SQL.format(cutoff, self.scorer, self.scorer)):
+            if player_url:
+                self.lookup[player_url] = score
+        self.unranked = None
+        self.others = {}
+
     @property
     def scorer(self):
         return 'aoe-elo'
@@ -198,10 +201,6 @@ AND m.started = c.mstarted
             self.cache[sql] = ",".join((str(hold_current), str(hold_max),))
         return hold_current
 
-    @property
-    def cache_section(self):
-        return 'JonSlowSeeder'
-
 class JonSlowSeeder(RankedLadderSeeder):
     def rating_from_sql(self, sql, _):
         if sql in self.cache:
@@ -215,21 +214,16 @@ class JonSlowSeeder(RankedLadderSeeder):
                 hold_current = current_rating
             self.cache[sql] = ",".join((str(hold_current), str(hold_max),))
         return hold_current + hold_max
-
-class OgnSeeder(JonSlowSeeder):
     @property
     def cache_section(self):
-        return 'JonSlowSeeder'
+        return 'RankedLadderSeeder'
 
-    def rating_from_sql(self, sql, participant):
-        try:
-            aoe_elo_score = self.aoeseeder.lookup[participant]
-        except AttributeError:
-            self.aoeseeder = AoeEloSeeder(self.tournament)
-            aoe_elo_score = self.aoeseeder.lookup[participant]
-        rating = super().rating_from_sql(sql, participant)
-        t = "{:40} {} {} {:5}"
-        return rating + (2 * aoe_elo_score)
+class OgnSeeder(Seeder):
+    def load_others(self, others):
+        for participant in self.participants:
+            aoe_elo_score = others[AoeEloSeeder].lookup[participant]
+            jon_slow_score = others[JonSlowSeeder].lookup[participant]
+            self.lookup[participant] = aoe_elo_score*2 + jon_slow_score
 
 def run():
     loader = Loader()
@@ -257,7 +251,7 @@ def run():
         '/ageofempires/History_Hit_Open',
         '/ageofempires/Rusaoc_Cup/77',
     )
-    seeders = (RoboAtpSeeder,) #RankedLadderSeeder, OgnSeeder, JonSlowSeeder, AoeEloSeeder, RoboAtpSeeder, HolySeeder, Winner)
+    seeders = (RankedLadderSeeder, JonSlowSeeder, AoeEloSeeder, RoboAtpSeeder, OgnSeeder, HolySeeder, Winner)
     seeder_totals = {}
     for seeder in seeders:
         seeder_totals[seeder] = defaultdict(int)
