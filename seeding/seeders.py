@@ -160,7 +160,7 @@ def round_participants(tournament, round_index):
     round_ = tournament.rounds[round_index]
     return flatten([[x['winner_url'], x['loser_url'],] for x in round_])
 
-class JonSlowSeeder(DBSeeder):
+class RankedLadderSeeder(DBSeeder):
     SQL = """
 SELECT m.rating, c.mrating
 FROM matches m,
@@ -178,6 +178,24 @@ AND m.started = c.mstarted
 """.replace("\n", " ").lower()
     def rating_from_sql(self, sql, _):
         if sql in self.cache:
+            return int(self.cache[sql].split(',')[0])
+        LOGGER.debug(sql)
+        hold_current = hold_max = 0
+        for current_rating, max_rating in execute_sql(sql):
+            if max_rating > hold_max:
+                hold_max = max_rating
+            if current_rating > hold_current:
+                hold_current = current_rating
+            self.cache[sql] = ",".join((str(hold_current), str(hold_max),))
+        return hold_current
+
+    @property
+    def cache_section(self):
+        return 'JonSlowSeeder'
+
+class JonSlowSeeder(RankedLadderSeeder):
+    def rating_from_sql(self, sql, _):
+        if sql in self.cache:
             return sum([int(x) for x in self.cache[sql].split(',')])
         LOGGER.debug(sql)
         hold_current = hold_max = 0
@@ -186,35 +204,8 @@ AND m.started = c.mstarted
                 hold_max = max_rating
             if current_rating > hold_current:
                 hold_current = current_rating
-        self.cache[sql] = ",".join((str(hold_current), str(hold_max),))
+            self.cache[sql] = ",".join((str(hold_current), str(hold_max),))
         return hold_current + hold_max
-
-class RankedLadderSeeder(DBSeeder):
-    SQL = """
-SELECT m.rating
-FROM matches m,
-(SELECT max(started) as mstarted, player_id
-FROM matches
-WHERE
-player_id IN ({pids})
-AND game_type = 0
-AND team_size = 1
-AND rating IS NOT NULL
-AND started < {started:0.0f}
-GROUP BY player_id) as c
-WHERE m.player_id = c.player_id
-AND m.started = c.mstarted
-""".replace("\n", " ").lower()
-    def rating_from_sql(self, sql, _):
-        if sql in self.cache:
-            return int(self.cache[sql])
-        LOGGER.debug(sql)
-        hold_current = 0
-        for current_rating, in execute_sql(sql):
-            if current_rating > hold_current:
-                hold_current = current_rating
-        self.cache[sql] = str(hold_current)
-        return hold_current
 
 class OgnSeeder(JonSlowSeeder):
     @property
@@ -282,8 +273,8 @@ def run():
     print('*'*28)
     print("TOTALS")
     print('*'*28)
-    headers = ['S-Tier:little', 'A-Tier:little', 'All:little', 'S-Tier:uniform', 'A-Tier:uniform', 'All:uniform', 'S-Tier:big', 'A-Tier:big', 'All:big',]
-    template = "{:20} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3}"
+    headers = ['S-Tier:uniform', 'A-Tier:uniform', 'All:uniform','S-Tier:little', 'A-Tier:little', 'All:little', 'S-Tier:big', 'A-Tier:big', 'All:big',]
+    template = "{:22} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3}"
     print(template.format('System', *headers))
     for seeder, totals in seeder_totals.items():
         print(template.format(seeder.__name__, *[totals[key] for key in headers]))

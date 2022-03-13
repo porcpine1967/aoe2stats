@@ -258,10 +258,20 @@ def update_from_aoe_players():
                         update_player(loader, better_player)
                         better_player[UPDATED_ATTRIBUTE] = datetime.now().date()
                 except KeyError:
-                    print("NO ENTRY FOR {}".format(better_player_id))
-
+                    LOGGER.error("NO ENTRY FOR {}".format(better_player_id))
+def update_from_liquipedia(urls):
+    args = arguments()
+    loader = AoeEloLoader()
+    lookup = player_lookup()
+    for player_url in urls:
+        print(player_url)
+        player = lookup[player_url[14:]]
+        update_player(loader, player)
 def run():
-    update_from_tournament()
+    urls = (
+        '/ageofempires/Dench',
+        )
+    update_from_liquipedia(urls)
 
 if __name__ == '__main__':
     run()

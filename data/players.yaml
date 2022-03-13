@@ -631,7 +631,7 @@
   - Gkcloud
   - Gkt_cloud
   aoeelo: 94
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-03-12
   canonical_name: Cloud
   country: tw
   discord:
@@ -1730,7 +1730,7 @@
   - SilentSpring
   - SpringTV
   aoeelo: 13
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-03-12
   canonical_name: Spring
   country: us
   discord:
@@ -2436,6 +2436,7 @@
 - aka:
   - HeaveN
   aoeelo: 26
+  aoeelo_updated: 2022-03-12
   canonical_name: Hearttt
   country: pe
   esportsearnings: 41831
@@ -2603,6 +2604,7 @@
     vooblycn:
     - '123864424'
 - aoeelo: 249
+  aoeelo_updated: 2022-03-12
   canonical_name: Jupe
   country: fi
   id: 111
@@ -2642,6 +2644,7 @@
   youtube:
   - http://www.youtube.com/channel/UCnqNykFBw3U-Gvth4bQCw5A
 - aoeelo: 446
+  aoeelo_updated: 2022-03-12
   canonical_name: Kamigawa
   country: it
   id: 113
@@ -3346,6 +3349,7 @@
     voobly:
     - '124244937'
 - aoeelo: 74
+  aoeelo_updated: 2022-03-12
   canonical_name: LB10
   country: at
   id: 158
@@ -4537,6 +4541,7 @@
 - aka:
   - DarknoobHD
   aoeelo: 745
+  aoeelo_updated: 2022-03-12
   canonical_name: Darknoob
   country: nl
   id: 235
@@ -4662,6 +4667,7 @@
   twitch:
   - https://www.twitch.tv/the__bloodless
 - aoeelo: 748
+  aoeelo_updated: 2022-03-12
   canonical_name: Wisepii
   country: cl
   id: 243
@@ -4841,7 +4847,7 @@
   - VIK_Warrior
   - Warrior
   aoeelo: 118
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-03-12
   canonical_name: WaRRioR
   country: ru
   id: 254
@@ -6514,6 +6520,7 @@
     rl:
     - '1829213'
     - '3038783'
+    - '9736464'
 - aoeelo: 814
   canonical_name: Mr.Bean
   country: vn
@@ -6777,6 +6784,7 @@
 - aka:
   - VIK_Dench
   aoeelo: 649
+  aoeelo_updated: 2022-03-12
   canonical_name: Dench
   country: ru
   id: 376
@@ -6932,9 +6940,11 @@
     - '435965'
   team: 40
 - aoeelo: 447
+  aoeelo_updated: 2022-03-12
   canonical_name: Socksyy
   country: au
   id: 389
+  liquipedia: Socksyy
   name: Socksyy
   notability:
     aoe2: true
@@ -8042,3 +8052,196 @@
   platforms:
     rl:
     - '382118'
+- canonical_name: Tointoin
+  country: fr
+  name: ToinToin
+  platforms:
+    rl:
+    - '213249'
+- canonical_name: ___John___
+  country: hu
+  name: ___John___
+  platforms:
+    rl:
+    - '1651354'
+    - '3209989'
+- canonical_name: Imperio_CC
+  country: de
+  name: Imperio_cc
+  platforms:
+    rl:
+    - '2524736'
+- canonical_name: Mo_Tastic
+  country: us
+  name: Mo_Tastic.tv
+  platforms:
+    rl:
+    - '2204002'
+- canonical_name: LemonJack
+  country: ch
+  name: LemonJack
+  platforms:
+    rl:
+    - '878378'
+- canonical_name: Jimmy2Timez
+  country: ca
+  name: Jimmy2Timez
+  platforms:
+    rl:
+    - '277709'
+- canonical_name: S3Kingcat
+  country: de
+  name: S3Kingcat
+  platforms:
+    rl:
+    - '279640'
+- canonical_name: mratin
+  country: se
+  name: mratin
+  platforms:
+    rl:
+    - '210382'
+- canonical_name: Leisure_
+  country: ca
+  name: dadleisure
+  platforms:
+    rl:
+    - '2567136'
+- canonical_name: roggy
+  country: tr
+  name: Roggy
+  platforms:
+    rl:
+    - '2413974'
+- canonical_name: Mununez
+  country: us
+  name: Mununez
+  platforms:
+    rl:
+    - '3444509'
+- canonical_name: LoneStarr
+  country: at
+  name: Lonestarr
+  platforms:
+    rl:
+    - '4122204'
+- canonical_name: Bullet
+  country: in
+  name: BuLLet
+  platforms:
+    rl:
+    - '4317127'
+- canonical_name: IamZak
+  country: us
+  name: _IamZak_
+  platforms:
+    rl:
+    - '2672950'
+- canonical_name: DoubleZX_
+  country: de
+  name: DoubleZX
+  platforms:
+    rl:
+    - '2445846'
+- canonical_name: NakedNipples
+  country: us
+  name: NakedNipples
+  platforms:
+    rl:
+    - '208083'
+- canonical_name: PleaseBeGentle
+  country: be
+  name: PleaseBeGentle_
+  platforms:
+    rl:
+    - '213388'
+- canonical_name: Professor4k
+  country: tr
+  name: Professor4K
+  platforms:
+    rl:
+    - '225309'
+- canonical_name: kylar_
+  country: de
+  name: kylar_
+  platforms:
+    rl:
+    - '4583489'
+- canonical_name: MrPlanner
+  country: si
+  name: MrPlanner
+  platforms:
+    rl:
+    - '4362836'
+- canonical_name: silverstar
+  country: ca
+  name: silverstar
+  platforms:
+    rl:
+    - '2121463'
+- canonical_name: teutonic_tanks
+  country: at
+  name: teutonic_tanks
+  platforms:
+    rl:
+    - '332603'
+- canonical_name: Slaktarn
+  country: se
+  name: Slaktarn
+  platforms:
+    rl:
+    - '2812437'
+- canonical_name: Locuss
+  country: bg
+  name: Locuss
+  platforms:
+    rl:
+    - '2648074'
+- canonical_name: Target331
+  country: de
+  name: Target331
+  platforms:
+    rl:
+    - '245811'
+- canonical_name: Rgeadn
+  country: gb
+  name: Rgeadn
+  platforms:
+    rl:
+    - '234997'
+- canonical_name: Vilager
+  country: nl
+  name: Vilager
+  platforms:
+    rl:
+    - '2454180'
+- canonical_name: Kedaxx
+  country: fr
+  name: Kedaxx
+  platforms:
+    rl:
+    - '373600'
+- canonical_name: AncientSmokealot
+  country: de
+  name: AncientSmokealot
+  platforms:
+    rl:
+    - '125632'
+- canonical_name: Nolofinwe
+  country: tr
+  name: Nolofinwe
+  platforms:
+    rl:
+    - '288532'
+- canonical_name: Rooster
+  country: us
+  name: Rooster
+  platforms:
+    rl:
+    - '1273427'
+- canonical_name: Jerry
+  country: us
+  name: Jerry
+  platforms:
+    rl:
+    - '843204'
