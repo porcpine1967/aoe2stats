@@ -14,9 +14,9 @@ from utils.tools import cache_file
 PLAYERS_YAML = "data/players.yaml"
 
 
-SE_PLAYERS = ("tmp/players.yaml",
+SE_PLAYERS = ("cache/players.yaml",
               "https://raw.githubusercontent.com/SiegeEngineers/aoc-reference-data/master/data/players.yaml",)
-AOE_ELO_PLAYERS = ("tmp/aoe_elo_players.json",
+AOE_ELO_PLAYERS = ("cache/aoe_elo_players.json",
                    "https://aoe-elo.com/api/?request=players",)
 
 def canonical_identifiers(player_name, player_url, players):

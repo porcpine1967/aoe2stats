@@ -28,7 +28,7 @@ ON CONFLICT DO NOTHING
 """
 
 PLAYERS_URL = "https://aoe-elo.com/api?request=players"
-PLAYERS_CACHE = "tmp/aoe_elo_players.json"
+PLAYERS_CACHE = "cache/aoe_elo_players.json"
 
 UPDATED_ATTRIBUTE = 'aoeelo_updated'
 SCORER = 'aoe-elo'

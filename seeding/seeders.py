@@ -16,7 +16,7 @@ from utils.tools import execute_sql, flatten, setup_logging
 
 LOGGER = setup_logging()
 
-SQL_CACHE_FILE = 'tmp/sqlcache'
+SQL_CACHE_FILE = 'cache/sqlcache'
 
 STARTING_ROUND = 0
 POINT_SYSTEMS = {

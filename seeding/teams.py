@@ -22,7 +22,7 @@ REPLACEMENTS = {
     '/ageofempires/Gkt_cloud': '/ageofempires/Cloud_(Taiwanese_player)',
     }
 
-SQL_CACHE_FILE = 'tmp/sqlcache'
+SQL_CACHE_FILE = 'cache/sqlcache'
 STARTING_ROUND = 0
 POINT_SYSTEMS = {
     'uniform': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],

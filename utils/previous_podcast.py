@@ -53,7 +53,7 @@ def run():
     for tournament in manager._tournaments:
         tournament_names.append(tournament.name)
     tournaments = tournament_mentions(arguments().podcasts, tournament_names)
-    with open('tmp/tournament_mentions.json', 'w') as f:
+    with open('cache/tournament_mentions.json', 'w') as f:
         json.dump(tournaments, f)
 
 if __name__ == '__main__':
