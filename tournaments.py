@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """ Writes tournament information for week to file."""
+from collections import defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 import os
+import re
 
+from liquiaoe.loaders import VcrLoader as Loader
+from liquiaoe.managers import MatchResultsManager
+
+from utils.identity import players_by_name
 import utils.previous_podcast
 from utils.tournament_loader import arguments, TournamentLoader
 from utils.tools import tournament_timeboxes
@@ -62,7 +68,7 @@ def completed_tournament_lines(tournament):
     lines.append("")
     return lines
 
-def print_info(tournament_dict, podcasts):
+def print_info(tournament_dict, podcasts, match_results):
     lines = []
     for game, tournaments in tournament_dict.items():
         lines.append("*"*25)
@@ -70,6 +76,11 @@ def print_info(tournament_dict, podcasts):
         lines.append("*"*25)
         for tournament in tournaments:
             lines.extend(completed_tournament_lines(tournament))
+            if game == 'Age of Empires II' and tournament.url in match_results:
+                lines.append("\nUPSETS:")
+                for match_result in match_results[tournament.url]:
+                    lines.append(" {} beat {}".format(match_result.winner, match_result.loser))
+                lines.append("")
             for podcast in podcasts:
                 for paragraph in podcast.paragraphs:
                     if tournament.name in paragraph:
@@ -82,6 +93,33 @@ def setup_and_verify(working_dir):
     working_file = "{}/tournament_info.txt".format(working_dir)
     Path(working_dir).mkdir(exist_ok=True)
     return working_file
+
+def notable_match_results():
+    player_lookup = players_by_name()
+    def dd():
+        return defaultdict(int)
+    ratings = defaultdict(dd)
+    with open("{}/Documents/podcasts/aoe2/current/ratings.txt".format(os.getenv('HOME'))) as f:
+        for l in f:
+            if l.startswith('  .'):
+                continue
+            rank, atp, telo = re.split(r'  +', l.strip())
+            try:
+                ratings[player_lookup[atp]['liquipedia']]['ATP'] = int(rank[:-1])
+            except KeyError:
+                pass
+            try:
+                ratings[player_lookup[telo]['liquipedia']]['TELO'] = int(rank[:-1])
+            except KeyError:
+                pass
+    nmr = defaultdict(list)
+    manager = MatchResultsManager(Loader())
+    for match_result in manager.match_results:
+        winner = match_result.winner
+        loser = match_result.loser
+        if ratings[winner]['ATP'] > ratings[loser]['ATP'] and ratings[winner]['TELO'] > ratings[loser]['TELO']:
+            nmr[match_result.tournament].append(match_result)
+    return nmr
 
 def run():
     """ Do the thing"""
@@ -97,19 +135,20 @@ def run():
     working_file = setup_and_verify(working_dir)
     manager = TournamentLoader()
     podcasts = utils.previous_podcast.podcasts(os.getenv("HOME") + '/Documents/podcasts/aoe2')
+    match_results = notable_match_results()
     lines = []
     lines.append("="*25)
     lines.append("COMPLETED")
     lines.append("="*25)
-    lines.extend(print_info(manager.completed(last_week), podcasts))
+    lines.extend(print_info(manager.completed(last_week), podcasts, match_results))
     lines.append("="*25)
     lines.append("ONGOING")
     lines.append("="*25)
-    lines.extend(print_info(manager.ongoing(this_week[0]), podcasts))
+    lines.extend(print_info(manager.ongoing(this_week[0]), podcasts, match_results))
     lines.append("="*25)
     lines.append("STARTING")
     lines.append("="*25)
-    lines.extend(print_info(manager.starting(this_week), podcasts))
+    lines.extend(print_info(manager.starting(this_week), podcasts, match_results))
     with open(working_file, "w") as f:
         for line in lines:
             print(line)

@@ -38,6 +38,13 @@ def canonical_identifiers(player_name, player_url, players):
                 return (player['canonical_name'], player_url,)
     return (player_name, player_url)
 
+def players_by_name():
+    pbn = {}
+    for player in player_yaml():
+        for name in player_names(player):
+            pbn[name] = player
+    return pbn
+
 def player_yaml():
     with open(PLAYERS_YAML) as f:
         return yaml.safe_load(f)

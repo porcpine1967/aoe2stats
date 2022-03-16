@@ -6521,7 +6521,9 @@
     - '1829213'
     - '3038783'
     - '9736464'
-- aoeelo: 814
+- aka:
+  - Mr. Bean
+  aoeelo: 814
   canonical_name: Mr.Bean
   country: vn
   facebook_gaming:
@@ -6797,7 +6799,9 @@
     - '367774'
     - '3380761'
   team: 36
-- aoeelo: 886
+- aka:
+  - Dr. Kozmonot
+  aoeelo: 886
   canonical_name: Dr.Kozmonot
   country: tr
   id: 377
@@ -8245,3 +8249,23 @@
   platforms:
     rl:
     - '843204'
+- aoeelo: 517
+  canonical_name: FJ_chou
+  name: FJ_chou
+- aoeelo: 176
+  canonical_name: Cain
+  name: Cain
+- aoeelo: 396
+  canonical_name: aluba
+  name: aluba
+- aoeelo: 82
+  canonical_name: WraTh_
+  name: WraTh_
+- canonical_name: Eli
+  name: Eli
+  platforms:
+    rl:
+    - '1273427'
+- aoeelo: 319
+  canonical_name: Play_Boys
+  name: Play_Boys
