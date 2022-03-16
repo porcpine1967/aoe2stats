@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ Classes that predict the outcome of tournament brackets."""
-from collections import defaultdict
+from collections import Counter, defaultdict
+import csv
 from configparser import ConfigParser
 from datetime import datetime, time, timedelta
 import logging
@@ -16,6 +17,7 @@ from utils.tools import execute_sql, flatten, setup_logging
 LOGGER = setup_logging()
 
 SQL_CACHE_FILE = 'tmp/sqlcache'
+
 STARTING_ROUND = 0
 POINT_SYSTEMS = {
     'uniform': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
@@ -24,37 +26,74 @@ POINT_SYSTEMS = {
     }
 
 class Seeder:
-    def __init__(self, tournament):
+    def __init__(self, tournament, by_match=False):
         self.tournament = tournament
         self.lookup = defaultdict(int)
+        self.by_match = by_match
+        self._ranks = None
+
+    @property
+    def ranked_partipants(self):
+        if not self._ranks:
+            self._ranks = {}
+            participant_lookup = {}
+            for participant in self.participants:
+                participant_lookup[participant] = self.lookup[participant]
+            last_score = 0
+            last_rank = 0
+            for name in sorted(participant_lookup, key=lambda x: participant_lookup[x], reverse=True):
+                score = participant_lookup[name]
+                if score != last_score:
+                    last_rank += 1
+                    last_score = score
+                self._ranks[name] = last_rank
+        return self._ranks
+        
     def load_others(self, others):
         pass
 
     def score_bracket(self, point_system):
+        self.fails = {}
         rounds = self.tournament.rounds[STARTING_ROUND:]
         score = 0
-        predictions = self.bracket_predictions()
+        if self.by_match:
+            predictions = self.match_predictions()
+        else:
+            predictions = self.bracket_predictions()
         for idx, round_ in enumerate(rounds):
             winners = {x['winner_url'] for x in round_ if x['winner_url']}
             if idx == 0:
                 missing = [unranked for unranked in winners if not self.lookup[unranked]]
                 if missing:
                     LOGGER.warning("Missing {} {} {}".format(self.__class__.__name__, self.tournament.url, ", ".join(missing)))
-            correct = len(winners.intersection(predictions[idx]))
-            winners = sorted([x[14:] for x in winners if x])
-            guesses = sorted([x[14:] for x in predictions[idx]])
-            LOGGER.debug("WINNERS: {} | PREDICTIONS: {}".format(", ".join(winners), ", ".join(guesses)))
+            correct = 0
+            for idx2, match in enumerate(round_):
+                prediction = predictions[idx][idx2]
+                winner = match['winner_url']
+                if prediction:
+                    if prediction == winner:
+                        correct += 1
             score += correct * point_system[idx]
         return score
 
     def bracket_predictions(self):
-        """ Returns an array of sets with predicted winners of round"""
+        """ Returns an array of lists with predicted winners over bracket"""
         current_round = self.participants
         predictions = []
         while len(current_round) > 1:
             prediction = self.round_prediction(current_round)
-            predictions.append({x for x in prediction if x})
+            predictions.append(prediction)
             current_round = prediction
+        return predictions
+
+    def match_predictions(self):
+        """ Returns an array of lists with predicted winners over each round"""
+        predictions = []
+
+        for idx in range(STARTING_ROUND, len(self.tournament.rounds)):
+            current_round = round_participants(self.tournament, idx)
+            prediction = self.round_prediction(current_round)
+            predictions.append(prediction)
         return predictions
 
     def round_prediction(self, round_):
@@ -74,15 +113,15 @@ class Seeder:
         return round_participants(self.tournament, STARTING_ROUND)
 
 class Winner(Seeder):
-    def __init__(self, tournament):
-        self.tournament = tournament
+    def __init__(self, tournament, by_match):
+        super().__init__(tournament)
         self.lookup = defaultdict(lambda: 1)
 
     def bracket_predictions(self):
         predictions = []
         rounds = self.tournament.rounds[STARTING_ROUND:]
         for idx, round_ in enumerate(rounds):
-            winners = {x['winner_url'] for x in round_ if x['winner_url']}
+            winners = [x['winner_url'] for x in round_]
             predictions.append(winners)
         return predictions
 
@@ -99,31 +138,25 @@ SELECT s.player_url, s.score, s.evaluation_date
 FROM scores as s,
 (SELECT player_url, max(evaluation_date) as eval_date FROM scores
 WHERE evaluation_date <= '{}'
-AND scorer = '{}'
+AND scorer = 'aoe-elo'
 GROUP BY player_url) as best_date
 WHERE best_date.player_url = s.player_url
 AND best_date.eval_date = s.evaluation_date
-AND scorer = '{}'
+AND scorer = 'aoe-elo'
 ORDER BY s.score
 """
-    def __init__(self, tournament):
-        self.tournament = tournament
-        self.lookup = defaultdict(int)
+    def __init__(self, tournament, by_match):
+        super().__init__(tournament, by_match)
         cutoff = tournament.start
-        for player_url, score, _ in execute_sql(self.SQL.format(cutoff, self.scorer, self.scorer)):
+        for player_url, score, _ in execute_sql(self.SQL.format(cutoff)):
             if player_url:
                 self.lookup[player_url] = score
         self.unranked = None
         self.others = {}
 
-    @property
-    def scorer(self):
-        return 'aoe-elo'
-
 class RoboAtpSeeder(Seeder):
-    def __init__(self, tournament):
-        self.tournament = tournament
-        self.lookup = defaultdict(int)
+    def __init__(self, tournament, by_match):
+        super().__init__(tournament, by_match)
         for name, rating in utils.robo_atp.player_ratings(tournament.start).items():
             try:
                 player = LIQUIPEDIA_LOOKUP[name]
@@ -134,10 +167,9 @@ class RoboAtpSeeder(Seeder):
         self.others = {}
 
 class DBSeeder(Seeder):
-    def __init__(self, tournament):
+    def __init__(self, tournament, by_match):
+        super().__init__(tournament, by_match)
         self.load_cache()
-        self.tournament = tournament
-        self.lookup = defaultdict(int)
         cutoff = datetime.combine(tournament.start, time()).timestamp()
         players = player_yaml()
         for participant in self.participants:
@@ -225,7 +257,7 @@ class OgnSeeder(Seeder):
             jon_slow_score = others[JonSlowSeeder].lookup[participant]
             self.lookup[participant] = aoe_elo_score*2 + jon_slow_score
 
-def run():
+def run(by_match):
     loader = Loader()
     s_tournament_urls = (
         '/ageofempires/King_of_the_Desert/4',
@@ -251,7 +283,7 @@ def run():
         '/ageofempires/History_Hit_Open',
         '/ageofempires/Rusaoc_Cup/77',
     )
-    seeders = (RankedLadderSeeder, JonSlowSeeder, AoeEloSeeder, RoboAtpSeeder, OgnSeeder, HolySeeder, Winner)
+    seeders = (AoeEloSeeder, RankedLadderSeeder, JonSlowSeeder, OgnSeeder, RoboAtpSeeder, HolySeeder)
     seeder_totals = {}
     for seeder in seeders:
         seeder_totals[seeder] = defaultdict(int)
@@ -261,32 +293,45 @@ def run():
             tournament = Tournament(url)
             tournament.load_advanced(loader)
             others = {}
+            fails = {}
             for seed_class in seeders:
-                seeder = seed_class(tournament)
+                LOGGER.info(" {}".format(seed_class.__name__))
+                seeder = seed_class(tournament, by_match)
                 others[seed_class] = seeder
                 seeder.load_others(others)
+                printed = False
                 for name, system in POINT_SYSTEMS.items():
+                    if by_match and name != 'uniform':
+                        continue
                     totals = seeder_totals[seed_class]
                     score = seeder.score_bracket(system)
                     key = "{}:{}".format(tier, name)
                     all_key = "All:{}".format(name)
                     totals[key] += score
                     totals[all_key] += score
+                    if not printed:
+                        fails[seed_class] = seeder.fails
+                        printed = True
 
     print('*'*28)
     print("TOTALS")
     print('*'*28)
     headers = ['S-Tier:uniform', 'A-Tier:uniform', 'All:uniform','S-Tier:little', 'A-Tier:little', 'All:little', 'S-Tier:big', 'A-Tier:big', 'All:big',]
-    template = "{:22} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3}"
+    template = "{:30} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3} {:3}"
     print(template.format('System', *headers))
     for seeder, totals in seeder_totals.items():
-        print(template.format(seeder.__name__, *[totals[key] for key in headers]))
+        print(template.format(SEEDER_NAMES[seeder.__name__], *[totals[key] for key in headers]))
 if __name__ == '__main__':
+    SEEDER_NAMES = {
+        'AoeEloSeeder': "Tournament-Elo",
+        'RoboAtpSeeder': "ATP",
+        'HolySeeder': "Holy-Cup-Mix",
+        'RankedLadderSeeder': "Current-Ranked-Ladder-Elo",
+        'JonSlowSeeder': "Max+Current-Ranked-Ladder-Elo",
+        'OgnSeeder': "Tournament+Ranked-Ladder-Elo",
+        }
     LIQUIPEDIA_LOOKUP = {}
     for player in player_yaml():
         for alias in player_names(player):
             LIQUIPEDIA_LOOKUP[alias] = player
-    MISSING = set()
-    run()
-    for m in MISSING:
-        print(m)
+    run(True)
