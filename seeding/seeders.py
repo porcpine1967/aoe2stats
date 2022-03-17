@@ -11,11 +11,11 @@ from liquiaoe.loaders import VcrLoader as Loader
 from liquiaoe.managers import Tournament
 
 import utils.robo_atp
-from utils.identity import player_names, player_yaml
+from utils.identity import players_by_name
 from utils.tools import execute_sql, flatten, setup_logging
 
 LOGGER = setup_logging()
-
+LIQUIPEDIA_LOOKUP = players_by_name()
 SQL_CACHE_FILE = 'cache/sqlcache'
 
 STARTING_ROUND = 0
@@ -171,21 +171,21 @@ class DBSeeder(Seeder):
         super().__init__(tournament, by_match)
         self.load_cache()
         cutoff = datetime.combine(tournament.start, time()).timestamp()
-        players = player_yaml()
         for participant in self.participants:
             if not participant:
                 continue
             liquipedia_name = participant.split('/')[-1]
 
-            for player in players:
-                if liquipedia_name == player.get('liquipedia'):
-                    try:
-                        pids = [x for x in player['platforms']['rl'] if 'n' not in x]
-                        pid_str = ",".join(pids)
-                        sql = self.SQL.format(pids=pid_str, started=cutoff)
-                        self.lookup[participant] = self.rating_from_sql(sql.strip(), participant)
-                    except KeyError:
-                        break
+            try:
+                player = LIQUIPEDIA_LOOKUP[liquipedia_name]
+                pids = [x for x in player['platforms']['rl'] if 'n' not in x]
+                pid_str = ",".join(pids)
+                sql = self.SQL.format(pids=pid_str, started=cutoff)
+                self.lookup[participant] = self.rating_from_sql(sql.strip(), participant)
+            except KeyError:
+                print(liquipedia_name)
+                break
+
         self.save_cache()
     def save_cache(self):
         with open(SQL_CACHE_FILE, 'w') as f:
@@ -330,8 +330,5 @@ if __name__ == '__main__':
         'JonSlowSeeder': "Max+Current-Ranked-Ladder-Elo",
         'OgnSeeder': "Tournament+Ranked-Ladder-Elo",
         }
-    LIQUIPEDIA_LOOKUP = {}
-    for player in player_yaml():
-        for alias in player_names(player):
-            LIQUIPEDIA_LOOKUP[alias] = player
+
     run(True)

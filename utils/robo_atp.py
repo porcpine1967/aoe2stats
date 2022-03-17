@@ -10,7 +10,6 @@ import os
 from dateutil.relativedelta import relativedelta
 import requests
 
-from utils.robo_atp_loader import ROBO
 from utils.tools import cache_file
 
 ROBO_FILE = "cache/roboatp.json"
@@ -36,9 +35,6 @@ def player_ratings(end_date):
         except ValueError:
             pass
     return ratings
-
-def links():
-    
 
 def run():
     pass
