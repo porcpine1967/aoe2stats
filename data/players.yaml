@@ -1852,6 +1852,7 @@
   team: 19
   twitch:
   - https://www.twitch.tv/alive_kgb
+  - https://www.twitch.tv/aliveaoe
 - aoeelo: 145
   canonical_name: Ding
   country: hk
@@ -6509,6 +6510,8 @@
     - '5221317'
     voobly:
     - '123197577'
+  twitch:
+  - https://www.twitch.tv/aoemil
 - aoeelo: 1174
   canonical_name: Falcao
   country: br
@@ -6521,6 +6524,8 @@
     - '1829213'
     - '3038783'
     - '9736464'
+  twitch:
+  - https://www.twitch.tv/f47cao
 - aka:
   - Mr. Bean
   aoeelo: 814
@@ -7056,6 +7061,7 @@
     - '8033822'
     - '3543798'
     - '6161085'
+    - '9687532'
   twitch:
   - https://www.twitch.tv/kerpoaoe
 - canonical_name: Pinch3Terneira
@@ -8019,6 +8025,8 @@
     rl:
     - '2048591'
   team: 23
+  twitch:
+  - https://www.twitch.tv/quendi_kelar
 - canonical_name: ClemoL45
   country: fr
   id: 465
@@ -8048,6 +8056,7 @@
   - https://www.twitch.tv/LilTrouble__
   youtube:
   - http://www.youtube.com/LilTrouble_AoE
+  - https://www.youtube.com/LilTrouble_AoE
 - canonical_name: Locke
   country: us
   id: 467
@@ -8264,10 +8273,28 @@
   canonical_name: WraTh_
   name: WraTh_
 - canonical_name: Eli
+  country: us
+  id: 469
   name: Eli
+  notability:
+    aoe2: true
   platforms:
     rl:
-    - '1273427'
+    - '268051'
 - aoeelo: 319
   canonical_name: Play_Boys
   name: Play_Boys
+- canonical_name: TutusAsylum
+  country: fr
+  id: 468
+  liquipedia: TutusAsylum
+  name: TutusAsylum
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '4904132'
+  twitch:
+  - https://www.twitch.tv/TutusAsylum
+  youtube:
+  - https://www.youtube.com/c/TutusAsylum
