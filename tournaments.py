@@ -80,7 +80,7 @@ def print_info(tournament_dict, podcasts, loader):
                 if upsets:
                     lines.append("UPSETS:")
                     for upset in upsets:
-                        lines.append(" {}: {} beat {}".format(upset['date'], upset['winner'], upset['loser']))
+                        lines.append(" {}: {} beat {}".format(upset.date, upset.winner, upset.loser))
                     lines.append('')
             for podcast in podcasts:
                 for paragraph in podcast.paragraphs:
@@ -94,33 +94,6 @@ def setup_and_verify(working_dir):
     working_file = "{}/tournament_info.txt".format(working_dir)
     Path(working_dir).mkdir(exist_ok=True)
     return working_file
-
-def notable_match_results(loader):
-    player_lookup = players_by_name()
-    def dd():
-        return defaultdict(lambda: 100000)
-    ratings = defaultdict(dd)
-    with open("{}/Documents/podcasts/aoe2/current/ratings.txt".format(os.getenv('HOME'))) as f:
-        for l in f:
-            if l.startswith('  .'):
-                continue
-            rank, atp, telo = re.split(r'  +', l.strip())
-            try:
-                ratings[player_lookup[atp]['liquipedia']]['ATP'] = int(rank[:-1])
-            except KeyError:
-                pass
-            try:
-                ratings[player_lookup[telo]['liquipedia']]['TELO'] = int(rank[:-1])
-            except KeyError:
-                pass
-    nmr = defaultdict(list)
-    manager = MatchResultsManager(loader)
-    for match_result in manager.match_results:
-        winner = match_result.winner
-        loser = match_result.loser
-        if ratings[winner]['ATP'] > ratings[loser]['ATP'] and ratings[winner]['TELO'] > ratings[loser]['TELO']:
-            nmr[match_result.tournament].append(match_result)
-    return nmr
 
 def run():
     """ Do the thing"""
