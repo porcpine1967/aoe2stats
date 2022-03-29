@@ -80,7 +80,7 @@ def print_info(tournament_dict, podcasts, loader):
                 if upsets:
                     lines.append("UPSETS:")
                     for upset in upsets:
-                        lines.append(" {} beat {}".format(upset['winner'], upset['loser']))
+                        lines.append(" {}: {} beat {}".format(upset['date'], upset['winner'], upset['loser']))
                     lines.append('')
             for podcast in podcasts:
                 for paragraph in podcast.paragraphs:
