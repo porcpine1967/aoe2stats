@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """ Fetches data from db and/or liquipedia"""
 from argparse import ArgumentParser
-
+from collections import defaultdict
 from datetime import datetime
 import logging
+import os
+import re
 
 import psycopg2
 
@@ -12,7 +14,7 @@ from liquiaoe.managers import PlayerManager, TournamentManager
 
 from utils.tools import execute_sql, execute_transaction, tournament_timeboxes
 from utils.tools import setup_logging, LOGGER_NAME
-from utils.identity import player_yaml, save_yaml, canonical_identifiers
+from utils.identity import player_yaml, players_by_name, save_yaml, canonical_identifiers
 
 PLAYERS = player_yaml()
 
@@ -20,6 +22,8 @@ LOGGER = logging.getLogger(LOGGER_NAME)
 
 GAMES = ("Age of Empires II", "Age of Empires IV",)
 TIERS = ("S-Tier", "A-Tier", "B-Tier",)
+
+UPSET_WORTHY_PATH = 'cache/upset_worthy'
 
 FROM_SQL = """
 SELECT tier, start_date, end_date, prize, participant_count,
@@ -142,6 +146,8 @@ class TournamentLoader:
         for api_tournament in tournaments:
             if not api_tournament.tier in TIERS:
                 continue
+            if api_tournament.cancelled:
+                continue
             tournament = Tournament(api_tournament, self.loader)
             db_tournaments.append(tournament)
         return db_tournaments
@@ -248,13 +254,69 @@ def player_result_present(player_name, player_url, tournament_url):
         return True
     return False
 
+def ratings():
+    player_lookup = players_by_name()
+    def dd():
+        return defaultdict(lambda: 100000)
+    _ratings = defaultdict(dd)
+    with open("{}/Documents/podcasts/aoe2/current/ratings.txt".format(os.getenv('HOME'))) as f:
+        for l in f:
+            if l.startswith('  .'):
+                continue
+            rank, atp, telo = re.split(r'  +', l.strip())
+            try:
+                _ratings[player_lookup[atp]['liquipedia']]['ATP'] = int(rank[:-1])
+            except KeyError:
+                pass
+            try:
+                _ratings[player_lookup[telo]['liquipedia']]['TELO'] = int(rank[:-1])
+            except KeyError:
+                pass
+    return _ratings
+
 class Tournament:
     def __init__(self, api_tournament, loader):
         self.api_tournament = api_tournament
         self.url = api_tournament.url
         self.first_place_tournaments = []
+        self.loader = loader
         self._load(loader)
 
+    @property
+    def check_for_upsets(self):
+        if self.start > datetime.now().date() or self.team:
+            return False
+        last_letter = ''
+        with open(UPSET_WORTHY_PATH) as f:
+            for l in f:
+                if self.url in l:
+                    last_letter = l.strip()[-1]
+        if last_letter:
+            return last_letter == 'T'
+        self.api_tournament.load_advanced(self.loader)
+        if not self.api_tournament.participants:
+            return False
+        r = ratings()
+        rated_players = len({x for x in self.api_tournament.participants if x[0] in r})
+        should_check = rated_players > 1
+        with open(UPSET_WORTHY_PATH, 'a') as f:
+            f.write("\n{}: {}".format(self.url, should_check and 'T'))
+        return should_check
+
+    @property
+    def upsets(self):
+        _upsets = []
+        if not self.check_for_upsets:
+            return upsets
+        _ratings = ratings()
+        self.api_tournament.load_advanced(self.loader)
+        for match in self.api_tournament.matches:
+            winner = match['winner']
+            loser = match['loser']
+            if _ratings[winner]['ATP'] > _ratings[loser]['ATP'] and _ratings[winner]['TELO'] > _ratings[loser]['TELO']:
+                _upsets.append(match)
+        return _upsets
+        
     def _load(self, loader):
         sql = FROM_SQL.format(self.url)
         in_db = False
@@ -286,7 +348,7 @@ class Tournament:
         self._load_placement_results(loader)
 
     def _verify_participant_placements(self, loader):
-        if not self.first_place:
+        if self.team or not self.first_place:
             return
         name, url = canonical_identifiers(self.first_place, self.first_place_url, PLAYERS)
         if not player_result_present(name, url, self.url):
