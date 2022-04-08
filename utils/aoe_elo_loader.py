@@ -30,6 +30,9 @@ ON CONFLICT DO NOTHING
 PLAYERS_URL = "https://aoe-elo.com/api?request=players"
 PLAYERS_CACHE = "cache/aoe_elo_players.json"
 
+TOURNAMENTS_URL = "https://aoe-elo.com/api?request=tournaments"
+TOURNAMENTS_CACHE = "cache/aoe_elo_tournaments.json"
+
 UPDATED_ATTRIBUTE = 'aoeelo_updated'
 SCORER = 'aoe-elo'
 LOGGER = logging.getLogger(LOGGER_NAME)
@@ -39,8 +42,10 @@ class AoeEloLoader:
     def __init__(self):
         self.last_call = 0
         self._player_list_url = PLAYERS_URL
+        self._tournament_list_url = TOURNAMENTS_URL
         self._headers = {"User-Agent": "aoe2stats/0.1 (feroc.felix@gmail.com)","Accept-Encoding": "gzip"}
         self._player_dict = None
+        self._tournament_dict = None
 
     def player_page(self, player_id):
         """ Returns the string version of the player page"""
@@ -49,12 +54,20 @@ class AoeEloLoader:
         return ''
 
     @property
+    def current_tournaments(self):
+        use_cache = cache_file(TOURNAMENTS_CACHE, self._tournament_list_url)
+        if not use_cache:
+            self.last_call = time.time()
+        with open(TOURNAMENTS_CACHE) as f:
+            return json.load(f)
+
+    @property
     def current_players(self):
-            use_cache = cache_file(PLAYERS_CACHE, self._player_list_url)
-            if not use_cache:
-                self.last_call = time.time()
-            with open(PLAYERS_CACHE) as f:
-                return json.load(f)
+        use_cache = cache_file(PLAYERS_CACHE, self._player_list_url)
+        if not use_cache:
+            self.last_call = time.time()
+        with open(PLAYERS_CACHE) as f:
+            return json.load(f)
 
     @property
     def players(self):
@@ -66,6 +79,9 @@ class AoeEloLoader:
                 self._player_dict[player['id']] = player['url']
         return self._player_dict
 
+    def tournament_players(self, tournament):
+        details = json.loads(self.response_text(tournament['api_url']))
+        return details['players']
     def response_text(self, url):
         LOGGER.warning("Calling aoe-elo url {}".format(url))
         if self.last_call + THROTTLE > time.time():
@@ -272,9 +288,27 @@ def update_from_liquipedia(urls):
         print(player_url)
         player = lookup[player_url[14:]]
         update_player(loader, player)
+
+def update_from_aoe_elo_tournaments(loader):
+    sql = """
+SELECT max(evaluation_date)
+FROM scores
+WHERE scorer = 'aoe-elo'
+"""
+    lookup = player_lookup()
+    for last_date, in execute_sql(sql):
+        start = datetime.combine(last_date, datetime.max.time()).timestamp()
+    players = set()
+    for tournament in loader.current_tournaments:
+        if start < tournament['end_timestamp']:
+            players.update(loader.tournament_players(tournament))
+    for player_id in players:
+        try:
+            update_player(loader, lookup[player_id])
+        except KeyError:
+            print("NO SUCH PLAYER {}".format(player_id))
 def run():
     loader = AoeEloLoader()
-    for p in loader.players:
-        print(p)
+    update_from_aoe_elo_tournaments(loader)
 if __name__ == '__main__':
     run()

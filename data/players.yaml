@@ -65,7 +65,7 @@
   - 8euro
   - Bacgioifro
   aoeelo: 16
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: BacT
   country: vn
   esportsearnings: 14723
@@ -105,7 +105,7 @@
   - vivi
   - "\u627E\u4E2A\u5382\u4E0A\u73ED\u5427"
   aoeelo: 35
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: Vivi
   country: cn
   douyu:
@@ -126,6 +126,7 @@
     - '6109694'
     - '9414010'
     - '9695965'
+    - '9873875'
     voobly:
     - '123493096'
     - '123303397'
@@ -138,7 +139,7 @@
   - TheYo
   - The_Yo
   aoeelo: 19
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Yo
   country: cn
   douyu:
@@ -214,7 +215,7 @@
   - Hisoka
   - LaN
   aoeelo: 62
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: LaaaaaN
   country: es
   esportsearnings: 56830
@@ -237,7 +238,7 @@
   twitch:
   - https://www.twitch.tv/lan_aoe
 - aoeelo: 4
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: dogao
   country: br
   esportsearnings: 12250
@@ -270,7 +271,7 @@
   - Barn3yStinson
   - Rob3rStinson
   aoeelo: 31
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: TaToH
   country: es
   esportsearnings: 41416
@@ -308,7 +309,7 @@
   - VIK_Vinchester
   - Vinch
   aoeelo: 55
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: Vinch
   country: ru
   esportsearnings: 42069
@@ -369,7 +370,7 @@
   - Tia_Harribel
   - _Barles_
   aoeelo: 79
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Barles
   country: pl
   id: 14
@@ -392,7 +393,7 @@
   - Thuongthoi
   - Yellow
   aoeelo: 15
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: saymyname
   country: vn
   esportsearnings: 14724
@@ -440,7 +441,7 @@
   twitch:
   - https://www.twitch.tv/chartaoc
 - aoeelo: 853
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Valas
   country: fi
   id: 17
@@ -487,7 +488,7 @@
   - F1re
   - TiMe_4_F1Re
   aoeelo: 5
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: F1Re
   country: br
   esportsearnings: 14714
@@ -514,7 +515,7 @@
 - aka:
   - Vietnam_human
   aoeelo: 14
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: ACCM
   country: vn
   esportsearnings: 14727
@@ -563,6 +564,8 @@
     - '6252391'
     - '9235635'
     - '9615599'
+    - '9798830'
+    - '6381504'
     voobly:
     - '182612'
     - '125129993'
@@ -676,6 +679,7 @@
     - paladin
     rl:
     - '210601'
+    - '5744943'
     voobly:
     - '123835916'
     - '179227'
@@ -685,7 +689,7 @@
   - Shmeker
   - Vegeta
   aoeelo: 1
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: DauT
   country: rs
   discord:
@@ -789,7 +793,7 @@
 - aka:
   - BUGUM
   aoeelo: 75
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: Belgium
   country: be
   discord:
@@ -813,7 +817,7 @@
   youtube:
   - https://www.youtube.com/channel/UCtLQsBrf-ugm0g1XitneyIw
 - aoeelo: 50
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Zuppi
   country: fi
   esportsearnings: 15934
@@ -842,7 +846,7 @@
   - DraconT
   - Dracont
   aoeelo: 100
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: DracKeN
   country: cz
   id: 31
@@ -868,7 +872,7 @@
 - aka:
   - The_Viper
   aoeelo: 29
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: TheViper
   country: 'no'
   discord:
@@ -915,7 +919,7 @@
   - Realm
   - Surya
   aoeelo: 32
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: slam
   country: ca
   esportsearnings: 12253
@@ -943,7 +947,7 @@
 - aka:
   - DLam
   aoeelo: 69
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Daniel
   country: us
   id: 34
@@ -1022,7 +1026,7 @@
 - aka:
   - NicoV
   aoeelo: 27
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Nicov
   country: ar
   discord:
@@ -1060,7 +1064,7 @@
   - JorDanTV
   - JorDan_23
   aoeelo: 30
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: JorDan
   country: de
   discord:
@@ -1129,7 +1133,7 @@
     - '125129980'
   team: 30
 - aoeelo: 51
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Villese
   country: fi
   esportsearnings: 43218
@@ -1184,7 +1188,7 @@
   - OnlyRooK
   - OnlyRook
   aoeelo: 2
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: miguel
   country: br
   esportsearnings: 15928
@@ -1258,7 +1262,7 @@
   youtube:
   - https://www.youtube.com/channel/UCI7xIJYOC2OEb6ttrsH2QHA
 - aoeelo: 12
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: Sitaux
   country: fr
   id: 46
@@ -1289,7 +1293,7 @@
   youtube:
   - http://www.youtube.com/channel/UCyRoER5J4CNYnpvxMy8zmvA
 - aoeelo: 53
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Rubenstock
   country: fi
   esportsearnings: 15936
@@ -1377,7 +1381,7 @@
 - aka:
   - K4SVA
   aoeelo: 195
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Kasva
   country: tr
   discord:
@@ -1420,6 +1424,7 @@
     rl:
     - '227857'
     - '1688652'
+    - '6268226'
     voobly:
     - '123642997'
     - '123641000'
@@ -1496,7 +1501,7 @@
 - aka:
   - Dziam
   aoeelo: 127
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Dziamdziak
   country: pl
   discord:
@@ -2051,7 +2056,7 @@
   twitch:
   - https://www.twitch.tv/spadenaoc
 - aoeelo: 159
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Monoz
   country: ar
   id: 84
@@ -2134,7 +2139,7 @@
 - aka:
   - KuTaTaXoa
   aoeelo: 852
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: SongSong
   country: vn
   id: 88
@@ -2212,7 +2217,7 @@
   - LordOfMOS
   - Sddfge
   aoeelo: 99
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: classicpro
   country: ua
   id: 91
@@ -2280,7 +2285,7 @@
   - Nagash
   - Teclis
   aoeelo: 273
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: Capoch
   country: ar
   discord:
@@ -2352,6 +2357,7 @@
     - '2868603'
     - '1369578'
     - '3796982'
+    - '6442860'
     voobly:
     - '187035'
     - '123831728'
@@ -2550,6 +2556,7 @@
     rl:
     - '971296'
     - '5126520'
+    - '9803576'
     voobly:
     - '123222710'
     - '7950'
@@ -2700,7 +2707,7 @@
   - Kongensgade_42
   - L1k3_A_B0SS
   aoeelo: 132
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Kongensgade
   country: dk
   id: 115
@@ -3055,7 +3062,7 @@
   - Dragonstar
   - TheDragonstar
   aoeelo: 603
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Dragonstar
   country: in
   id: 140
@@ -3132,6 +3139,7 @@
 - aka:
   - GoldenAcid
   aoeelo: 197
+  aoeelo_updated: 2022-04-07
   canonical_name: GoldenEnd
   country: nl
   id: 145
@@ -3888,6 +3896,7 @@
     voobly:
     - '123308350'
 - aoeelo: 656
+  aoeelo_updated: 2022-04-07
   canonical_name: Survivalist
   country: ca
   discord:
@@ -3979,7 +3988,7 @@
 - aka:
   - repard
   aoeelo: 245
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Repard
   country: ru
   id: 205
@@ -4061,7 +4070,7 @@
   - Bruhtal
   - bruh
   aoeelo: 149
-  aoeelo_updated: 2022-03-07
+  aoeelo_updated: 2022-04-07
   canonical_name: Bruh
   country: br
   id: 209
@@ -4107,7 +4116,7 @@
   - T90
   - T90Official
   aoeelo: 498
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: T90
   country: us
   discord:
@@ -4179,7 +4188,7 @@
 - aka:
   - Dynamite
   aoeelo: 752
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Dark
   country: ru
   id: 215
@@ -4249,7 +4258,7 @@
   - BadB0y_
   - Badboy
   aoeelo: 743
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Badboy
   country: vn
   id: 219
@@ -4287,7 +4296,7 @@
   - Black
   - _BL4CK_
   aoeelo: 93
-  aoeelo_updated: 2022-02-13
+  aoeelo_updated: 2022-04-07
   canonical_name: BL4CK
   country: ar
   id: 221
@@ -4357,6 +4366,7 @@
 - aka:
   - TennesseeWhiskey
   aoeelo: 615
+  aoeelo_updated: 2022-04-07
   canonical_name: JackK
   country: pl
   id: 225
@@ -4567,6 +4577,7 @@
   platforms:
     rl:
     - '1630598'
+    - '7715590'
     voobly:
     - '123607994'
 - aoeelo: 219
@@ -4653,7 +4664,7 @@
   - TheBloodless
   - ZeBludlass
   aoeelo: 722
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: The Bloodless
   country: us
   id: 242
@@ -5005,6 +5016,9 @@
     - '6240092'
     - '6150436'
     - '9599374'
+    - '9792453'
+    - '9687739'
+    - '9888746'
   twitch:
   - https://www.twitch.tv/ertugaoe
   twitter:
@@ -5365,7 +5379,7 @@
     - '3579491'
   team: 10
 - aoeelo: 614
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: D3rp
   country: nl
   id: 282
@@ -5497,7 +5511,7 @@
   - Clement
   - "Cl\xE9ment"
   aoeelo: 605
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Cl3m3nT
   country: fr
   id: 291
@@ -5546,7 +5560,7 @@
   youtube:
   - http://www.youtube.com/channel/UCoWEA6fgQOHF4L5Nt3WPA1A
 - aoeelo: 635
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: FreakinAndy
   country: at
   id: 294
@@ -5675,6 +5689,7 @@
   - https://www.youtube.com/c/JuanPerottiAoE
   youtube_live:
   - http://www.youtube.com/channel/UCZ4aiIlpiIn0dUTiXTjqDJw/live
+  - https://www.youtube.com/channel/UCZ4aiIlpiIn0dUTiXTjqDJw/live
 - canonical_name: KhaLeN
   country: fr
   id: 303
@@ -5754,7 +5769,7 @@
 - aka:
   - Margou
   aoeelo: 651
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Margougou
   country: fr
   id: 308
@@ -5816,6 +5831,7 @@
   - https://twitter.com/MembTV
   youtube:
   - http://www.youtube.com/FoptMembrillo
+  - https://www.youtube.com/FoptMembrillo
 - aka:
   - Aura
   - Micav
@@ -5849,6 +5865,7 @@
   - https://www.twitch.tv/moonfaller
   youtube:
   - http://www.youtube.com/channel/UC_69Nt352RIEMXfhlBeF4VA
+  - https://www.youtube.com/channel/UC_69Nt352RIEMXfhlBeF4VA
 - aka:
   - Mr_moon
   canonical_name: Mr.moon
@@ -6017,11 +6034,15 @@
   platforms:
     rl:
     - '4632681'
+    voobly:
+    - '124754548'
+  twitch:
+  - https://www.twitch.tv/overtaken_aoe
 - aka:
   - Call_Me_SuBotai
   - Sebastion2002
   aoeelo: 936
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: Sebastian2002
   country: uy
   id: 324
@@ -6585,6 +6606,7 @@
   - https://twitter.com/DjangoFly
   youtube:
   - https://www.youtube.com/channel/UC7li9aVSk8b94hNEZdDPAcg
+  - https://www.youtube.com/channel/UCkONYmgc8jP97a4AXQ4yGiA
 - canonical_name: TieuQuy
   country: vn
   id: 359
@@ -6669,6 +6691,8 @@
     rl:
     - '994370'
     - '1177662'
+  twitch:
+  - https://www.twitch.tv/iam2k1
 - canonical_name: "Qu\u1EA3ng Tr\u1ECB"
   country: vn
   id: 366
@@ -6831,6 +6855,7 @@
     rl:
     - '516841'
     - '2762038'
+    - '3496839'
   twitch:
   - https://www.twitch.tv/emalius2
 - aka:
@@ -7150,6 +7175,8 @@
   - https://www.twitch.tv/nacho_aoe
   twitter:
   - https://twitter.com/NachoAoe
+  youtube_live:
+  - https://www.youtube.com/channel/UCPi7qn4OydOUSfHQqU0XDQg/live
 - canonical_name: TWest
   country: us
   id: 403
@@ -7220,7 +7247,7 @@
   twitch:
   - https://www.twitch.tv/torrelles
 - aoeelo: 1139
-  aoeelo_updated: 2022-02-08
+  aoeelo_updated: 2022-04-07
   canonical_name: uno1
   country: ar
   id: 408
@@ -7361,6 +7388,7 @@
     rl:
     - '6744520'
     - '210888'
+    - '9747712'
   twitch:
   - https://www.twitch.tv/silenttv
   youtube:
@@ -7465,6 +7493,7 @@
     - '180520'
     - '4379431'
 - aoeelo: 612
+  aoeelo_updated: 2022-04-07
   canonical_name: Poxo
   country: es
   id: 425
@@ -7725,6 +7754,8 @@
     - '633255'
     voobly:
     - '124223693'
+  twitch:
+  - https://www.twitch.tv/mrtempooo
 - aoeelo: 211
   canonical_name: FasT
   country: vn
@@ -7896,6 +7927,7 @@
   - C3mbre
   - c3mbrich
   aoeelo: 666
+  aoeelo_updated: 2022-04-07
   canonical_name: C3mbrich
   country: es
   id: 458
@@ -8002,6 +8034,8 @@
   platforms:
     rl:
     - '208952'
+  twitch:
+  - https://www.twitch.tv/shed_au
 - aoeelo: 221
   aoeelo_updated: 2022-02-28
   canonical_name: Yezris
@@ -8298,3 +8332,45 @@
   - https://www.twitch.tv/TutusAsylum
   youtube:
   - https://www.youtube.com/c/TutusAsylum
+- canonical_name: Big Scoob
+  country: ee
+  id: 470
+  name: Big Scoob
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '264469'
+    - '5858565'
+    - '3324111'
+    - '9109942'
+- canonical_name: Wayne Chang
+  country: tw
+  id: 471
+  liquipedia: Wayne_Chang
+  name: Wayne Chang
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '4814983'
+  youtube:
+  - https://www.youtube.com/channel/UC3dM4HsFy6j9AUkzlthRBiA
+  youtube_live:
+  - https://www.youtube.com/channel/UC3dM4HsFy6j9AUkzlthRBiA/live
+- canonical_name: Nova
+  country: ar
+  discord:
+  - https://discord.gg/EbVbZGU
+  id: 472
+  liquipedia: NovaAoE
+  name: Nova
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '229804'
+  twitch:
+  - https://www.twitch.tv/novaaoe
+  youtube:
+  - https://www.youtube.com/channel/UCE1-6wfKM7QsDq71qFuVmRg

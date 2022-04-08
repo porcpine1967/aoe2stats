@@ -109,7 +109,7 @@ def run():
     last_wednesday = last_time_breakpoint(datetime.now())
     this_week = (last_wednesday - timedelta(days=7)).strftime("%Y%m%d")
     print(this_week)
-    for metric in ("popularity", "winrate"):
+    for metric in ("popularity", "winrate",):
         print("*" * len(metric))
         print(metric)
         print("*" * len(metric))
