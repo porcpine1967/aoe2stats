@@ -10,6 +10,7 @@ import os
 from dateutil.relativedelta import relativedelta
 import requests
 
+from utils.identity import players_by_name
 from utils.tools import cache_file
 
 ROBO_FILE = "cache/roboatp.json"
@@ -35,6 +36,18 @@ def player_ratings(end_date):
         except ValueError:
             pass
     return ratings
+
+def robo_profile_ids():
+    """ Returns map of player name per robo and list of ranked ladder profile ids """
+    profile_map = {}
+    players = players_by_name()
+    for row in robo_data()['values'][1:]:
+        name = row[5]
+        try:
+            profile_map[name] = players[name]['platforms']['rl']
+        except KeyError:
+            pass
+    return profile_map
 
 def run():
     pass

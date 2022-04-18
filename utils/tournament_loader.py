@@ -120,6 +120,7 @@ class TournamentLoader:
     def __init__(self):
         self.tournament_manager = TournamentManager(Loader())
         self.loader = self.tournament_manager.loader
+        self.tournament_manager.load_extra('local/extra_tournaments.yaml')
 
     def starting(self, timebox):
         """ Fetch information on all upcoming tournaments."""
@@ -370,6 +371,7 @@ class Tournament:
     def _verify(self, loader):
         first_place_check = self.first_place == self.api_tournament.first_place or (self.first_place and self.team)
         if not all((
+                not self.api_tournament.extra or self.api_tournament.loaded,
                 self.name == self.api_tournament.name,
                 self.tier == self.api_tournament.tier,
                 self.start == self.api_tournament.start,

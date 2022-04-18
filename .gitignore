@@ -138,3 +138,4 @@ tmp/*
 logs/*
 TAGS
 cache/*
+local/*

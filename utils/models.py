@@ -14,11 +14,13 @@ class Player:
         self.elos = []
         self.total = 0.0
 
-    def add_civ_use(self, civ, civ_count):
+    def add_civ_use(self, civ, civ_count, elos=''):
         """ Adds civilization usage data for later calculations. """
         civ_id = ":".join(sorted(civ.split(":")))
         self.civ_uses[civ_id] += civ_count
         self.total += civ_count
+        if elos:
+            self.elos.extend([int(x) for x in elos.split(',')])
 
     def add_map_use(self, map_type, map_count):
         """ Adds map usage data for later calculations. """

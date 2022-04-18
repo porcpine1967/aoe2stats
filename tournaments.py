@@ -102,8 +102,8 @@ def run():
         now = datetime.strptime(args.date, "%Y%m%d")
     else:
         now = datetime.now()
-        if now.weekday() in (0, 1, 6):
-            now += timedelta(days=4)
+        if now.weekday() != 2:
+            now += timedelta(days=6)
     last_week, this_week = tournament_timeboxes(now)
     working_dir = this_week[0].strftime("%Y%m%d")
     working_file = setup_and_verify(working_dir)
