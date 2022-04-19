@@ -6,7 +6,6 @@ from liquiaoe.loaders import HttpsLoader as Loader
 from liquiaoe.managers import TransferManager
 
 from map_report import run as run_map_report
-from smurf import run as run_smurf
 from utils.tools import civ_map, execute_sql, last_time_breakpoint
 
 
@@ -141,7 +140,4 @@ if __name__ == "__main__":
     print("****************************")
     run_map_report()
     print("****************************")
-    print("SMURF")
-    print("****************************")
-    run_smurf()
     run_transfer_report()
