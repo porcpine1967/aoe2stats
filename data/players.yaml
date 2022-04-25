@@ -1426,6 +1426,7 @@
     - '227857'
     - '1688652'
     - '6268226'
+    - '6169169'
     voobly:
     - '123642997'
     - '123641000'
@@ -2136,6 +2137,7 @@
     - '123189353'
   team: 16
   twitch:
+  - https://www.twitch.tv/ediefr
   - https://www.twitch.tv/poz_edie
   youtube:
   - http://www.youtube.com/channel/UCBNGV-KCgh8Nb6tHP-WN2_A
@@ -2154,6 +2156,7 @@
     rl:
     - '2733015'
     - '6872563'
+    - '10025632'
     voobly:
     - '123505495'
     - '123890962'
@@ -4206,7 +4209,7 @@
     - '6157837'
     voobly:
     - '125137692'
-  team: 17
+  team: 1
   twitch:
   - https://www.twitch.tv/3d_dark_
   - https://www.twitch.tv/darkaoe
@@ -5026,6 +5029,7 @@
     - '9687739'
     - '9888746'
     - '9926868'
+    - '10041821'
   twitch:
   - https://www.twitch.tv/ertugaoe
   twitter:
@@ -6310,6 +6314,7 @@
     - '9298780'
     voobly:
     - '133845'
+  team: 17
   twitch:
   - https://www.twitch.tv/yax_aoe
 - canonical_name: TurkEycof
@@ -7351,7 +7356,8 @@
   - https://www.twitch.tv/paganini_aoe2
   youtube:
   - https://www.youtube.com/BKPaganini
-- canonical_name: TRM
+- aoeelo: 1226
+  canonical_name: TRM
   country: ch
   id: 414
   name: TRM
@@ -7670,8 +7676,10 @@
   platforms:
     rl:
     - '1238767'
+    - '9663595'
     voobly:
     - '125373585'
+  team: 17
   twitch:
   - https://twitch.tv/peagonmayo
   - https://www.twitch.tv/AirCooL_xR
@@ -8103,7 +8111,8 @@
   youtube:
   - http://www.youtube.com/LilTrouble_AoE
   - https://www.youtube.com/LilTrouble_AoE
-- canonical_name: Locke
+- aoeelo: 956
+  canonical_name: Locke
   country: us
   id: 467
   liquipedia: Locke
@@ -8169,9 +8178,15 @@
   platforms:
     rl:
     - '2567136'
-- canonical_name: roggy
+- aka:
+  - Roggy
+  canonical_name: roggy
   country: tr
-  name: Roggy
+  id: 474
+  liquipedia: roggy
+  name: roggy
+  notability:
+    aoe2: true
   platforms:
     rl:
     - '2413974'
@@ -8388,7 +8403,8 @@
   - https://www.twitch.tv/novaaoe
   youtube:
   - https://www.youtube.com/channel/UCE1-6wfKM7QsDq71qFuVmRg
-- canonical_name: ElNoniro
+- aoeelo: 1114
+  canonical_name: ElNoniro
   country: pl
   id: 473
   name: ElNoniro
