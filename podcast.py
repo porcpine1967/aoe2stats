@@ -43,6 +43,7 @@ AND team_size = '1v1'
 AND methodology = 'player'
 AND map_category = '{}'
 and week < '{}'
+and week != '2021'
 ORDER BY week DESC
 LIMIT 1""".format(
             self.rank, self.civ_id, self.metric, self.category, self.week
@@ -116,7 +117,7 @@ def run():
             if metric == "winrate" and category == "All":
                 continue
             sql = """SELECT civ_id, rank FROM results
-WHERE rank < 7
+WHERE rank < 9
 and metric = '{}'
 and team_size = '1v1'
 and methodology = 'player'

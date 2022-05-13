@@ -744,6 +744,7 @@
     - '199325'
     - '1847121'
     - '3209724'
+    - '4423546'
     voobly:
     - '124954867'
     - '123984714'
@@ -1231,6 +1232,7 @@
   twitch:
   - https://www.twitch.tv/twiggaoe
 - aka:
+  - HueHue
   - JonSnow
   - Jonsnow
   - TeRRoR
@@ -4671,6 +4673,7 @@
   - Bloodless
   - TheBloodless
   - ZeBludlass
+  - ze Bludlass
   aoeelo: 722
   aoeelo_updated: 2022-04-07
   canonical_name: The Bloodless
@@ -6924,6 +6927,7 @@
   platforms:
     rl:
     - '267775'
+    - '2950223'
 - aoeelo: 715
   canonical_name: King_Marv
   country: de
@@ -8343,6 +8347,7 @@
   platforms:
     rl:
     - '268051'
+    - '9754039'
 - aoeelo: 319
   canonical_name: Play_Boys
   name: Play_Boys

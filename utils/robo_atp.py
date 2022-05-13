@@ -32,7 +32,8 @@ def player_ratings(end_date):
         try:
             tourney_date = date.fromisoformat(row[0].replace('/', '-'))
             if start_date < tourney_date < end_date:
-                ratings[row[5]] += float(row[7])
+                if row[5].strip():
+                    ratings[row[5]] += float(row[7])
         except ValueError:
             pass
     return ratings
