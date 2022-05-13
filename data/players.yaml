@@ -230,6 +230,7 @@
     - 196366-nac3
     - '1819193'
     - '2602752'
+    - '6892418'
     voobly:
     - '124116514'
     - '123989026'
@@ -1450,6 +1451,7 @@
     - '1262725'
     - '3557942'
     - '4328139'
+    - '9622152'
     voobly:
     - '124308648'
   team: 23
@@ -2141,6 +2143,8 @@
   twitch:
   - https://www.twitch.tv/ediefr
   - https://www.twitch.tv/poz_edie
+  twitter:
+  - https://twitter.com/edie592
   youtube:
   - http://www.youtube.com/channel/UCBNGV-KCgh8Nb6tHP-WN2_A
 - aka:
@@ -3056,6 +3060,7 @@
   canonical_name: chaos_2_win
   country: de
   id: 139
+  liquipedia: chaos_2_win
   name: chaos_2_win
   notability:
     aoe2: true
@@ -3254,6 +3259,7 @@
     - '3435966'
     - '4959296'
     - '5687096'
+    - '6894634'
 - aoeelo: 611
   aoeelo_updated: 2022-02-08
   canonical_name: DemonSheep
@@ -4974,6 +4980,10 @@
     - '2571777'
     voobly:
     - '124284205'
+  twitch:
+  - https://www.twitch.tv/flightlessbirdy
+  youtube:
+  - https://www.youtube.com/channel/UCFWMbF-BP7fc21bDV1eyJtQ
 - aka:
   - Viernes3am
   aoeelo: 784
@@ -5299,6 +5309,8 @@
     - '3238663'
     - '6231852'
   team: 41
+  twitch:
+  - https://www.twitch.tv/Annotoph
 - canonical_name: RookStar
   country: br
   id: 276
@@ -5801,6 +5813,8 @@
     - '8987579'
   twitch:
   - https://www.twitch.tv/margougou_
+  twitter:
+  - https://twitter.com/Margougou21
 - aka:
   - MarineLord
   - Mlord
@@ -6222,6 +6236,8 @@
     - '6069513'
     - '3392033'
     - '4670972'
+  twitch:
+  - https://www.twitch.tv/Ubetnir
 - aka:
   - vancart
   aoeelo: 713
@@ -6799,6 +6815,7 @@
   canonical_name: c.salette
   country: fr
   id: 373
+  liquipedia: c.salette
   name: c.salette
   notability:
     aoe2: true
@@ -6808,6 +6825,8 @@
     - '9337807'
   twitch:
   - https://www.twitch.tv/csalette
+  twitter:
+  - https://twitter.com/cedric_salette
 - aoeelo: 957
   canonical_name: Chirris
   country: mx
@@ -7214,6 +7233,7 @@
   canonical_name: PhilippHJS
   country: de
   id: 404
+  liquipedia: PhilippHJS
   name: PhilippHJS
   notability:
     aoe2: true
@@ -7772,6 +7792,7 @@
   canonical_name: MrTempo
   country: pe
   id: 444
+  liquipedia: MrTempo
   name: MrTempo
   notability:
     aoe2: true
@@ -7817,6 +7838,7 @@
   platforms:
     rl:
     - '3022245'
+    - '2903706'
 - canonical_name: ElMago
   country: ar
   id: 448
@@ -8127,12 +8149,21 @@
     rl:
     - '382118'
   team: 41
+  twitch:
+  - https://www.twitch.tv/lockeaoe
 - canonical_name: Tointoin
   country: fr
-  name: ToinToin
+  id: 481
+  liquipedia: Tointoin
+  name: Tointoin
+  notability:
+    aoe2: true
   platforms:
     rl:
     - '213249'
+    - '2896472'
+  twitch:
+  - https://www.twitch.tv/Tointoiin
 - canonical_name: ___John___
   country: hu
   name: ___John___
@@ -8194,6 +8225,8 @@
   platforms:
     rl:
     - '2413974'
+  twitch:
+  - https://www.twitch.tv/29roggy
 - canonical_name: Mununez
   country: us
   name: Mununez
@@ -8214,7 +8247,11 @@
     - '4317127'
 - canonical_name: IamZak
   country: us
-  name: _IamZak_
+  id: 476
+  liquipedia: IamZak
+  name: IamZak
+  notability:
+    aoe2: true
   platforms:
     rl:
     - '2672950'
@@ -8322,7 +8359,11 @@
     - '1273427'
 - canonical_name: Jerry
   country: us
+  id: 478
+  liquipedia: Jerry
   name: Jerry
+  notability:
+    aoe2: true
   platforms:
     rl:
     - '843204'
@@ -8361,6 +8402,7 @@
   platforms:
     rl:
     - '4904132'
+    - '2235055'
   twitch:
   - https://www.twitch.tv/TutusAsylum
   youtube:
@@ -8424,3 +8466,66 @@
   - https://www.twitch.tv/elnoniro
   youtube:
   - https://www.youtube.com/channel/UCgTNt1bnd_OyPP1Xh5FEKkQ
+- canonical_name: Fresh To Death
+  country: ru
+  id: 475
+  liquipedia: Fresh To Death
+  name: Fresh To Death
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '223830'
+- canonical_name: Imperio_cc
+  country: de
+  id: 477
+  liquipedia: Imperio_cc
+  name: Imperio_cc
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '2524736'
+    - '399375'
+- canonical_name: Matt107
+  country: gb
+  id: 479
+  liquipedia: Matt107
+  name: Matt107
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '230751'
+- canonical_name: NoLo
+  country: tr
+  id: 480
+  liquipedia: NoLo
+  name: NoLo
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '3093864'
+- canonical_name: Zastosy
+  country: pl
+  id: 482
+  liquipedia: Zastosy
+  name: Zastosy
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '1510463'
+  twitch:
+  - https://www.twitch.tv/zastosy
+- canonical_name: yanki
+  country: tr
+  id: 484
+  liquipedia: yanki
+  name: yanki
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '1843149'
