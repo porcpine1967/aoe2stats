@@ -35,6 +35,7 @@
   country: 'no'
   discord:
   - https://discord.gg/5cHqGMx
+  discord_id: MbL#7829
   esportsearnings: 25311
   id: 2
   liquipedia: MbL
@@ -68,6 +69,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: BacT
   country: vn
+  discord_id: BacT#0982
   esportsearnings: 14723
   id: 3
   liquipedia: BacT
@@ -143,6 +145,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Yo
   country: cn
+  discord_id: Mr_Yo#0944
   douyu:
   - https://www.douyu.com/753676
   esportsearnings: 14713
@@ -219,6 +222,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: LaaaaaN
   country: es
+  discord_id: LaaaaaN#5576
   esportsearnings: 56830
   id: 8
   liquipedia: LaaaaaN
@@ -243,6 +247,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: dogao
   country: br
+  discord_id: dogao#8057
   esportsearnings: 12250
   id: 9
   liquipedia: Dogao
@@ -276,6 +281,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: TaToH
   country: es
+  discord_id: tatoh89#2456
   esportsearnings: 41416
   id: 10
   liquipedia: TaToH
@@ -337,6 +343,7 @@
   aoeelo_updated: 2022-03-07
   canonical_name: Modri
   country: si
+  discord_id: Modri#6980
   id: 12
   liquipedia: Modri
   name: Modri
@@ -375,6 +382,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Barles
   country: pl
+  discord_id: Barles#8803
   id: 14
   liquipedia: Barles
   name: Barles
@@ -398,6 +406,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: saymyname
   country: vn
+  discord_id: saymyname#1200
   esportsearnings: 14724
   id: 15
   liquipedia: Saymyname
@@ -446,6 +455,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Valas
   country: fi
+  discord_id: valass#8425
   id: 17
   liquipedia: Valas
   name: Valas
@@ -523,6 +533,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: ACCM
   country: vn
+  discord_id: ACCM#0539
   esportsearnings: 14727
   id: 20
   liquipedia: ACCM
@@ -612,6 +623,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Liereyy
   country: at
+  discord_id: liereyy#5813
   esportsearnings: 41415
   id: 23
   liquipedia: Liereyy
@@ -644,6 +656,7 @@
   country: tw
   discord:
   - https://discord.gg/dKzquZB
+  discord_id: gkt_cloud#8597
   facebook_gaming:
   - https://www.facebook.com/gaming/Aoecloud
   id: 24
@@ -699,6 +712,7 @@
   country: rs
   discord:
   - https://discord.gg/ckHd3vT
+  discord_id: Daut#9673
   esportsearnings: 12247
   id: 26
   liquipedia: DauT
@@ -737,6 +751,7 @@
   country: ca
   discord:
   - https://discord.gg/DkdJj4D
+  discord_id: Hera#4278
   esportsearnings: 25296
   id: 27
   liquipedia: Hera
@@ -773,6 +788,7 @@
   country: de
   discord:
   - https://discordapp.com/invite/pQG8txM
+  discord_id: Nili_AoE#7781
   esportsearnings: 41832
   id: 28
   liquipedia: Nili
@@ -826,6 +842,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Zuppi
   country: fi
+  discord_id: Zuppi#2702
   esportsearnings: 15934
   id: 30
   liquipedia: Zuppi
@@ -855,6 +872,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: DracKeN
   country: cz
+  discord_id: DracKeN#9019
   id: 31
   liquipedia: DracKeN
   name: DracKeN
@@ -883,6 +901,7 @@
   country: 'no'
   discord:
   - https://discord.gg/WNmHUEH
+  discord_id: TheViper#3589
   esportsearnings: 12243
   facebook_gaming:
   - https://www.facebook.com/gaming/theviper
@@ -928,6 +947,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: slam
   country: ca
+  discord_id: slam#3973
   esportsearnings: 12253
   id: 33
   liquipedia: Slam
@@ -1038,6 +1058,7 @@
   country: ar
   discord:
   - https://discord.gg/quRrGhV
+  discord_id: Nicov#1203
   esportsearnings: 14718
   id: 37
   liquipedia: Nicov
@@ -1076,6 +1097,7 @@
   country: de
   discord:
   - https://discord.gg/TWpUYVh
+  discord_id: JorDan_AoE#7705
   esportsearnings: 12245
   id: 38
   liquipedia: JorDan_AoE
@@ -1123,6 +1145,7 @@
   aoeelo_updated: 2022-03-07
   canonical_name: TheMax
   country: fi
+  discord_id: TheMax#9145
   esportsearnings: 25297
   id: 40
   liquipedia: TheMax
@@ -1143,6 +1166,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Villese
   country: fi
+  discord_id: Villese#1612
   esportsearnings: 43218
   id: 41
   liquipedia: Villese
@@ -1198,6 +1222,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: miguel
   country: br
+  discord_id: miguel#6973
   esportsearnings: 15928
   id: 43
   liquipedia: Miguel
@@ -1246,6 +1271,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: JonSlow
   country: il
+  discord_id: JonSlow#9665
   id: 45
   liquipedia: JonSlow
   name: JonSlow
@@ -1273,6 +1299,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Sitaux
   country: fr
+  discord_id: Sitaux#7654
   id: 46
   liquipedia: Sitaux
   name: Sitaux
@@ -1304,6 +1331,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Rubenstock
   country: fi
+  discord_id: Rubenstock#5222
   esportsearnings: 15936
   id: 47
   liquipedia: Rubenstock
@@ -1369,6 +1397,7 @@
   country: se
   discord:
   - https://discord.gg/rtpCfgE
+  discord_id: Ganji#2171
   id: 50
   liquipedia: Ganji
   name: Ganji
@@ -1447,6 +1476,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Noisick
   country: cl
+  discord_id: Noisick#4419
   id: 53
   liquipedia: Noisick
   name: Noisick
@@ -1467,6 +1497,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Inc
   country: us
+  discord_id: Inc#2475
   id: 54
   liquipedia: Inc
   name: Inc
@@ -1491,6 +1522,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Fedex
   country: ar
+  discord_id: Fedex#2075
   id: 55
   liquipedia: Fedex
   name: Fedex
@@ -1518,6 +1550,7 @@
   country: pl
   discord:
   - https://discord.gg/xz7uDPp
+  discord_id: dziam#5626
   id: 56
   liquipedia: Dziamdziak
   name: Dziamdziak
@@ -1849,6 +1882,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Alive
   country: br
+  discord_id: Alive#1249
   esportsearnings: 12947
   id: 73
   liquipedia: Alive
@@ -1983,6 +2017,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Goku
   country: br
+  discord_id: goku#8383
   esportsearnings: 14715
   id: 80
   liquipedia: GoKu
@@ -2033,6 +2068,7 @@
   aoeelo_updated: 2022-03-07
   canonical_name: Vodka
   country: it
+  discord_id: Vodka#7250
   id: 82
   liquipedia: Vodka_L
   name: Vodka
@@ -2073,6 +2109,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Monoz
   country: ar
+  discord_id: Monoz#8435
   id: 84
   liquipedia: Monoz
   name: Monoz
@@ -2161,6 +2198,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: SongSong
   country: vn
+  discord_id: songsong#3086
   id: 88
   liquipedia: SongSong
   name: SongSong
@@ -2310,6 +2348,7 @@
   country: ar
   discord:
   - https://discord.gg/sjCpquh
+  discord_id: Capoch#4093
   esportsearnings: 3535
   id: 94
   liquipedia: Capoch
@@ -2442,6 +2481,8 @@
     - feage
   twitch:
   - https://www.twitch.tv/feage_
+  twitter:
+  - https://twitter.com/FeAgeAoE
   youtube:
   - http://www.youtube.com/channel/UCYhsraJ7ht7qYpZuHht-ibA
 - canonical_name: Noto
@@ -2466,6 +2507,7 @@
   aoeelo_updated: 2022-03-12
   canonical_name: Hearttt
   country: pe
+  discord_id: Hearttt#5450
   esportsearnings: 41831
   id: 102
   liquipedia: Hearttt
@@ -2635,6 +2677,7 @@
   aoeelo_updated: 2022-03-12
   canonical_name: Jupe
   country: fi
+  discord_id: Jupe#1196
   id: 111
   liquipedia: Jupe
   name: Jupe
@@ -2676,6 +2719,7 @@
   aoeelo_updated: 2022-03-12
   canonical_name: Kamigawa
   country: it
+  discord_id: Kamigawa#3787
   id: 113
   liquipedia: Kamigawa
   name: Kamigawa
@@ -2914,6 +2958,7 @@
   canonical_name: Canary
   country: jp
   id: 127
+  liquipedia: Canary
   name: Canary
   notability:
     aoe2: true
@@ -3066,6 +3111,7 @@
 - aoeelo: 73
   canonical_name: chaos_2_win
   country: de
+  discord_id: chaos_2_win#0928
   id: 139
   liquipedia: chaos_2_win
   name: chaos_2_win
@@ -3085,6 +3131,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Dragonstar
   country: in
+  discord_id: Dragonstar#1233
   id: 140
   liquipedia: The_Dragonstar
   name: Dragonstar
@@ -3162,6 +3209,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: GoldenEnd
   country: nl
+  discord_id: GoldenEnd#2484
   id: 145
   liquipedia: GoldenEnd
   name: GoldenEnd
@@ -3353,6 +3401,7 @@
   aoeelo_updated: 2022-02-28
   canonical_name: Scotty
   country: us
+  discord_id: scotty#3359
   id: 156
   liquipedia: Scotty
   name: Scotty
@@ -3423,6 +3472,7 @@
   aoeelo: 122
   canonical_name: Skittle
   country: de
+  discord_id: nC_Skittle_#1100
   id: 160
   liquipedia: Skittle
   name: Skittle
@@ -3808,6 +3858,7 @@
     - '124317014'
   team: 51
   twitch:
+  - https://www.twitch.tv/sobek_aoe
   - https://www.twitch.tv/sobekaoe
   youtube:
   - http://www.youtube.com/channel/UCVH-sSxnCZtqJJmbtggTCxQ/feed
@@ -3906,6 +3957,7 @@
     - '3144451'
     - '1966276'
     - '3208276'
+    - '10336997'
   team: 36
 - aka:
   - kyo
@@ -4015,6 +4067,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Repard
   country: ru
+  discord_id: repard#4608
   id: 205
   liquipedia: Repard
   name: Repard
@@ -4097,6 +4150,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Bruh
   country: br
+  discord_id: bruh#0768
   id: 209
   liquipedia: BruH
   name: Bruh
@@ -4195,6 +4249,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Rise
   country: it
+  discord_id: Rise#6860
   id: 214
   liquipedia: Rise
   name: Rise
@@ -4215,6 +4270,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Dark
   country: ru
+  discord_id: Dark_#6351
   id: 215
   liquipedia: Dark
   name: Dark
@@ -4287,6 +4343,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Badboy
   country: vn
+  discord_id: badboy190791#5677
   id: 219
   liquipedia: BadBoy
   name: Badboy
@@ -4397,6 +4454,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: JackK
   country: pl
+  discord_id: JackK#4398
   id: 225
   liquipedia: JackK
   name: JackK
@@ -4526,6 +4584,7 @@
 - aoeelo: 650
   canonical_name: OnLeKe
   country: br
+  discord_id: OnLeKe#5721
   id: 232
   liquipedia: OnLeKe
   name: OnLeKe
@@ -4546,6 +4605,7 @@
   aoeelo_updated: 2022-03-07
   canonical_name: Babaorum
   country: fr
+  discord_id: Babaorum#3699
   id: 233
   liquipedia: Babaorum
   name: Babaorum
@@ -4584,6 +4644,7 @@
   aoeelo_updated: 2022-03-12
   canonical_name: Darknoob
   country: nl
+  discord_id: DarknoobHD#7665
   id: 235
   liquipedia: Darknoob
   name: Darknoob
@@ -4612,6 +4673,7 @@
 - aoeelo: 219
   canonical_name: Skull
   country: cz
+  discord_id: Skull#5096
   id: 237
   liquipedia: Skull
   name: Skull
@@ -4697,6 +4759,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: The Bloodless
   country: us
+  discord_id: Bloodless#5178
   id: 242
   liquipedia: The_Bloodless
   name: The Bloodless
@@ -4712,6 +4775,7 @@
   aoeelo_updated: 2022-03-12
   canonical_name: Wisepii
   country: cl
+  discord_id: Wisepiii#0369
   id: 243
   liquipedia: Wisepii
   name: Wisepii
@@ -4777,12 +4841,15 @@
     - '2276037'
     voobly:
     - z40305125
+  twitch:
+  - https://www.twitch.tv/z40305125
 - aka:
   - PushTheTempo
   aoeelo: 899
   aoeelo_updated: 2022-02-08
   canonical_name: Dratek
   country: cz
+  discord_id: Dratek#6619
   id: 247
   liquipedia: Dratek
   name: Dratek
@@ -4836,6 +4903,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Whocl
   country: cl
+  discord_id: Whocl#7918
   id: 250
   liquipedia: Whocl
   name: Whocl
@@ -4851,6 +4919,7 @@
     - '6187727'
     - '6732719'
     - '5124528'
+    - '10296719'
     voobly:
     - '124423933'
   team: 51
@@ -4874,6 +4943,7 @@
   aoeelo: 879
   canonical_name: Lobo
   country: mx
+  discord_id: LobodeLaNieve#5431
   id: 253
   liquipedia: LobodeLaNieve
   name: Lobo
@@ -4932,6 +5002,7 @@
   - JalapenoFarmer
   canonical_name: Mango
   country: cz
+  discord_id: Mango#1689
   id: 256
   liquipedia: Mango
   name: Mango
@@ -4985,6 +5056,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: flightlessbird
   country: nz
+  discord_id: Flightlessbird#8917
   id: 259
   liquipedia: Flightlessbird
   name: flightlessbird
@@ -5092,6 +5164,7 @@
 - aoeelo: 864
   canonical_name: fatman
   country: de
+  discord_id: fatman#6918
   id: 263
   name: fatman
   notability:
@@ -5129,6 +5202,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Gary
   country: ar
+  discord_id: Gary_#5277
   id: 265
   liquipedia: Gary
   name: Gary
@@ -5313,6 +5387,7 @@
 - aoeelo: 981
   canonical_name: Annotoph
   country: de
+  discord_id: Annotoph#3948
   id: 275
   liquipedia: Annotoph
   name: Annotoph
@@ -5373,6 +5448,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Whitecourt
   country: cl
+  discord_id: Whitecourt#9227
   id: 279
   liquipedia: Whitecourt
   name: Whitecourt
@@ -5425,6 +5501,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: D3rp
   country: nl
+  discord_id: d3rp276#7350
   id: 282
   liquipedia: D3rp
   name: D3rp
@@ -5440,6 +5517,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Andorin
   country: de
+  discord_id: nC_Andorin#3135
   id: 283
   liquipedia: Andorin
   name: Andorin
@@ -5522,6 +5600,7 @@
 - aoeelo: 971
   canonical_name: Bourbon
   country: ru
+  discord_id: Bourbon#7787
   id: 289
   liquipedia: Bourbon
   name: Bourbon
@@ -5606,6 +5685,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: FreakinAndy
   country: at
+  discord_id: FreakinAndy#7698
   id: 294
   liquipedia: FreakinAndy
   name: FreakinAndy
@@ -5621,6 +5701,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: FreakinChris
   country: at
+  discord_id: FreakinChris#7147
   id: 295
   liquipedia: FreakinChris
   name: FreakinChris
@@ -5815,6 +5896,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Margougou
   country: fr
+  discord_id: Margougou#1764
   id: 308
   liquipedia: Margougou
   name: Margougou
@@ -5916,6 +5998,7 @@
   - Mr_moon
   canonical_name: Mr.moon
   country: ru
+  discord_id: mr.moon#9583
   id: 313
   liquipedia: Mr.moon
   name: Mr.moon
@@ -5931,6 +6014,7 @@
   aoeelo: 816
   canonical_name: Neromelnick
   country: cl
+  discord_id: nero#8816
   id: 314
   liquipedia: Neromelnick
   name: Neromelnick
@@ -5945,6 +6029,7 @@
 - aoeelo: 137
   canonical_name: Nick
   country: gb
+  discord_id: NickAoE#4649
   id: 315
   liquipedia: Nick
   name: Nick
@@ -5973,6 +6058,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: OLADUSHEK
   country: by
+  discord_id: OLADUSHEK#8106
   id: 317
   liquipedia: OLADUSHEK
   name: OLADUSHEK
@@ -6056,6 +6142,7 @@
 - aoeelo: 102
   canonical_name: Ovenka
   country: cz
+  discord_id: Ovenka#8790
   id: 322
   liquipedia: Ovenka
   name: Ovenka
@@ -6229,6 +6316,7 @@
   aoeelo: 150
   canonical_name: wAkKo
   country: cl
+  discord_id: wAkKo#4028
   id: 332
   liquipedia: WAkKo
   name: wAkKo
@@ -6244,6 +6332,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Ubetnir
   country: tr
+  discord_id: Ubetnir#2029
   id: 333
   liquipedia: Ubetnir
   name: Ubetnir
@@ -6280,6 +6369,7 @@
   canonical_name: Tomate
   country: es
   id: 335
+  liquipedia: Tomate
   name: Tomate
   notability:
     aoe2: true
@@ -6395,6 +6485,8 @@
     - '125150015'
   twitch:
   - https://www.twitch.tv/albislol
+  youtube:
+  - https://www.youtube.com/Albislol
 - aka:
   - Wbpolar
   canonical_name: PoLaR
@@ -6458,6 +6550,7 @@
     rl:
     - '1773197'
     - '9567625'
+    - '2950559'
     voobly:
     - '124381545'
     - '125033680'
@@ -6484,6 +6577,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: RediRodion
   country: pl
+  discord_id: Redi#3884
   id: 349
   liquipedia: RediRodion
   name: RediRodion
@@ -6552,6 +6646,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Somero
   country: cz
+  discord_id: CZ_Somero#8701
   id: 353
   liquipedia: Somero
   name: Somero
@@ -6571,6 +6666,7 @@
   aoeelo: 938
   canonical_name: Emil
   country: dk
+  discord_id: Emil#0017
   id: 354
   name: Emil
   notability:
@@ -6671,6 +6767,7 @@
   aoeelo: 653
   canonical_name: Good Luck
   country: dk
+  discord_id: Good_luck#0778
   id: 360
   name: Good Luck
   notability:
@@ -6685,6 +6782,7 @@
   aoeelo: 166
   canonical_name: Fanjita
   country: gb
+  discord_id: Fanjita#1337
   id: 361
   liquipedia: Fanjita
   name: Fanjita
@@ -6782,6 +6880,7 @@
   country: co
   discord:
   - https://discord.gg/S2Cg5nusrQ
+  discord_id: Snapy#0016
   id: 369
   liquipedia: Snapy
   name: Snapy
@@ -6889,6 +6988,7 @@
   aoeelo: 886
   canonical_name: Dr.Kozmonot
   country: tr
+  discord_id: Kozmonot#3676
   id: 377
   name: Dr.Kozmonot
   notability:
@@ -6898,12 +6998,16 @@
     - '3446882'
     - '6426678'
     - '1827866'
+  twitch:
+  - https://www.twitch.tv/drkozmonot
 - aka:
   - emalius2
   aoeelo: 636
   canonical_name: emalius
   country: fi
+  discord_id: emalius2#9866
   id: 378
+  liquipedia: emalius2
   name: emalius
   notability:
     aoe2: true
@@ -6920,12 +7024,15 @@
   canonical_name: Gergis
   country: ar
   id: 379
+  liquipedia: Gergis
   name: Gergis
   notability:
     aoe2: true
   platforms:
     rl:
     - '1618328'
+  twitch:
+  - https://www.twitch.tv/gergis__
 - aoeelo: 639
   canonical_name: GodOfTheGodless
   country: de
@@ -6971,6 +7078,7 @@
 - aoeelo: 715
   canonical_name: King_Marv
   country: de
+  discord_id: king_marv#1339
   id: 384
   name: King_Marv
   notability:
@@ -7034,6 +7142,7 @@
   aoeelo_updated: 2022-03-12
   canonical_name: Socksyy
   country: au
+  discord_id: Socksyy#3444
   id: 389
   liquipedia: Socksyy
   name: Socksyy
@@ -7071,6 +7180,7 @@
 - aoeelo: 1180
   canonical_name: Ozone
   country: co
+  discord_id: Ozone#4504
   id: 392
   name: Ozone
   notability:
@@ -7193,6 +7303,7 @@
   - https://www.twitch.tv/hgb_aoe
 - canonical_name: A bao'
   country: vn
+  discord_id: Babaorum#3699
   id: 400
   name: A bao'
   notability:
@@ -7253,6 +7364,7 @@
   aoeelo: 908
   canonical_name: PhilippHJS
   country: de
+  discord_id: PhilippHJS#0944
   id: 404
   liquipedia: PhilippHJS
   name: PhilippHJS
@@ -7284,6 +7396,7 @@
 - aoeelo: 805
   canonical_name: Capout
   country: fr
+  discord_id: Capout#8852
   id: 406
   name: Capout
   notability:
@@ -7311,6 +7424,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: uno1
   country: ar
+  discord_id: uno1#6661
   id: 408
   liquipedia: Uno1
   name: uno1
@@ -7370,6 +7484,7 @@
   aoeelo: 1049
   canonical_name: Nahuel05
   country: ar
+  discord_id: Nahuel05_#8518
   id: 412
   liquipedia: Nahuel05
   name: Nahuel05
@@ -7385,6 +7500,7 @@
 - aoeelo: 815
   canonical_name: Paganini
   country: br
+  discord_id: Paganini#0214
   id: 413
   liquipedia: Paganini
   name: Paganini
@@ -7433,6 +7549,7 @@
 - aoeelo: 1172
   canonical_name: Mullisaukko
   country: fi
+  discord_id: Mullisaukko#1334
   id: 417
   name: Mullisaukko
   notability:
@@ -7461,6 +7578,7 @@
 - aoeelo: 1190
   canonical_name: Zaid
   country: pk
+  discord_id: Zaid#9826
   id: 421
   name: Zaid
   notability:
@@ -7493,6 +7611,7 @@
   aoeelo: 732
   canonical_name: Macluffy
   country: be
+  discord_id: Macluffy#4746
   id: 419
   name: Macluffy
   notability:
@@ -7551,6 +7670,7 @@
   aoeelo: 1060
   canonical_name: King Boo
   country: gb
+  discord_id: King_Boo#0227
   id: 424
   name: King Boo
   notability:
@@ -7618,6 +7738,7 @@
   aoeelo_updated: 2022-02-28
   canonical_name: cHELOOO
   country: ar
+  discord_id: Chelo#4156
   id: 429
   liquipedia: cHELOOO
   name: cHELOOO
@@ -7704,6 +7825,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Faraday
   country: br
+  discord_id: Faraday#6459
   id: 435
   liquipedia: Faraday
   name: Faraday
@@ -7779,6 +7901,7 @@
   aoeelo: 1204
   canonical_name: DarklyWise
   country: se
+  discord_id: Sostratus#1632
   id: 441
   name: DarklyWise
   notability:
@@ -7867,6 +7990,7 @@
     rl:
     - '3022245'
     - '2903706'
+    - '5170240'
 - canonical_name: ElMago
   country: ar
   id: 448
@@ -7919,6 +8043,7 @@
   aoeelo: 621
   canonical_name: Wraith
   country: fr
+  discord_id: Wraith#7449
   id: 452
   liquipedia: Wraith
   name: Wraith
@@ -8060,8 +8185,17 @@
 - aka:
   - HazZy
   canonical_name: Hazzy
+  country: us
+  id: 501
   liquipedia: Hazzy
   name: Hazzy
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '2871576'
+  twitch:
+  - https://www.twitch.tv/hazzy_aoe
 - aka:
   - AnnaPap98
   - TheMistA
@@ -8077,6 +8211,7 @@
   name: LyRiCs
 - canonical_name: Heisen
   country: ar
+  discord_id: HeisenN#7109
   id: 460
   liquipedia: Heisen
   name: Heisen
@@ -8177,6 +8312,7 @@
 - aoeelo: 956
   canonical_name: Locke
   country: us
+  discord_id: Locke#1464
   id: 467
   liquipedia: Locke
   name: Locke
@@ -8442,6 +8578,7 @@
   name: Play_Boys
 - canonical_name: TutusAsylum
   country: fr
+  discord_id: Tutu#6522
   id: 468
   liquipedia: TutusAsylum
   name: TutusAsylum
@@ -8610,6 +8747,7 @@
     - '4176394'
 - canonical_name: John
   country: hu
+  discord_id: __John__#6906
   id: 488
   liquipedia: John
   name: John
@@ -8631,6 +8769,7 @@
     - '6095441'
 - canonical_name: squeak
   country: sk
+  discord_id: squeak#4636
   id: 494
   liquipedia: squeak
   name: squeak
@@ -8668,6 +8807,8 @@
     rl:
     - '240909'
     - '2902159'
+  twitch:
+  - https://www.twitch.tv/M4Te_
 - aoeelo: 801
   canonical_name: steak
   country: gb
@@ -8704,3 +8845,5 @@
   - https://www.twitch.tv/Pablito_Aoe
   youtube:
   - https://www.youtube.com/channel/UCETwZ6FOrXhGbSRdcuchKwg
+  youtube_live:
+  - https://www.youtube.com/channel/UCETwZ6FOrXhGbSRdcuchKwg/live
