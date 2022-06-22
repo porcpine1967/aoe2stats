@@ -127,6 +127,7 @@
     - '9414010'
     - '9695965'
     - '9873875'
+    - '10198859'
     voobly:
     - '123493096'
     - '123303397'
@@ -463,6 +464,8 @@
   aoeelo: 64
   canonical_name: StrayDog
   country: cn
+  douyu:
+  - https://www.douyu.com/891497
   id: 18
   liquipedia: StrayDog
   name: StrayDog
@@ -1009,6 +1012,7 @@
   country: cn
   douyu:
   - https://www.douyu.com/1029928
+  - https://www.douyu.com/10825333
   esportsearnings: 14740
   id: 36
   liquipedia: Lyx
@@ -1419,6 +1423,7 @@
   aoeelo: 198
   canonical_name: Jibatong
   country: cn
+  douyin: https://live.douyin.com/785583361067
   id: 52
   liquipedia: Jibatong
   name: Jibatong
@@ -1430,6 +1435,7 @@
     - '1688652'
     - '6268226'
     - '6169169'
+    - '10141634'
     voobly:
     - '123642997'
     - '123641000'
@@ -1769,6 +1775,8 @@
   team: 10
   twitch:
   - https://www.twitch.tv/springtv
+  twitter:
+  - https://twitter.com/SpringTV7
   youtube:
   - http://www.youtube.com/channel/UCDNmFkR-F0SLkIB-JlbWWlg
 - aka:
@@ -2636,6 +2644,7 @@
     rl:
     - '208080'
     - '703045'
+    - '8590587'
     voobly:
     - '123451615'
   team: 29
@@ -2700,8 +2709,6 @@
     rl:
     - '3235648'
     - '2411454'
-    - '2386170'
-    - '3386424'
     voobly:
     - '123916446'
     - '124139264'
@@ -3221,10 +3228,13 @@
   canonical_name: Seoul
   country: vn
   id: 149
+  liquipedia: SeOul
   name: Seoul
   notability:
     aoe2: true
-  platforms: {}
+  platforms:
+    rl:
+    - '3078289'
 - aka:
   - Gavagai
   - User:Mr_redy/Running
@@ -4241,6 +4251,8 @@
   aoeelo: 736
   canonical_name: Bad Koala
   country: cn
+  douyu:
+  - https://www.douyu.com/9404502
   id: 217
   liquipedia: Bad_Koala
   name: Bad Koala
@@ -4503,6 +4515,7 @@
     - '2717438'
     - '4388039'
     - '9307337'
+    - '10243171'
     voobly:
     - '123797075'
   team: 27
@@ -4843,6 +4856,8 @@
   team: 51
   twitch:
   - https://www.twitch.tv/whoclaoe
+  youtube:
+  - https://www.youtube.com/channel/UC4qu2qgIzsjdWsYRxgfHN6g
 - canonical_name: Galaxy
   country: hk
   id: 252
@@ -4860,6 +4875,7 @@
   canonical_name: Lobo
   country: mx
   id: 253
+  liquipedia: LobodeLaNieve
   name: Lobo
   notability:
     aoe2: true
@@ -5240,7 +5256,6 @@
     rl:
     - '874604'
     - '5453798'
-    - '448431'
   team: 40
   twitch:
   - https://www.twitch.tv/alperenaoe2
@@ -5308,9 +5323,11 @@
     - '222102'
     - '3238663'
     - '6231852'
-  team: 41
+  team: 38
   twitch:
   - https://www.twitch.tv/Annotoph
+  twitter:
+  - https://twitter.com/Annotoph_AoE
 - canonical_name: RookStar
   country: br
   id: 276
@@ -5811,6 +5828,7 @@
     - '6341853'
     - '5114558'
     - '8987579'
+  team: 38
   twitch:
   - https://www.twitch.tv/margougou_
   twitter:
@@ -6276,6 +6294,7 @@
   canonical_name: Rmcoo
   country: lt
   id: 336
+  liquipedia: Rmcoo
   name: Rmcoo
   notability:
     aoe2: true
@@ -6847,6 +6866,8 @@
   platforms:
     rl:
     - '234755'
+  twitch:
+  - https://www.twitch.tv/darvoi
 - aka:
   - VIK_Dench
   aoeelo: 649
@@ -7284,7 +7305,9 @@
     - '340002'
   twitch:
   - https://www.twitch.tv/torrelles
-- aoeelo: 1139
+- aka:
+  - Fuller
+  aoeelo: 1139
   aoeelo_updated: 2022-04-07
   canonical_name: uno1
   country: ar
@@ -7348,6 +7371,7 @@
   canonical_name: Nahuel05
   country: ar
   id: 412
+  liquipedia: Nahuel05
   name: Nahuel05
   notability:
     aoe2: true
@@ -7628,6 +7652,7 @@
   canonical_name: Redlash
   country: ar
   id: 431
+  liquipedia: Redlash
   name: Redlash
   notability:
     aoe2: true
@@ -7635,6 +7660,8 @@
     rl:
     - '2771618'
     - '9343412'
+  twitch:
+  - https://www.twitch.tv/redlash_
 - canonical_name: Hackali
   country: tr
   id: 432
@@ -7813,6 +7840,7 @@
   platforms:
     rl:
     - '5938210'
+    - '6921400'
     voobly:
     - '123417524'
 - aoeelo: 965
@@ -8010,8 +8038,17 @@
   - Original
   - ZaRYaB
   canonical_name: Zaryab
+  country: pk
+  id: 492
   liquipedia: Zaryab
   name: Zaryab
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '5186718'
+  twitch:
+  - https://www.twitch.tv/zaryab
 - canonical_name: Hydra
   liquipedia: Hydra
   name: Hydra
@@ -8225,6 +8262,8 @@
   platforms:
     rl:
     - '2413974'
+    voobly:
+    - '123642235'
   twitch:
   - https://www.twitch.tv/29roggy
 - canonical_name: Mununez
@@ -8285,12 +8324,21 @@
   platforms:
     rl:
     - '4583489'
-- canonical_name: MrPlanner
+- aoeelo: 905
+  canonical_name: MrPlanner
   country: si
+  id: 491
+  liquipedia: MrPlanner
   name: MrPlanner
+  notability:
+    aoe2: true
   platforms:
     rl:
     - '4362836'
+    - '6898407'
+    - '5556595'
+  twitch:
+  - https://www.twitch.tv/mrplanneraoe
 - canonical_name: silverstar
   country: ca
   name: silverstar
@@ -8454,6 +8502,7 @@
   canonical_name: ElNoniro
   country: pl
   id: 473
+  liquipedia: ElNoniro
   name: ElNoniro
   notability:
     aoe2: true
@@ -8529,3 +8578,129 @@
   platforms:
     rl:
     - '1843149'
+- canonical_name: Cheng
+  country: vn
+  id: 485
+  name: Cheng
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '1280400'
+    voobly:
+    - '125201175'
+- canonical_name: Rayzor
+  country: au
+  id: 486
+  name: Rayzor
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '292318'
+- canonical_name: Andrew
+  country: hu
+  id: 487
+  liquipedia: Andrew
+  name: Andrew
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '4176394'
+- canonical_name: John
+  country: hu
+  id: 488
+  liquipedia: John
+  name: John
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '1651354'
+- canonical_name: Leozim
+  country: br
+  id: 489
+  liquipedia: Leozim
+  name: Leozim
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '1978249'
+    - '6095441'
+- canonical_name: squeak
+  country: sk
+  id: 494
+  liquipedia: squeak
+  name: squeak
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '261055'
+    - '5795845'
+    - '6867619'
+  twitch:
+  - https://www.twitch.tv/squeakaoe
+- canonical_name: PY_Blue_Sky
+  country: vn
+  id: 495
+  name: PY_Blue_Sky
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '836375'
+  youtube:
+  - https://www.youtube.com/c/AOE2VN
+  youtube_live:
+  - https://www.youtube.com/channel/UC-gSSHl13CTFrZMWHJ5i6Gg/live
+- aoeelo: 817
+  canonical_name: M4Te
+  country: ar
+  id: 496
+  liquipedia: M4Te
+  name: M4Te
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '240909'
+    - '2902159'
+- aoeelo: 801
+  canonical_name: steak
+  country: gb
+  id: 498
+  liquipedia: steak
+  name: steak
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '230432'
+- canonical_name: dog9you
+  country: hk
+  id: 499
+  name: dog9you
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '232376'
+  twitch:
+  - https://www.twitch.tv/dog9youaoe2
+- canonical_name: Pablito
+  country: ar
+  id: 500
+  liquipedia: Pablito_Aoe
+  name: Pablito
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '5046692'
+  twitch:
+  - https://www.twitch.tv/Pablito_Aoe
+  youtube:
+  - https://www.youtube.com/channel/UCETwZ6FOrXhGbSRdcuchKwg

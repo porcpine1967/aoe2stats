@@ -351,7 +351,7 @@ def run():
         end_date = last_time_breakpoint(datetime.now()) + timedelta(hours=9)
         end_timestamp = int(end_date.timestamp())
         if not start_timestamp:
-            start_timestamp = end_timestamp - SEVEN_DAYS_OF_SECONDS
+            start_timestamp = end_timestamp - SEVEN_DAYS_OF_SECONDS - 36000
 
     if not start_timestamp:
         start_timestamp = last_match_time()
