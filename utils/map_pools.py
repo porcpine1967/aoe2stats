@@ -41,6 +41,7 @@ RANKED_MAP_POOLS = {
         "20220518": [33, 9, 72, 29, 171, 77, 21],
         "20220601": [141, 29, 9, 140, 87, 10, 172],
         "20220615": [9, 29, 77, 165, 149, 86, 72],
+        "20220629": [29, 9, 162, 150, 75, 112, 71],
     },
     "team": {
         "20210428": [9, 12, 19, 25, 29, 73, 77, 140, 141],
@@ -70,6 +71,7 @@ RANKED_MAP_POOLS = {
         "20220518": [147, 149, 29, 33, 12, 23, 9, 74, 170],
         "20220601": [17, 9, 29, 77, 12, 33, 31, 165, 72],
         "20220615": [29, 33, 9, 87, 169, 75, 12, 78, 77],
+        "20220629": [12, 9, 77, 33, 29, 76, 124, 21, 168],
     },
 }
 
@@ -139,8 +141,8 @@ def current_pool(team_size=1):
              AND game_type = 0 AND team_size = {}
              GROUP BY map_type
              ORDER BY s DESC""".format(
-        last_cutoff, team_size
-    )
+                 last_cutoff, team_size
+             )
     week_key = ""
     ids = []
     names = []
@@ -166,8 +168,8 @@ def current_pool(team_size=1):
 def run():
     """ Do what is necessary."""
     for size in (
-        1,
-        2,
+            1,
+            2,
     ):
         print(current_pool(size))
         print("")

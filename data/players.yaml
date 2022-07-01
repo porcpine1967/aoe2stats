@@ -196,6 +196,7 @@
   country: br
   discord:
   - https://discord.gg/K4VEGWC
+  discord_id: St4rk#3835
   esportsearnings: 12258
   id: 7
   liquipedia: St4rk
@@ -505,6 +506,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: F1Re
   country: br
+  discord_id: F1Re#7692
   esportsearnings: 14714
   id: 19
   liquipedia: F1Re
@@ -976,6 +978,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Daniel
   country: us
+  discord_id: Daniel_#5000
   id: 34
   liquipedia: Daniel
   name: Daniel
@@ -3290,6 +3293,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Running
   country: de
+  discord_id: Running_#5214
   id: 150
   liquipedia: Running
   name: Running
@@ -4353,6 +4357,7 @@
     rl:
     - '2503651'
     - '5551503'
+    - '5876134'
   team: 33
   twitch:
   - https://www.twitch.tv/badboyaoe
@@ -5636,6 +5641,7 @@
   aoeelo_updated: 2022-04-07
   canonical_name: Cl3m3nT
   country: fr
+  discord_id: Cl3m3nT#2748
   id: 291
   liquipedia: Cl3m3nT
   name: Cl3m3nT
@@ -6173,11 +6179,13 @@
   - https://www.twitch.tv/overtaken_aoe
 - aka:
   - Call_Me_SuBotai
+  - SEBA2002
   - Sebastion2002
   aoeelo: 936
   aoeelo_updated: 2022-04-07
   canonical_name: Sebastian2002
   country: uy
+  discord_id: sebastian2002#2613
   id: 324
   liquipedia: Sebastian2002
   name: Sebastian2002
@@ -8662,7 +8670,8 @@
   platforms:
     rl:
     - '223830'
-- canonical_name: Imperio_cc
+- aoeelo: 785
+  canonical_name: Imperio_cc
   country: de
   id: 477
   liquipedia: Imperio_cc
@@ -8726,7 +8735,8 @@
     - '1280400'
     voobly:
     - '125201175'
-- canonical_name: Rayzor
+- aoeelo: 960
+  canonical_name: Rayzor
   country: au
   id: 486
   name: Rayzor
@@ -8767,7 +8777,8 @@
     rl:
     - '1978249'
     - '6095441'
-- canonical_name: squeak
+- aoeelo: 104
+  canonical_name: squeak
   country: sk
   discord_id: squeak#4636
   id: 494
@@ -8820,7 +8831,8 @@
   platforms:
     rl:
     - '230432'
-- canonical_name: dog9you
+- aoeelo: 645
+  canonical_name: dog9you
   country: hk
   id: 499
   name: dog9you
@@ -8847,3 +8859,25 @@
   - https://www.youtube.com/channel/UCETwZ6FOrXhGbSRdcuchKwg
   youtube_live:
   - https://www.youtube.com/channel/UCETwZ6FOrXhGbSRdcuchKwg/live
+- aoeelo: 1041
+  canonical_name: AR12
+  country: de
+  id: 502
+  name: AR12
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '229173'
+  twitch:
+  - https://www.twitch.tv/ar12__
+- aoeelo: 958
+  canonical_name: Dexter
+  country: ar
+  id: 503
+  name: Dexter
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '1195043'
