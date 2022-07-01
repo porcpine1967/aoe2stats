@@ -67,7 +67,7 @@ def completed_tournament_lines(tournament):
     lines.append("")
     return lines
 
-def print_info(tournament_dict, podcasts, loader):
+def print_info(tournament_dict, podcasts, loader, upset_cutoff):
     lines = []
     for game, tournaments in tournament_dict.items():
         lines.append("*"*25)
@@ -79,8 +79,11 @@ def print_info(tournament_dict, podcasts, loader):
                 upsets = tournament.upsets
                 if upsets:
                     lines.append("UPSETS:")
-                    for upset in upsets:
-                        lines.append(" {}: {} beat {}".format(upset.date, upset.winner, upset.loser))
+                    for upset in sorted(upsets, key=lambda x: x.date):
+                        if upset.date >= upset_cutoff:
+                            lines.append(" ** {}: {} beat {} {}".format(upset.date, upset.winner, upset.loser, upset.score))
+                        else:
+                            lines.append(" {}: {} beat {} {}".format(upset.date, upset.winner, upset.loser, upset.score))
                     lines.append('')
             for podcast in podcasts:
                 for paragraph in podcast.paragraphs:
@@ -113,15 +116,15 @@ def run():
     lines.append("="*25)
     lines.append("COMPLETED")
     lines.append("="*25)
-    lines.extend(print_info(manager.completed(last_week), podcasts, manager.loader))
+    lines.extend(print_info(manager.completed(last_week), podcasts, manager.loader, last_week[0]))
     lines.append("="*25)
     lines.append("ONGOING")
     lines.append("="*25)
-    lines.extend(print_info(manager.ongoing(this_week[0]), podcasts, manager.loader))
+    lines.extend(print_info(manager.ongoing(this_week[0]), podcasts, manager.loader, last_week[0]))
     lines.append("="*25)
     lines.append("STARTING")
     lines.append("="*25)
-    lines.extend(print_info(manager.starting(this_week), podcasts, manager.loader))
+    lines.extend(print_info(manager.starting(this_week), podcasts, manager.loader, last_week[0]))
     with open(working_file, "w") as f:
         for line in lines:
             print(line)
