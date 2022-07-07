@@ -15,8 +15,8 @@ from utils.tools import cache_file
 
 ROBO_FILE = "cache/roboatp.json"
 REQUEST_HEADER = {'x-referer': 'https://explorer.apis.google.com'}
-REQUEST_URL = 'https://content-sheets.googleapis.com/v4/spreadsheets/1HaBkO10i51rqxWytJwfBCgPdISp_cdXzSKyXIPT5FTY/values/Tourney+Results!A:H?key=AIzaSyAa8yy0GdcGPHdtD083HiGGx_S0vMPScDM'
-LINKS_URL = 'https://content-sheets.googleapis.com/v4/spreadsheets/1HaBkO10i51rqxWytJwfBCgPdISp_cdXzSKyXIPT5FTY/values/Tourney+Results!A:H?key=AIzaSyAa8yy0GdcGPHdtD083HiGGx_S0vMPScDM'
+REQUEST_URL = 'https://content-sheets.googleapis.com/v4/spreadsheets/1HaBkO10i51rqxWytJwfBCgPdISp_cdXzSKyXIPT5FTY/values/Tourney+Results!A:I?key=AIzaSyAa8yy0GdcGPHdtD083HiGGx_S0vMPScDM'
+LINKS_URL = 'https://content-sheets.googleapis.com/v4/spreadsheets/1HaBkO10i51rqxWytJwfBCgPdISp_cdXzSKyXIPT5FTY/values/Tourney+Results!A:I?key=AIzaSyAa8yy0GdcGPHdtD083HiGGx_S0vMPScDM'
 
 def robo_data():
     """ Fetches (cached) tournament results """
@@ -33,7 +33,7 @@ def player_ratings(end_date):
             tourney_date = date.fromisoformat(row[0].replace('/', '-'))
             if start_date < tourney_date < end_date:
                 if row[5].strip():
-                    ratings[row[5]] += float(row[7])
+                    ratings[row[5]] += float(row[8])
         except ValueError:
             pass
     return ratings
