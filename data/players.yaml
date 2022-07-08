@@ -487,6 +487,7 @@
     - straydog
     rl:
     - '716717'
+    - '10480907'
     voobly:
     - '124489527'
     - '124297679'
@@ -4831,7 +4832,9 @@
     - '124536623'
   twitch:
   - https://www.twitch.tv/scogo
-- aoeelo: 963
+- aka:
+  - z40
+  aoeelo: 963
   canonical_name: z40305125
   country: tw
   id: 246
@@ -4881,6 +4884,7 @@
     - '13052'
     rl:
     - '2638400'
+    - '3408281'
     voobly:
     - '13052'
   twitch:
@@ -6059,6 +6063,7 @@
     - '802944'
     - '5623928'
   twitch:
+  - https://www.twitch.tv/ningning0331
   - https://www.twitch.tv/ningning995
 - aoeelo: 606
   aoeelo_updated: 2022-02-08
@@ -7094,6 +7099,7 @@
   platforms:
     rl:
     - '1787077'
+    - '10248391'
 - aoeelo: 725
   canonical_name: MingudaiLee
   country: uy
@@ -7356,6 +7362,7 @@
   - https://www.youtube.com/channel/UCPi7qn4OydOUSfHQqU0XDQg/live
 - canonical_name: TWest
   country: us
+  discord_id: T-West#5555
   id: 403
   name: TWest
   notability:
@@ -7888,6 +7895,7 @@
     - '2707922'
     - '4563541'
     - '6396309'
+    - '5257573'
 - aka:
   - FuRy
   aoeelo: 467
@@ -8123,6 +8131,7 @@
     - '2014691'
 - canonical_name: BlackheartB
   country: de
+  discord_id: Blackheart#8557
   id: 457
   name: BlackheartB
   notability:
@@ -8881,3 +8890,30 @@
   platforms:
     rl:
     - '1195043'
+- canonical_name: Lord Envidiates
+  country: mx
+  id: 504
+  name: Lord Envidiates
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '401359'
+    - '2498538'
+- canonical_name: robo
+  country: au
+  discord_id: robo_boro#5469
+  id: 505
+  liquipedia: Robo
+  name: robo
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '211321'
+    voobly:
+    - '123905987'
+  twitch:
+  - https://www.twitch.tv/robo_boro_
+  twitter:
+  - https://twitter.com/robo_boro_

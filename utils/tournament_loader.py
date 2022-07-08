@@ -126,9 +126,13 @@ class TournamentLoader:
         """ Fetch information on all upcoming tournaments."""
         return self._tournament_dict(self.tournament_manager.starting(timebox).items())
 
-    def ongoing(self, timestamp):
+    def ongoing(self, timebox):
         """ Fetch information on all ongoing tournaments."""
-        return self._tournament_dict(self.tournament_manager.ongoing(timestamp).items())
+        return self._tournament_dict(self.tournament_manager.ongoing(timebox).items())
+
+    def ending(self, timebox):
+        """ Fetch information on all ending tournaments."""
+        return self._tournament_dict(self.tournament_manager.ending(timebox).items())
 
     def completed(self, timebox):
         """ Fetch information on all completed tournaments."""
