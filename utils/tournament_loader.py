@@ -316,6 +316,8 @@ class Tournament:
         _ratings = ratings()
         self.api_tournament.load_advanced(self.loader)
         for match in self.api_tournament.matches:
+            if not match.played:
+                continue
             winner = match.winner
             loser = match.loser
             if _ratings[winner]['ATP'] > _ratings[loser]['ATP'] and _ratings[winner]['TELO'] > _ratings[loser]['TELO']:
