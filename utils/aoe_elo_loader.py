@@ -302,6 +302,7 @@ WHERE scorer = 'aoe-elo'
     for tournament in loader.current_tournaments:
         if start < tournament['end_timestamp']:
             players.update(loader.tournament_players(tournament))
+    print('{} players'.format(len(players)))
     for player_id in players:
         try:
             update_player(loader, lookup[player_id])
