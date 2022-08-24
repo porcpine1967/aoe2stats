@@ -6417,6 +6417,7 @@
   twitch:
   - https://www.twitch.tv/tomateaoe
 - aka:
+  - ramaco
   - rmcoo
   aoeelo: 643
   aoeelo_updated: 2022-08-04
@@ -7449,6 +7450,7 @@
     - '124753095'
   twitch:
   - https://www.twitch.tv/sonytoprano_
+  - https://www.twitch.tv/umut_aoe
 - aoeelo: 805
   canonical_name: Capout
   country: fr
@@ -7535,6 +7537,8 @@
     rl:
     - '230475'
     - '9604749'
+  twitch:
+  - https://www.twitch.tv/el_matador_5
 - aka:
   - Nahuel05_
   aoeelo: 1049
@@ -9028,5 +9032,17 @@
   platforms:
     rl:
     - '1136191'
+    - '3320450'
   twitch:
   - https://www.twitch.tv/ciskhan_
+- canonical_name: Prisma09
+  country: ar
+  id: 511
+  name: Prisma09
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '3176045'
+    - '5821885'
+    - '10104438'
