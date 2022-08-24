@@ -7,8 +7,6 @@ import logging
 import os
 import re
 
-import psycopg2
-
 from liquiaoe.loaders import HttpsLoader as Loader
 from liquiaoe.managers import PlayerManager, TournamentManager
 

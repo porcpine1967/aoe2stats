@@ -4530,6 +4530,8 @@
     - '1451847'
     - '1195260'
     - '1784541'
+    - '10573031'
+    - '10717176'
   team: 23
   twitch:
   - https://www.twitch.tv/Kellar_AoE
@@ -5180,6 +5182,7 @@
     - '4367756'
     - '5722641'
     - '9603085'
+    - '10828310'
   team: 23
   twitch:
   - https://www.twitch.tv/shadesaoe
@@ -5541,6 +5544,7 @@
   team: 9
   twitch:
   - https://www.twitch.tv/d3rp276
+  - https://www.twitch.tv/d3rpaoe
 - aoeelo: 601
   aoeelo_updated: 2022-02-08
   canonical_name: Andorin
@@ -5739,6 +5743,7 @@
   platforms:
     rl:
     - '657052'
+    - '3214529'
 - aka:
   - FRost_9
   canonical_name: Frost_9
@@ -6702,6 +6707,7 @@
   country: dk
   discord_id: Emil#0017
   id: 354
+  liquipedia: Emil :D
   name: Emil
   notability:
     aoe2: true
@@ -6997,6 +7003,7 @@
   canonical_name: darvoi
   country: gb
   id: 375
+  liquipedia: darvoi
   name: darvoi
   notability:
     aoe2: true
@@ -7120,6 +7127,7 @@
   country: de
   discord_id: king_marv#1339
   id: 384
+  liquipedia: King_Marv
   name: King_Marv
   notability:
     aoe2: true
@@ -8130,6 +8138,8 @@
   platforms:
     rl:
     - '952733'
+  twitch:
+  - https://www.twitch.tv/Tulendeena
 - aka:
   - saps_
   aoeelo: 607
@@ -8169,6 +8179,7 @@
   platforms:
     rl:
     - '2014691'
+    - '5363603'
 - canonical_name: BlackheartB
   country: de
   discord_id: Blackheart#8557
@@ -8625,6 +8636,7 @@
 - canonical_name: Eli
   country: us
   id: 469
+  liquipedia: Eli
   name: Eli
   notability:
     aoe2: true
@@ -8942,6 +8954,7 @@
   canonical_name: Lord Envidiates
   country: mx
   id: 504
+  liquipedia: Lord Envidiates
   name: Lord Envidiates
   notability:
     aoe2: true
