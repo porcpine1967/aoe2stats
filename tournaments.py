@@ -7,10 +7,11 @@ import os
 import re
 
 from liquiaoe.managers import MatchResultsManager
+from liquiaoe.managers import Tournament as ApiTournament
 
 from utils.identity import players_by_name
 import utils.previous_podcast
-from utils.tournament_loader import arguments, TournamentLoader
+from utils.tournament_loader import arguments, Tournament, TournamentLoader
 from utils.tools import tournament_timeboxes
 
 def completed_tournament_lines(tournament):
@@ -85,10 +86,11 @@ def print_info(tournament_dict, podcasts, loader, upset_cutoff):
                         else:
                             lines.append(" {}: {} beat {} {}".format(upset.date, upset.winner, upset.loser, upset.score))
                     lines.append('')
-            for podcast in podcasts:
-                for paragraph in podcast.paragraphs:
-                    if tournament.name in paragraph:
-                        lines.append(paragraph)
+            if tournament.name:
+                for podcast in podcasts:
+                    for paragraph in podcast.paragraphs:
+                        if tournament.name in paragraph:
+                            lines.append(paragraph)
         lines.append("")
     return lines
 
@@ -113,21 +115,30 @@ def run():
     manager = TournamentLoader()
     podcasts = utils.previous_podcast.podcasts(os.getenv("HOME") + '/Documents/podcasts/aoe2')
     lines = []
-    lines.append("="*25)
-    lines.append("COMPLETED")
-    lines.append("="*25)
-    lines.extend(print_info(manager.completed(last_week), podcasts, manager.loader, last_week[0]))
-    lines.append("ENDING")
-    lines.append("="*25)
-    lines.extend(print_info(manager.ending(this_week), podcasts, manager.loader, last_week[0]))
-    lines.append("="*25)
-    lines.append("ONGOING")
-    lines.append("="*25)
-    lines.extend(print_info(manager.ongoing(this_week), podcasts, manager.loader, last_week[0]))
-    lines.append("="*25)
-    lines.append("STARTING")
-    lines.append("="*25)
-    lines.extend(print_info(manager.starting(this_week), podcasts, manager.loader, last_week[0]))
+    if args.url:
+        lines.append("="*25)
+        lines.append("BESPOKE")
+        lines.append("="*25)
+        api_tournament = ApiTournament(args.url)
+        tournament = Tournament(api_tournament, manager.loader)
+        data = { "Age of Empires II": [tournament] }
+        lines.extend(print_info(data, podcasts, manager.loader, last_week[0]))
+    else:
+        lines.append("="*25)
+        lines.append("COMPLETED")
+        lines.append("="*25)
+        lines.extend(print_info(manager.completed(last_week), podcasts, manager.loader, last_week[0]))
+        lines.append("ENDING")
+        lines.append("="*25)
+        lines.extend(print_info(manager.ending(this_week), podcasts, manager.loader, last_week[0]))
+        lines.append("="*25)
+        lines.append("ONGOING")
+        lines.append("="*25)
+        lines.extend(print_info(manager.ongoing(this_week), podcasts, manager.loader, last_week[0]))
+        lines.append("="*25)
+        lines.append("STARTING")
+        lines.append("="*25)
+        lines.extend(print_info(manager.starting(this_week), podcasts, manager.loader, last_week[0]))
     with open(working_file, "w") as f:
         for line in lines:
             print(line)
