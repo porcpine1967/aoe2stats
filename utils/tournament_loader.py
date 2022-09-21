@@ -401,7 +401,7 @@ class Tournament:
 
 def arguments():
     parser = ArgumentParser()
-    parser.add_argument("--url", help="Url to a specific tournament to process")
+    parser.add_argument("--url_file", help="path to urls for specific tournaments")
     parser.add_argument("--date", help="Custom date to start processing in YYYYmmdd")
     parser.add_argument('--debug', action='store_true', help="Set logger to debug")
     args = parser.parse_args()

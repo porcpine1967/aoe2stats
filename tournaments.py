@@ -115,30 +115,31 @@ def run():
     manager = TournamentLoader()
     podcasts = utils.previous_podcast.podcasts(os.getenv("HOME") + '/Documents/podcasts/aoe2')
     lines = []
-    if args.url:
+    if args.url_file:
         lines.append("="*25)
         lines.append("BESPOKE")
         lines.append("="*25)
-        api_tournament = ApiTournament(args.url)
-        tournament = Tournament(api_tournament, manager.loader)
-        data = { "Age of Empires II": [tournament] }
-        lines.extend(print_info(data, podcasts, manager.loader, last_week[0]))
-    else:
-        lines.append("="*25)
-        lines.append("COMPLETED")
-        lines.append("="*25)
-        lines.extend(print_info(manager.completed(last_week), podcasts, manager.loader, last_week[0]))
-        lines.append("ENDING")
-        lines.append("="*25)
-        lines.extend(print_info(manager.ending(this_week), podcasts, manager.loader, last_week[0]))
-        lines.append("="*25)
-        lines.append("ONGOING")
-        lines.append("="*25)
-        lines.extend(print_info(manager.ongoing(this_week), podcasts, manager.loader, last_week[0]))
-        lines.append("="*25)
-        lines.append("STARTING")
-        lines.append("="*25)
-        lines.extend(print_info(manager.starting(this_week), podcasts, manager.loader, last_week[0]))
+        with open(args.url_file) as f:
+            for url in f:
+                api_tournament = ApiTournament(url.strip())
+                tournament = Tournament(api_tournament, manager.loader)
+                data = { "Age of Empires II": [tournament] }
+                lines.extend(print_info(data, podcasts, manager.loader, last_week[0]))
+    lines.append("="*25)
+    lines.append("COMPLETED")
+    lines.append("="*25)
+    lines.extend(print_info(manager.completed(last_week), podcasts, manager.loader, last_week[0]))
+    lines.append("ENDING")
+    lines.append("="*25)
+    lines.extend(print_info(manager.ending(this_week), podcasts, manager.loader, last_week[0]))
+    lines.append("="*25)
+    lines.append("ONGOING")
+    lines.append("="*25)
+    lines.extend(print_info(manager.ongoing(this_week), podcasts, manager.loader, last_week[0]))
+    lines.append("="*25)
+    lines.append("STARTING")
+    lines.append("="*25)
+    lines.extend(print_info(manager.starting(this_week), podcasts, manager.loader, last_week[0]))
     with open(working_file, "w") as f:
         for line in lines:
             print(line)
