@@ -16,7 +16,7 @@
     - '6177368'
     voobly:
     - '123358944'
-  team: 22
+  team: 21
   twitch:
   - https://www.twitch.tv/av3stan
   youtube:
@@ -48,6 +48,7 @@
     - '1826483'
     - '2644601'
     - '4422938'
+    - '15150039'
     voobly:
     - '123844441'
     - '123422126'
@@ -55,7 +56,7 @@
     - '125129979'
     - 125129978-2
     - '124653653'
-  team: 4
+  team: 56
   twitch:
   - https://www.twitch.tv/mblaoc
   twitter:
@@ -89,7 +90,7 @@
     - '125129985'
     - '123887528'
     - '124341247'
-  team: 42
+  team: 41
   twitch:
   - https://www.twitch.tv/bact_
   twitter:
@@ -131,12 +132,14 @@
     - '9873875'
     - '10198859'
     - '10710012'
+    - '11406458'
+    - '11406458'
     voobly:
     - '123493096'
     - '123303397'
     - '125129996'
     - 125129996-11
-  team: 45
+  team: 44
 - aka:
   - Mr._Yo
   - Mr_Yo
@@ -168,7 +171,9 @@
     - '124341168'
     vooblycn:
     - '123636492'
-  team: 45
+  team: 44
+  twitch:
+  - https://www.twitch.tv/sy_yo
 - aka:
   - Pity_memory
   - XD_xiaofan
@@ -242,7 +247,7 @@
     - '124116514'
     - '123989026'
     - '124691590'
-  team: 21
+  team: 54
   twitch:
   - https://www.twitch.tv/lan_aoe
 - aoeelo: 4
@@ -282,6 +287,7 @@
   aoeelo: 31
   aoeelo_updated: 2022-08-04
   canonical_name: TaToH
+  city: Madrid
   country: es
   discord_id: tatoh89#2456
   esportsearnings: 41416
@@ -299,6 +305,7 @@
     - '5317568'
     - '8645496'
     - '8325522'
+    - '10836335'
     voobly:
     - '123999216'
     - '125366410'
@@ -307,7 +314,7 @@
     - 125129998-12
     - '947'
     - '124199973'
-  team: 19
+  team: 18
   twitch:
   - https://www.twitch.tv/tatohaoe
   twitter:
@@ -333,10 +340,11 @@
     - '271202'
     - '2886954'
     - '4298865'
+    - '9696322'
     voobly:
     - '123397463'
     - '124170820'
-  team: 31
+  team: 55
   twitch:
   - https://www.twitch.tv/salzz_vinchester
   youtube:
@@ -361,7 +369,7 @@
     - '124662701'
     - '124160323'
     - '124860581'
-  team: 37
+  team: 34
   twitch:
   - https://www.twitch.tv/modri_
 - canonical_name: Kotex
@@ -399,7 +407,7 @@
     - '123850375'
     - '124214626'
     - '123934159'
-  team: 37
+  team: 34
   twitch:
   - https://www.twitch.tv/b4rles
 - aka:
@@ -428,7 +436,7 @@
     - '123193037'
     - '123991049'
     - '124793331'
-  team: 42
+  team: 41
   twitch:
   - https://www.twitch.tv/saymyname2909
   youtube:
@@ -439,6 +447,7 @@
   aoeelo: 68
   canonical_name: Chart
   country: jp
+  discord_id: chart#3873
   id: 16
   liquipedia: Chart
   name: Chart
@@ -452,9 +461,10 @@
     - '124322377'
     - '124508020'
     - '124206032'
-  team: 15
+  team: 51
   twitch:
   - https://www.twitch.tv/chartaoc
+  - https://www.twitch.tv/chartaoe
 - aoeelo: 853
   aoeelo_updated: 2022-08-04
   canonical_name: Valas
@@ -468,11 +478,12 @@
   platforms:
     rl:
     - '628503'
+    - '11447680'
     voobly:
     - '124806109'
     - '124493950'
     - '124245294'
-  team: 37
+  team: 34
 - aka:
   - BlackMamba
   - CiCa_Zhou
@@ -502,7 +513,7 @@
     vooblycn:
     - '9747'
     - '124489527'
-  team: 45
+  team: 44
 - aka:
   - AppleFan
   - F1re
@@ -524,10 +535,11 @@
     - '1819094'
     - '5551398'
     - '9997273'
+    - '14500794'
     voobly:
     - '123658746'
     - 125129985-6
-  team: 23
+  team: 22
   twitch:
   - https://www.twitch.tv/f1reaoe
   twitter:
@@ -539,6 +551,7 @@
   aoeelo: 14
   aoeelo_updated: 2022-08-04
   canonical_name: ACCM
+  city: Da Nang
   country: vn
   discord_id: ACCM#0539
   esportsearnings: 14727
@@ -556,7 +569,7 @@
     - '123428504'
     - '123591487'
     - '125129982'
-  team: 42
+  team: 41
   twitch:
   - https://www.twitch.tv/accm_vn
   - https://www.twitch.tv/theaccm
@@ -590,6 +603,8 @@
     - '9798830'
     - '6381504'
     - '11255662'
+    - '11957022'
+    - '12269448'
     voobly:
     - '182612'
     - '125129993'
@@ -602,7 +617,7 @@
     - '124539771'
     zone:
     - tim
-  team: 45
+  team: 44
 - aoeelo: 17
   canonical_name: CooL
   country: vn
@@ -646,7 +661,7 @@
     - '124147336'
     - 125129977-1
     - '125227717'
-  team: 4
+  team: 56
   twitch:
   - https://www.twitch.tv/liereyy
   twitter:
@@ -682,11 +697,13 @@
     - '123198508'
     - '16640'
     - '123463926'
-  team: 24
+  team: 52
   twitch:
   - https://www.twitch.tv/gktcloud
   youtube:
   - https://www.youtube.com/user/qaws68
+  youtube_live:
+  - https://www.youtube.com/channel/UChOSBHAdhDG8J0yGHJrPoNQ/live
 - aka:
   - Fengxin
   aoeelo: 20
@@ -710,7 +727,7 @@
     voobly:
     - '123835916'
     - '179227'
-  team: 45
+  team: 44
 - aka:
   - Daut
   - Shmeker
@@ -718,6 +735,7 @@
   aoeelo: 1
   aoeelo_updated: 2022-08-04
   canonical_name: DauT
+  city: Belgrade
   country: rs
   discord:
   - https://discord.gg/ckHd3vT
@@ -743,7 +761,7 @@
     - '108050'
     zone:
     - daut
-  team: 19
+  team: 18
   twitch:
   - https://www.twitch.tv/daut
   twitter:
@@ -773,18 +791,21 @@
     - '1847121'
     - '3209724'
     - '4423546'
+    - '12934666'
     voobly:
     - '124954867'
     - '123984714'
     - '125227715'
     - '124694635'
-  team: 4
+  team: 56
   twitch:
   - https://www.twitch.tv/hera
   twitter:
   - https://twitter.com/Hera_Aoe
   youtube:
   - https://www.youtube.com/channel/UCeqc9aYVAZcRQq9Ey0x26AQ
+  youtube_live:
+  - https://www.youtube.com/channel/UCFYYkZosXVL2t9w1DIkBCNg/live
 - aka:
   - NilPferD
   - Nili_AoE
@@ -814,7 +835,7 @@
     - '124423938'
     zone:
     - nili
-  team: 19
+  team: 18
   twitch:
   - https://www.twitch.tv/nili_aoe
   twitter:
@@ -863,7 +884,7 @@
     - '575722'
     voobly:
     - '123961442'
-  team: 35
+  team: 58
   twitch:
   - https://www.twitch.tv/zuppiaoe
   twitter:
@@ -877,6 +898,7 @@
   - Dracken
   - DraconT
   - Dracont
+  - Mr. Platinum
   aoeelo: 100
   aoeelo_updated: 2022-08-04
   canonical_name: DracKeN
@@ -897,7 +919,7 @@
     - '124717620'
     - '124832150'
     - '125297245'
-  team: 12
+  team: 6
   twitch:
   - https://www.twitch.tv/drackentv
   youtube:
@@ -940,7 +962,7 @@
     - '124341240'
     zone:
     - viper
-  team: 19
+  team: 18
   twitch:
   - https://www.twitch.tv/theviper
   twitter:
@@ -994,9 +1016,10 @@
   platforms:
     rl:
     - '265517'
+    - '11447758'
     voobly:
     - '123256402'
-  team: 47
+  team: 46
   twitch:
   - https://www.twitch.tv/aocdaniel
   twitter:
@@ -1059,7 +1082,7 @@
     vooblycn:
     - '123230853'
     - '180548'
-  team: 45
+  team: 44
 - aka:
   - NicoV
   aoeelo: 27
@@ -1089,7 +1112,7 @@
     - '125129977'
     - 125129982-5
     - '124775535'
-  team: 4
+  team: 56
   twitch:
   - https://www.twitch.tv/nicov_
   twitter:
@@ -1124,7 +1147,7 @@
     - '125129994'
     - '123195719'
     - '124340943'
-  team: 19
+  team: 18
   twitch:
   - https://www.twitch.tv/JorDan_AoE
   twitter:
@@ -1171,7 +1194,7 @@
     - '39623'
     - '123636616'
     - '125129980'
-  team: 35
+  team: 58
 - aoeelo: 51
   aoeelo_updated: 2022-08-04
   canonical_name: Villese
@@ -1191,13 +1214,14 @@
     - '124166670'
     - '124240093'
     - '125129990'
-  team: 35
+  team: 58
   twitch:
   - https://www.twitch.tv/villese
 - aoeelo: 3
   aoeelo_updated: 2022-03-07
   canonical_name: RiuT
   country: br
+  discord_id: RiuTAoE#9691
   esportsearnings: 12244
   id: 42
   liquipedia: RiuT
@@ -1218,7 +1242,7 @@
     - '8643'
     - 125129995-10
     - '124340884'
-  team: 23
+  team: 22
   twitch:
   - https://www.twitch.tv/riut_aoe
   youtube:
@@ -1269,7 +1293,7 @@
     - '124042289'
     - '123784980'
     - '123975630'
-  team: 15
+  team: 51
   twitch:
   - https://www.twitch.tv/twiggaoe
 - aka:
@@ -1299,7 +1323,7 @@
     - '123172587'
     zone:
     - jonslow
-  team: 12
+  team: 6
   twitch:
   - https://www.twitch.tv/jonslow_
   twitter:
@@ -1325,13 +1349,14 @@
     - '5230833'
     - '5845322'
     - '9254072'
+    - '3289923'
     voobly:
     - '125241102'
     - '124313135'
     - '124216278'
     - '124728574'
     - '124653323'
-  team: 47
+  team: 46
   twitch:
   - https://www.twitch.tv/sitaux
   twitter:
@@ -1354,7 +1379,7 @@
     - '431744'
     voobly:
     - '123417449'
-  team: 35
+  team: 58
   twitch:
   - https://www.twitch.tv/rubenstock
 - aka:
@@ -1380,7 +1405,7 @@
     - '124750873'
     - '124452866'
     - '124449479'
-  team: 15
+  team: 51
   twitch:
   - https://www.twitch.tv/hoangnguyen485
   youtube:
@@ -1389,6 +1414,7 @@
   aoeelo_updated: 2022-02-28
   canonical_name: AngelinaJolie
   country: nl
+  discord_id: Leggies#7101
   id: 49
   liquipedia: AngelinaJolie
   name: AngelinaJolie
@@ -1400,7 +1426,7 @@
     voobly:
     - '124134715'
     - '123493331'
-  team: 28
+  team: 49
   twitch:
   - https://www.twitch.tv/angelina_jolie
 - aoeelo: 458
@@ -1422,9 +1448,10 @@
     - '965185'
     - '3496121'
     - '9555704'
+    - '10837099'
     voobly:
     - '124183501'
-  team: 37
+  team: 34
   twitch:
   - https://www.twitch.tv/ganji__
 - aka:
@@ -1432,9 +1459,11 @@
   aoeelo: 195
   aoeelo_updated: 2022-07-27
   canonical_name: Kasva
+  city: Ankara
   country: tr
   discord:
   - https://discord.gg/CETwWEp
+  discord_id: Kasva#7672
   id: 51
   liquipedia: Kasva
   name: Kasva
@@ -1450,7 +1479,7 @@
     - '124473071'
     - '125040561'
     - '123507501'
-  team: 53
+  team: 5
   twitch:
   - https://www.twitch.tv/kasvaoe
   twitter:
@@ -1502,9 +1531,11 @@
     - '3557942'
     - '4328139'
     - '9622152'
+    - '2677445'
+    - '10511320'
     voobly:
     - '124308648'
-  team: 28
+  team: 32
   twitch:
   - https://www.twitch.tv/noisick_aoe
 - aoeelo: 323
@@ -1521,7 +1552,6 @@
     rl:
     - '221997'
     - '1237326'
-    - '2032611'
     voobly:
     - '123644749'
     zone:
@@ -1535,6 +1565,7 @@
   aoeelo: 153
   aoeelo_updated: 2022-07-27
   canonical_name: Fedex
+  city: Buenos Aires
   country: ar
   discord_id: Fedex#2075
   id: 55
@@ -1581,7 +1612,7 @@
     - '9806'
     zone:
     - dziamdziak
-  team: 52
+  team: 53
   twitch:
   - https://www.twitch.tv/dziamdziak
 - aka:
@@ -1617,7 +1648,7 @@
     - yanzi
     zone:
     - yanzi
-  team: 8
+  team: 11
 - aoeelo: 203
   canonical_name: kkab
   country: kr
@@ -1656,7 +1687,7 @@
     - '123189460'
     zone:
     - grunt
-  team: 41
+  team: 40
 - aka:
   - Arch_Koven
   aoeelo: 392
@@ -1691,7 +1722,7 @@
     - '16205'
     zone:
     - halen
-  team: 41
+  team: 40
 - aka:
   - ChampioN
   - Kimchisarang
@@ -1720,6 +1751,7 @@
   aoeelo: 60
   canonical_name: Chris
   country: ca
+  discord_id: _IamChris#6661
   esportsearnings: 15927
   id: 64
   liquipedia: Chris
@@ -1747,6 +1779,8 @@
   - https://www.twitch.tv/iamchris_age2
   youtube:
   - https://www.youtube.com/channel/UC00u-XPUH-nNhHNU7MsxBPA
+  youtube_live:
+  - https://www.youtube.com/channel/UC00u-XPUH-nNhHNU7MsxBPA/live
 - canonical_name: The_Sheriff
   country: us
   id: 65
@@ -1803,6 +1837,7 @@
   country: us
   discord:
   - https://discord.gg/MrNwsQB
+  discord_id: SpringTV#1011
   esportsearnings: 41842
   id: 68
   liquipedia: Spring
@@ -1823,7 +1858,7 @@
     - '124781271'
     zone:
     - spring
-  team: 14
+  team: 4
   twitch:
   - https://www.twitch.tv/springtv
   twitter:
@@ -1845,7 +1880,7 @@
     - '123429442'
     zone:
     - windy
-  team: 30
+  team: 28
 - aka:
   - MyST_IORI
   - The_Koven_Fan
@@ -1873,7 +1908,7 @@
   platforms:
     zone:
     - cath_joe
-  team: 16
+  team: 15
 - aoeelo: 168
   canonical_name: Ruso
   country: es
@@ -1894,6 +1929,8 @@
     - '22303'
     zone:
     - ruso
+  twitch:
+  - https://www.twitch.tv/mr_gpb
 - aka:
   - GunsNRoses
   aoeelo: 142
@@ -1920,7 +1957,7 @@
     - '610'
     zone:
     - alive
-  team: 23
+  team: 22
   twitch:
   - https://www.twitch.tv/alive_kgb
   - https://www.twitch.tv/aliveaoe
@@ -2009,7 +2046,7 @@
     voobly:
     - '123134558'
     - '124340942'
-  team: 25
+  team: 23
 - aka:
   - LMAC
   - PiLLaGeR
@@ -2017,6 +2054,7 @@
   aoeelo: 6
   canonical_name: Mentalist
   country: ca
+  discord_id: mentalist#3763
   esportsearnings: 14737
   id: 79
   liquipedia: Mentalist
@@ -2024,12 +2062,14 @@
   notability:
     aoe2: true
   platforms:
+    rl:
+    - '9579739'
     voobly:
     - '123805043'
     - '123936769'
     - '124195578'
     - '125091165'
-  team: 25
+  team: 23
 - aka:
   - Just_GoKu
   aoeelo: 7
@@ -2051,7 +2091,7 @@
     - '123984617'
     - '125143234'
     - '123529024'
-  team: 23
+  team: 22
   twitch:
   - https://www.twitch.tv/gokuaoe
 - aka:
@@ -2104,12 +2144,13 @@
     - '123946886'
     - '125271720'
     - '123793404'
-  team: 28
+  team: 49
   twitch:
   - https://www.twitch.tv/vodka_l_
 - aoeelo: 65
   canonical_name: Spaden
   country: se
+  discord_id: Spaden#8516
   id: 83
   liquipedia: Spaden
   name: Spaden
@@ -2121,7 +2162,7 @@
     voobly:
     - '123210474'
     - '124166791'
-  team: 25
+  team: 23
   twitch:
   - https://www.twitch.tv/spadenaoc
 - aoeelo: 159
@@ -2203,7 +2244,7 @@
     - '123741316'
     - '123321654'
     - '123189353'
-  team: 21
+  team: 54
   twitch:
   - https://www.twitch.tv/ediefr
   - https://www.twitch.tv/poz_edie
@@ -2236,7 +2277,7 @@
     - '123532179'
     - '124626542'
     - '125009949'
-  team: 42
+  team: 41
   twitch:
   - https://www.twitch.tv/songsong_aoe
 - aka:
@@ -2262,7 +2303,7 @@
     - '123999699'
     vooblycn:
     - '30984'
-  team: 45
+  team: 28
 - aka:
   - 8th_wonder
   - Bully
@@ -2289,7 +2330,7 @@
     - '123781126'
     - '124003159'
     - '123129305'
-  team: 25
+  team: 23
 - aka:
   - LordOfMOS
   - Sddfge
@@ -2306,11 +2347,12 @@
     rl:
     - '1755520'
     - '1754629'
+    - '14665996'
     voobly:
     - '124075494'
     - '124240304'
     - '125024125'
-  team: 31
+  team: 55
   twitch:
   - https://www.twitch.tv/salzz_classicpro
 - aka:
@@ -2335,7 +2377,7 @@
     - '24950'
     zone:
     - ralber
-  team: 39
+  team: 38
   twitch:
   - https://www.twitch.tv/ralbertv
   twitter:
@@ -2367,6 +2409,7 @@
   aoeelo: 273
   aoeelo_updated: 2022-08-04
   canonical_name: Capoch
+  city: Buenos Aires
   country: ar
   discord:
   - https://discord.gg/sjCpquh
@@ -2439,7 +2482,6 @@
     - '2868603'
     - '1369578'
     - '3796982'
-    - '6442860'
     voobly:
     - '187035'
     - '123831728'
@@ -2483,6 +2525,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: FeAge
   country: br
+  discord_id: FeAge#3568
   esportsearnings: 12255
   id: 100
   liquipedia: FeAge
@@ -2493,6 +2536,7 @@
     rl:
     - '300649'
     - '4956328'
+    - '13996455'
     voobly:
     - '123203450'
     - '124170824'
@@ -2543,9 +2587,11 @@
     - '582058'
     voobly:
     - '124386524'
-  team: 4
+  team: 56
   twitch:
   - https://www.twitch.tv/hearttt_
+  twitter:
+  - https://twitter.com/HeartttAoE
   youtube:
   - http://www.youtube.com/channel/UCOtdNcfA05JODTx1cBlniyg
 - aoeelo: 148
@@ -2560,10 +2606,11 @@
   platforms:
     rl:
     - '1098178'
+    - '5501995'
     voobly:
     - '47262'
     - '127366'
-  team: 38
+  team: 36
   twitch:
   - https://www.twitch.tv/ra_aoe
 - aka:
@@ -2604,7 +2651,7 @@
     - james
     voobly:
     - '123797718'
-  team: 30
+  team: 28
 - aka:
   - FitzChilvary
   - Fitzchivalry
@@ -2613,6 +2660,7 @@
   aoeelo: 9
   canonical_name: Feanor
   country: ie
+  discord_id: Feanor#3234
   id: 106
   liquipedia: Feanor
   name: Feanor
@@ -2623,7 +2671,7 @@
     - '208493'
     voobly:
     - '123806659'
-  team: 21
+  team: 54
   twitch:
   - https://www.twitch.tv/heresy_feanor
 - aka:
@@ -2634,7 +2682,7 @@
   aoeelo: 86
   aoeelo_updated: 2022-07-27
   canonical_name: Hasan
-  country: ba
+  country: us
   id: 107
   liquipedia: Hasan
   name: Hasan
@@ -2645,6 +2693,7 @@
     - '971296'
     - '5126520'
     - '9803576'
+    - '2032611'
     voobly:
     - '123222710'
     - '7950'
@@ -2652,8 +2701,9 @@
     - '123370148'
     - '123180505'
     - '125321142'
-  team: 38
+  team: 36
   twitch:
+  - https://www.twitch.tv/hasande_
   - https://www.twitch.tv/raidenaoe
 - aoeelo: 80
   canonical_name: Juan
@@ -2715,10 +2765,10 @@
     rl:
     - '208080'
     - '703045'
-    - '8590587'
+    - '3499857'
     voobly:
     - '123451615'
-  team: 35
+  team: 58
   twitch:
   - https://www.twitch.tv/jupeeeeee
   youtube:
@@ -2726,6 +2776,7 @@
 - aoeelo: 664
   canonical_name: Dobbs
   country: dk
+  discord_id: Dobbs351#2210
   id: 112
   liquipedia: Dobbs351
   name: Dobbs
@@ -2738,7 +2789,7 @@
     - '4767036'
     voobly:
     - '124368651'
-  team: 15
+  team: 51
   twitch:
   - https://www.twitch.tv/dobbs351
   youtube:
@@ -2761,7 +2812,7 @@
     - '124287511'
     - '124505989'
     - '124378288'
-  team: 28
+  team: 49
   twitch:
   - https://www.twitch.tv/kamigawa_
 - aka:
@@ -2780,7 +2831,6 @@
   platforms:
     rl:
     - '3235648'
-    - '2411454'
     voobly:
     - '123916446'
     - '124139264'
@@ -2801,6 +2851,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: Kongensgade
   country: dk
+  discord_id: Mabov#7375
   id: 115
   liquipedia: Kongensgade
   name: Kongensgade
@@ -2963,7 +3014,7 @@
   platforms:
     zone:
     - rukie
-  team: 39
+  team: 38
 - aka:
   - DriNky_T
   aoeelo: 322
@@ -3052,7 +3103,7 @@
     - '12597'
     zone:
     - poisn
-  team: 8
+  team: 11
 - aoeelo: 319
   canonical_name: Playboy
   country: cn
@@ -3119,7 +3170,7 @@
     - '6031'
     zone:
     - fox
-  team: 16
+  team: 15
 - aka:
   - Pete_Martell
   - Pete_martell
@@ -3127,6 +3178,7 @@
   aoeelo: 503
   canonical_name: Nanimaren
   country: it
+  discord_id: pete_martell#9173
   id: 138
   liquipedia: Nanimaren
   name: Nanimaren
@@ -3137,7 +3189,7 @@
     - '746777'
     voobly:
     - '124483923'
-  team: 28
+  team: 49
 - aoeelo: 73
   aoeelo_updated: 2022-07-27
   canonical_name: chaos_2_win
@@ -3177,7 +3229,7 @@
     - '8657232'
     voobly:
     - '124281975'
-  team: 22
+  team: 21
   twitch:
   - https://www.twitch.tv/100dragonstar
   - https://www.twitch.tv/dragonstar_aoe
@@ -3254,7 +3306,7 @@
     - '283224'
     voobly:
     - '123839438'
-  team: 28
+  team: 49
 - aoeelo: 408
   canonical_name: Elfanor
   country: be
@@ -3272,6 +3324,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: Cyclops
   country: tr
+  discord_id: Cyclops#7566
   id: 147
   liquipedia: Cyclops
   name: Cyclops
@@ -3285,17 +3338,19 @@
     - '3524242'
     - '4976729'
     - '6344987'
+    - '8717567'
     voobly:
     - '20404'
     - '123638821'
     zone:
     - cyclops
-  team: 2
+  team: 20
   twitch:
   - https://www.twitch.tv/cyclopsaoe
 - aoeelo: 91
   canonical_name: Janik
   country: cz
+  discord_id: Janik#0960
   id: 148
   liquipedia: Janik
   name: Janik
@@ -3358,6 +3413,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: DemonSheep
   country: tw
+  discord_id: DemonSheep#3538
   id: 152
   liquipedia: DemonSheep
   name: DemonSheep
@@ -3366,7 +3422,7 @@
   platforms:
     rl:
     - '226697'
-  team: 24
+  team: 52
   twitch:
   - https://www.twitch.tv/demonsheeptw
 - aka:
@@ -3399,6 +3455,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: Sora Kuma
   country: tw
+  discord_id: kumameow!#9619
   id: 154
   liquipedia: Sora_Kuma
   name: Sora Kuma
@@ -3408,7 +3465,7 @@
     rl:
     - '209118'
     - '712465'
-  team: 24
+  team: 52
   twitch:
   - https://www.twitch.tv/skyandpeace
 - aka:
@@ -3418,6 +3475,7 @@
   aoeelo: 66
   canonical_name: Komtan
   country: jp
+  discord_id: komtan#2528
   id: 155
   liquipedia: Komtan
   name: Komtan
@@ -3470,6 +3528,7 @@
   aoeelo_updated: 2022-03-12
   canonical_name: LB10
   country: at
+  discord_id: '#6511'
   id: 158
   liquipedia: LB10
   name: LB10
@@ -3480,7 +3539,7 @@
     - '1050688'
     voobly:
     - '123926453'
-  team: 48
+  team: 47
   twitch:
   - https://www.twitch.tv/lb10_
 - aoeelo: 449
@@ -3519,10 +3578,11 @@
     - '123225139'
     rl:
     - '992381'
+    - '12168310'
     voobly:
     - '123225139'
     - '2976'
-  team: 48
+  team: 47
   twitch:
   - https://www.twitch.tv/nc_skittle_
 - aka:
@@ -3535,6 +3595,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Jidba
   country: gr
+  discord_id: "\U0001D575\U0001D58E\U0001D589\U0001D587\U0001D586#3170"
   esportsearnings: 15926
   id: 161
   liquipedia: Jidba
@@ -3547,7 +3608,7 @@
     - '1834168'
     voobly:
     - '978'
-  team: 41
+  team: 40
   twitch:
   - https://www.twitch.tv/jidba
 - canonical_name: IamKen
@@ -3674,7 +3735,7 @@
     - '584824'
     voobly:
     - '123188321'
-  team: 26
+  team: 25
 - aoeelo: 336
   canonical_name: WraTh
   country: br
@@ -3756,7 +3817,7 @@
   notability:
     aoe2: true
   platforms: {}
-  team: 17
+  team: 16
 - aoeelo: 924
   canonical_name: HimT
   country: hk
@@ -3882,6 +3943,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: Sobek
   country: cl
+  discord_id: Sobek#3676
   id: 191
   liquipedia: Sobek
   name: Sobek
@@ -3894,7 +3956,7 @@
     - '5658345'
     voobly:
     - '124317014'
-  team: 58
+  team: 32
   twitch:
   - https://www.twitch.tv/sobek_aoe
   - https://www.twitch.tv/sobekaoe
@@ -3920,7 +3982,7 @@
     voobly:
     - '123851827'
     - '123649340'
-  team: 28
+  team: 24
   twitch:
   - https://www.twitch.tv/hallisaoc
   youtube:
@@ -4079,7 +4141,7 @@
   platforms:
     zone:
     - kick
-  team: 39
+  team: 38
 - aka:
   - LeAsH
   - Leashed
@@ -4095,7 +4157,7 @@
     - '322858'
     voobly:
     - '123556801'
-  team: 26
+  team: 25
   twitch:
   - https://www.twitch.tv/leash__
   youtube:
@@ -4136,7 +4198,7 @@
     - '489128'
     voobly:
     - '123369268'
-  team: 34
+  team: 30
   twitch:
   - https://www.twitch.tv/TheCode_AoE
 - aka:
@@ -4158,7 +4220,7 @@
     - '4682069'
     voobly:
     - '123374407'
-  team: 34
+  team: 30
   twitch:
   - https://www.twitch.tv/sunodaywalker
 - aka:
@@ -4176,7 +4238,7 @@
     - '217180'
     voobly:
     - '124045298'
-  team: 26
+  team: 25
   twitch:
   - https://www.twitch.tv/i2age_
 - aka:
@@ -4203,13 +4265,14 @@
     voobly:
     - '123698004'
     - '123158445'
-  team: 26
+  team: 35
   twitch:
   - https://www.twitch.tv/bruh_aoe
   youtube:
   - http://www.youtube.com/channel/UC0ohO1gLZWjX1DUG6oTSGZw
 - aoeelo: 889
   canonical_name: ashleylynn
+  city: Boston
   country: us
   discord:
   - https://discord.gg/DFBYNfG
@@ -4225,6 +4288,7 @@
     - '674899'
     - '1602128'
     - '4020280'
+    - '12467673'
     voobly:
     - '123866515'
   twitch:
@@ -4302,7 +4366,7 @@
     - '210388'
     - '4799335'
     - '2855866'
-  team: 28
+  team: 49
   twitch:
   - https://www.twitch.tv/riseaoe2
 - aka:
@@ -4324,7 +4388,7 @@
     - '6157837'
     voobly:
     - '125137692'
-  team: 3
+  team: 8
   twitch:
   - https://www.twitch.tv/3d_dark_
   - https://www.twitch.tv/darkaoe
@@ -4359,7 +4423,8 @@
     rl:
     - '211351'
     - '1435093'
-  team: 45
+    - '10592662'
+  team: 44
 - aka:
   - D8_baby
   aoeelo: 37
@@ -4395,7 +4460,7 @@
     - '2503651'
     - '5551503'
     - '5876134'
-  team: 42
+  team: 41
   twitch:
   - https://www.twitch.tv/badboyaoe
 - aka:
@@ -4424,6 +4489,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: BL4CK
   country: ar
+  discord_id: BLACK#1654
   id: 221
   liquipedia: Bl4ck
   name: BL4CK
@@ -4436,9 +4502,10 @@
     - '5999674'
     - '9231165'
     - '9572827'
+    - '11410187'
     voobly:
     - '123624141'
-  team: 15
+  team: 45
   twitch:
   - https://www.twitch.tv/bl4ck_aoe
 - canonical_name: killpigboy
@@ -4473,6 +4540,7 @@
   aoeelo: 623
   canonical_name: Keno
   country: mx
+  discord_id: Keno#6318
   id: 224
   liquipedia: Keno
   name: Keno
@@ -4487,7 +4555,7 @@
     voobly:
     - '124318462'
     - '1431'
-  team: 32
+  team: 59
   twitch:
   - https://www.twitch.tv/keno_aoe
 - aka:
@@ -4528,7 +4596,7 @@
     - '3489772'
     voobly:
     - '123921098'
-  team: 20
+  team: 19
 - aoeelo: 1028
   canonical_name: Tushen
   country: cn
@@ -4560,7 +4628,7 @@
     - '1784541'
     - '10573031'
     - '10717176'
-  team: 37
+  team: 49
   twitch:
   - https://www.twitch.tv/Kellar_AoE
   youtube:
@@ -4570,7 +4638,9 @@
   aoeelo: 783
   aoeelo_updated: 2022-07-27
   canonical_name: Carbo
+  city: Quilmes
   country: ar
+  discord_id: Carbo#4493
   id: 229
   liquipedia: Carbo
   name: Carbo
@@ -4580,7 +4650,7 @@
     rl:
     - '618731'
     - '2171446'
-  team: 15
+  team: 51
   twitch:
   - https://www.twitch.tv/carboarg
   twitter:
@@ -4620,9 +4690,10 @@
     - '9307337'
     - '10243171'
     - '10798747'
+    - '15042744'
     voobly:
     - '123797075'
-  team: 32
+  team: 59
   twitch:
   - https://www.twitch.tv/puerco_black
   twitter:
@@ -4684,7 +4755,7 @@
     - '560474'
     voobly:
     - '124546027'
-  team: 32
+  team: 59
 - aka:
   - DarknoobHD
   aoeelo: 745
@@ -4703,7 +4774,7 @@
     - '3219682'
     voobly:
     - '124516604'
-  team: 12
+  team: 6
 - aoeelo: 125
   canonical_name: DarkDevil
   country: it
@@ -4796,7 +4867,7 @@
     - '9646265'
     voobly:
     - '124655527'
-  team: 13
+  team: 60
   twitch:
   - https://www.twitch.tv/uzzi_aoe
   youtube:
@@ -4820,7 +4891,7 @@
   platforms:
     rl:
     - '178430'
-  team: 12
+  team: 6
   twitch:
   - https://www.twitch.tv/the__bloodless
 - aoeelo: 748
@@ -4839,9 +4910,11 @@
     - '3379989'
     voobly:
     - '123911641'
-  team: 9
+  team: 32
   twitch:
   - https://www.twitch.tv/wisepii
+  twitter:
+  - https://twitter.com/Wisepii_aoe
 - aka:
   - Choco
   - Tokotoko
@@ -4884,6 +4957,7 @@
   aoeelo: 963
   canonical_name: z40305125
   country: tw
+  discord_id: stu18004077#1634
   id: 246
   liquipedia: z40
   name: z40305125
@@ -4897,6 +4971,7 @@
     - '2276037'
     voobly:
     - z40305125
+  team: 52
   twitch:
   - https://www.twitch.tv/z40305125
 - aka:
@@ -4921,7 +4996,9 @@
 - aoeelo: 144
   canonical_name: Funito
   country: ar
+  discord_id: Funito#8407
   id: 248
+  liquipedia: Funito
   name: Funito
   notability:
     aoe2: true
@@ -4932,15 +5009,21 @@
     - '13052'
     rl:
     - '2638400'
+    - '484649'
+    - '10261408'
     voobly:
     - '13052'
+  team: 14
   twitch:
   - https://www.twitch.tv/funito
+  twitter:
+  - https://twitter.com/FunitoAoE
 - aka:
   - Concur
   aoeelo: 278
   canonical_name: K0ty
   country: cz
+  discord_id: Koty#3092
   id: 249
   name: K0ty
   notability:
@@ -4976,10 +5059,12 @@
     - '6732719'
     - '5124528'
     - '10296719'
+    - '12251606'
     voobly:
     - '124423933'
   team: 13
   twitch:
+  - https://www.twitch.tv/dreamcl_aoe
   - https://www.twitch.tv/whoclaoe
   youtube:
   - https://www.youtube.com/channel/UC4qu2qgIzsjdWsYRxgfHN6g
@@ -5012,7 +5097,7 @@
     - '3317764'
     - '4974647'
     - '5232076'
-  team: 13
+  team: 60
   twitch:
   - https://www.twitch.tv/lobodelanieve
 - aka:
@@ -5034,7 +5119,7 @@
     - '2915171'
     voobly:
     - '123204531'
-  team: 31
+  team: 55
   twitch:
   - https://www.twitch.tv/salzz_warrior
   youtube:
@@ -5045,6 +5130,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: klavskis
   country: lv
+  discord_id: klavskis#8714
   id: 255
   liquipedia: Klavskis
   name: klavskis
@@ -5090,24 +5176,26 @@
     - '123904053'
   team: 28
 - aka:
+  - Adam
   - Adham
   aoeelo: 76
   canonical_name: Xhing
   country: us
   discord:
   - https://discord.gg/MusuEz
+  discord_id: Adamantium#4545
   id: 258
+  liquipedia: Xhing
   name: Xhing
   notability:
     aoe2: true
   platforms:
     rl:
     - '611972'
-    - '3229922'
-    - '527164'
     voobly:
     - '124835966'
     - '124725130'
+  team: 4
   twitch:
   - https://www.twitch.tv/adam_aoe
 - aka:
@@ -5138,6 +5226,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: Pela
   country: ar
+  discord_id: Pela#4044
   id: 260
   liquipedia: Pela
   name: Pela
@@ -5148,12 +5237,13 @@
     - '219739'
     - '2821779'
     - '5093301'
-  team: 15
+  team: 51
   twitch:
   - https://www.twitch.tv/pela_aoe
   youtube:
   - http://www.youtube.com/channel/UCzhzve1YE9Mq5tIsQbG48XA/videos
 - canonical_name: Ertug
+  city: "\u0130zmir"
   country: tr
   id: 261
   name: Ertug
@@ -5194,8 +5284,11 @@
     - '10051788'
     - '10430576'
     - '10406566'
+    - '11440254'
+    - '11891268'
   twitch:
   - https://www.twitch.tv/ertugaoe
+  - https://www.twitch.tv/ertugguner
   - https://www.twitch.tv/mastertuq
   twitter:
   - https://twitter.com/ertugaoe
@@ -5219,7 +5312,7 @@
     - '5722641'
     - '9603085'
     - '10828310'
-  team: 28
+  team: 49
   twitch:
   - https://www.twitch.tv/shadesaoe
   twitter:
@@ -5239,6 +5332,8 @@
     - '215963'
     - '3163620'
     - '3472929'
+    - '12367227'
+  team: 3
 - aka:
   - LavieHead
   aoeelo: 1115
@@ -5257,7 +5352,7 @@
     - '4345753'
     voobly:
     - '123220280'
-  team: 25
+  team: 23
   twitch:
   - https://www.twitch.tv/lavie_head
 - aka:
@@ -5279,6 +5374,8 @@
     - '3964432'
     voobly:
     - '123151277'
+  twitch:
+  - https://www.twitch.tv/gary_arg
 - aka:
   - 185_Biry
   - 185_Biry_Arg
@@ -5288,6 +5385,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: Biry
   country: ar
+  discord_id: El Biry De LAmour#3157
   id: 266
   liquipedia: Biry
   name: Biry
@@ -5303,10 +5401,12 @@
     - '6779858'
     - '9280724'
     - '11011628'
+    - '12952693'
+    - '14403738'
     voobly:
     - '123714392'
     - '60956'
-  team: 15
+  team: 51
   twitch:
   - https://www.twitch.tv/biryarg
   youtube:
@@ -5346,6 +5446,7 @@
   aoeelo: 178
   aoeelo_updated: 2022-03-07
   canonical_name: BlinG
+  city: Cornwall
   country: gb
   esportsearnings: 1846
   id: 269
@@ -5378,7 +5479,9 @@
   platforms:
     rl:
     - '1165138'
-  team: 31
+    - '10735376'
+    - '14757479'
+  team: 55
   twitch:
   - https://www.twitch.tv/salzz_good_game
 - aka:
@@ -5397,7 +5500,7 @@
     rl:
     - '874604'
     - '5453798'
-  team: 49
+  team: 48
   twitch:
   - https://www.twitch.tv/alperenaoe2
   youtube:
@@ -5432,13 +5535,14 @@
   - KingstoN_
   - Kingston
   - Kingstone
+  - USb
   aoeelo: 976
   aoeelo_updated: 2022-08-04
   canonical_name: USb
   country: mx
   id: 274
   liquipedia: KingstoNe
-  name: USb
+  name: KingstoNe
   notability:
     aoe2: true
   platforms:
@@ -5447,7 +5551,7 @@
     - '3253348'
     - '2776293'
     - '4957841'
-  team: 13
+  team: 60
   twitch:
   - https://www.twitch.tv/bazan_aoe
   - https://www.twitch.tv/kingston_aoe
@@ -5466,13 +5570,16 @@
     - '222102'
     - '3238663'
     - '6231852'
-  team: 47
+  team: 46
   twitch:
   - https://www.twitch.tv/Annotoph
   twitter:
   - https://twitter.com/Annotoph_AoE
+  youtube:
+  - https://www.youtube.com/@annotophaoe2894
 - canonical_name: RookStar
   country: br
+  discord_id: rookstar#6779
   id: 276
   name: RookStar
   notability:
@@ -5481,7 +5588,9 @@
     rl:
     - '2265942'
     - '2948283'
+    - '13527312'
 - canonical_name: grathwrang
+  city: Toronto
   country: ca
   discord:
   - https://discord.com/invite/Cp94ry9
@@ -5509,6 +5618,7 @@
   platforms:
     rl:
     - '4796235'
+    - '14192577'
   twitch:
   - https://www.twitch.tv/roxyc
   twitter:
@@ -5528,7 +5638,9 @@
     - '3101322'
     - '5057225'
     - '8067841'
-  team: 28
+    - '11988237'
+    - '14587212'
+  team: 32
   twitch:
   - https://www.twitch.tv/whitecourtt
 - aoeelo: 782
@@ -5543,6 +5655,7 @@
     rl:
     - '2444511'
     - '2762305'
+    - '14595118'
   team: 11
   twitch:
   - https://www.twitch.tv/gabiaoe_
@@ -5566,7 +5679,7 @@
     rl:
     - '945852'
     - '3579491'
-  team: 15
+  team: 51
 - aoeelo: 614
   aoeelo_updated: 2022-07-27
   canonical_name: D3rp
@@ -5581,7 +5694,7 @@
     rl:
     - '212294'
     - '9246070'
-  team: 12
+  team: 6
   twitch:
   - https://www.twitch.tv/d3rp276
   - https://www.twitch.tv/d3rpaoe
@@ -5600,7 +5713,7 @@
     - '200073'
     voobly:
     - '123553491'
-  team: 48
+  team: 47
   twitch:
   - https://www.twitch.tv/nc_andorin
 - aoeelo: 800
@@ -5617,7 +5730,7 @@
     - '3201121'
     voobly:
     - '124074916'
-  team: 26
+  team: 25
   twitch:
   - https://www.twitch.tv/clemensor
   youtube:
@@ -5632,7 +5745,7 @@
   platforms:
     rl:
     - '1566498'
-  team: 26
+  team: 25
 - canonical_name: ffavorite
   country: us
   id: 286
@@ -5643,7 +5756,7 @@
   platforms:
     rl:
     - '509112'
-  team: 26
+  team: 25
 - aoeelo: 629
   aoeelo_updated: 2022-02-08
   canonical_name: PaladiNz
@@ -5656,7 +5769,7 @@
   platforms:
     rl:
     - '255376'
-  team: 26
+  team: 25
 - canonical_name: Bean Dip
   country: us
   id: 288
@@ -5669,6 +5782,8 @@
     - '293288'
   twitch:
   - https://www.twitch.tv/bean__dip
+  twitter:
+  - https://twitter.com/Jill_Crook1
 - aoeelo: 971
   canonical_name: Bourbon
   country: ru
@@ -5697,7 +5812,8 @@
   platforms:
     rl:
     - '664715'
-  team: 33
+    - '4888277'
+  team: 29
 - aka:
   - Cl3m3nT_AoE
   - Cl3m3nt
@@ -5735,7 +5851,7 @@
     rl:
     - '757886'
     - '3395893'
-  team: 43
+  team: 42
 - aka:
   - Ellie4k
   canonical_name: Ellie4K
@@ -5748,6 +5864,7 @@
   platforms:
     rl:
     - '1686373'
+  team: 46
   twitch:
   - https://www.twitch.tv/ellie4k
   twitter:
@@ -5768,8 +5885,11 @@
     rl:
     - '1531083'
     - '2559615'
+  team: 46
   twitch:
   - https://www.twitch.tv/freakinandy
+  twitter:
+  - https://twitter.com/FreakinAndy
 - aoeelo: 654
   aoeelo_updated: 2022-02-08
   canonical_name: FreakinChris
@@ -5796,7 +5916,9 @@
   platforms:
     rl:
     - '2653793'
-  team: 34
+  team: 30
+  twitch:
+  - https://www.twitch.tv/Frost_9AoE
 - aka:
   - MR_Grin
   - Mr_GriN
@@ -5811,7 +5933,7 @@
   platforms:
     rl:
     - '208812'
-  team: 29
+  team: 27
   twitch:
   - https://www.twitch.tv/mr_grin_
   youtube:
@@ -5819,6 +5941,7 @@
     \u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0439"
 - canonical_name: HamRTime
   country: au
+  discord_id: Hamrtime#9049
   id: 298
   liquipedia: HamRTime
   name: HamRTime
@@ -5826,6 +5949,7 @@
     aoe2: true
   platforms:
     rl:
+    - '347521'
     - '2125259'
     - '2786676'
     - '8079190'
@@ -5843,13 +5967,14 @@
   platforms:
     rl:
     - '839529'
-  team: 53
+  team: 57
   twitch:
   - https://www.twitch.tv/ultra_coming
   youtube:
   - http://www.youtube.com/channel/UCAm-fFhNAhKPnh3C3XxGdBA
 - canonical_name: Improvise
   country: us
+  discord_id: Blobification#8033
   id: 300
   liquipedia: Improvise
   name: Improvise
@@ -5858,7 +5983,7 @@
   platforms:
     rl:
     - '3879633'
-  team: 26
+  team: 25
 - canonical_name: JazBas
   country: nz
   id: 301
@@ -5870,6 +5995,7 @@
     rl:
     - '978577'
 - canonical_name: Juan Perotti
+  city: Laboulaye
   country: ar
   id: 302
   liquipedia: Juan_Perotti
@@ -5890,6 +6016,7 @@
   - http://www.youtube.com/channel/UCZ4aiIlpiIn0dUTiXTjqDJw/live
   - https://www.youtube.com/channel/UCZ4aiIlpiIn0dUTiXTjqDJw/live
 - canonical_name: KhaLeN
+  city: Toulon
   country: fr
   id: 303
   liquipedia: KhaLeN
@@ -5904,6 +6031,7 @@
   twitter:
   - https://twitter.com/ElKhaLeN
 - canonical_name: Kioss3000
+  city: Saint-Malo
   country: fr
   id: 304
   liquipedia: Kioss3000
@@ -5928,12 +6056,13 @@
   platforms:
     rl:
     - '228375'
-  team: 26
+  team: 25
 - aka:
   - Pteramander
   aoeelo: 1069
   canonical_name: Loris
   country: it
+  discord_id: Loris#2773
   id: 306
   liquipedia: Loris
   name: Loris
@@ -5985,11 +6114,13 @@
     - '6341853'
     - '5114558'
     - '8987579'
-  team: 47
+  team: 17
   twitch:
   - https://www.twitch.tv/margougou_
   twitter:
   - https://twitter.com/Margougou21
+  youtube:
+  - https://www.youtube.com/@margougou4744
 - aka:
   - MarineLord
   - Mlord
@@ -6026,6 +6157,8 @@
   platforms:
     rl:
     - '196407'
+    - '244176'
+    - '208418'
     voobly:
     - '11574'
   twitch:
@@ -6041,6 +6174,7 @@
   aoeelo: 1201
   canonical_name: Mica
   country: ar
+  discord_id: Mica_#8482
   id: 311
   liquipedia: Mica
   name: Mica
@@ -6057,6 +6191,7 @@
   - https://twitter.com/aura_lpz
 - canonical_name: Moonfaller
   country: nl
+  discord_id: Moonfaller#3591
   id: 312
   liquipedia: Moonfaller
   name: Moonfaller
@@ -6083,7 +6218,7 @@
   platforms:
     rl:
     - '701482'
-  team: 29
+  team: 27
 - aka:
   - Nero
   - neromelnick
@@ -6100,6 +6235,7 @@
     rl:
     - '316555'
     - '2796405'
+  team: 32
   twitch:
   - https://www.twitch.tv/neromelnick
 - aoeelo: 137
@@ -6114,11 +6250,13 @@
   platforms:
     rl:
     - '209599'
-  team: 25
+  team: 24
   twitch:
   - https://www.twitch.tv/nickaoe_
-- canonical_name: Ning_
+- aoeelo: 1303
+  canonical_name: Ning_
   country: tw
+  discord_id: Abby#3159
   id: 316
   liquipedia: Ning
   name: Ning_
@@ -6128,7 +6266,7 @@
     rl:
     - '802944'
     - '5623928'
-  team: 5
+  team: 9
   twitch:
   - https://www.twitch.tv/ningning0331
   - https://www.twitch.tv/ningning995
@@ -6145,7 +6283,7 @@
   platforms:
     rl:
     - '1853187'
-  team: 29
+  team: 27
   twitch:
   - https://www.twitch.tv/oladushek__
   youtube:
@@ -6153,6 +6291,7 @@
 - aka:
   - OdetteD
   canonical_name: Odette
+  city: Prague
   country: cz
   id: 318
   liquipedia: Odette
@@ -6202,7 +6341,9 @@
   - Ornlu
   - Ornlu_aoe
   canonical_name: OrnLu
+  city: Grayslake
   country: us
+  discord_id: OrnLu#7228
   id: 321
   liquipedia: OrnLu
   name: OrnLu
@@ -6269,7 +6410,7 @@
     - '5194815'
     - '4541520'
     - '3392644'
-  team: 15
+  team: 51
   twitch:
   - https://www.twitch.tv/sebastian2002
   youtube:
@@ -6356,7 +6497,7 @@
   platforms:
     rl:
     - '236934'
-  team: 5
+  team: 9
   twitch:
   - https://www.twitch.tv/tinytriss
   twitter:
@@ -6382,6 +6523,7 @@
   aoeelo: 239
   canonical_name: noboru
   country: jp
+  discord_id: noboru#9307
   id: 331
   liquipedia: Noboru43
   name: noboru
@@ -6406,7 +6548,7 @@
   platforms:
     rl:
     - '267597'
-  team: 58
+  team: 12
   twitch:
   - https://www.twitch.tv/wakko_aoe
 - aoeelo: 900
@@ -6424,6 +6566,8 @@
     - '6069513'
     - '3392033'
     - '4670972'
+    voobly:
+    - '123327605'
   team: 2
   twitch:
   - https://www.twitch.tv/Ubetnir
@@ -6451,6 +6595,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: Tomate
   country: es
+  discord_id: _Tomate#5733
   id: 335
   liquipedia: Tomate
   name: Tomate
@@ -6459,6 +6604,7 @@
   platforms:
     rl:
     - '77944'
+    - '12180558'
   team: 15
   twitch:
   - https://www.twitch.tv/tomateaoe
@@ -6482,7 +6628,7 @@
     - '123718318'
     - '123664415'
     - '125205934'
-  team: 12
+  team: 6
   twitch:
   - https://www.twitch.tv/rmcoothehater_
 - canonical_name: ThisLove
@@ -6511,7 +6657,7 @@
     - '2659351'
     voobly:
     - '124651224'
-  team: 50
+  team: 35
   twitch:
   - https://twitch.tv/antidemon_aoe
 - aka:
@@ -6529,9 +6675,11 @@
     - '2944434'
     - '5829363'
     - '9298780'
+    - '4124760'
+    - '11951391'
     voobly:
     - '133845'
-  team: 2
+  team: 20
   twitch:
   - https://www.twitch.tv/yax_aoe
 - canonical_name: TurkEycof
@@ -6561,6 +6709,7 @@
 - aoeelo: 1132
   canonical_name: Albis
   country: tw
+  discord_id: Albislol#7787
   id: 342
   liquipedia: Albis
   name: Albis
@@ -6588,7 +6737,7 @@
   platforms:
     rl:
     - '1802779'
-  team: 34
+  team: 30
   twitch:
   - https://www.twitch.tv/wbpolar
 - aoeelo: 961
@@ -6606,6 +6755,7 @@
     voobly:
     - '123541346'
 - canonical_name: Valak
+  city: "Concepci\xF3n"
   country: cl
   id: 345
   liquipedia: Valak
@@ -6615,7 +6765,7 @@
   platforms:
     rl:
     - '3085163'
-  team: 58
+  team: 32
   twitch:
   - https://www.twitch.tv/imvalak
   twitter:
@@ -6643,16 +6793,19 @@
     - '1773197'
     - '9567625'
     - '2950559'
+    - '11901287'
     voobly:
     - '124381545'
     - '125033680'
     - '125196962'
     - '125206801'
   twitch:
+  - https://www.twitch.tv/morg__11
   - https://www.twitch.tv/morgg_11
 - aoeelo: 854
   canonical_name: Chrazini
   country: dk
+  discord_id: Chrazini#5687
   id: 348
   liquipedia: Chrazini
   name: Chrazini
@@ -6660,7 +6813,7 @@
     aoe2: true
   platforms:
     rl:
-    - '208418'
+    - '2084180000'
   twitch:
   - https://www.twitch.tv/chrazini
   twitter:
@@ -6687,6 +6840,7 @@
 - aoeelo: 855
   canonical_name: SaladEsc
   country: dk
+  discord_id: SaladEsc#4459
   id: 350
   liquipedia: SaladEsc
   name: SaladEsc
@@ -6699,9 +6853,12 @@
   - https://www.twitch.tv/saladesc
   twitter:
   - https://twitter.com/saladesc
+  youtube:
+  - https://www.youtube.com/channel/UCno0cUsDebtxNIe9T2X0NZQ
 - aka:
   - V1sTiMa
   - Vistima
+  aoeelo: 1286
   canonical_name: V1stima
   country: cl
   id: 351
@@ -6713,7 +6870,7 @@
     rl:
     - '211236'
     - '3084624'
-  team: 27
+  team: 32
   twitch:
   - https://www.twitch.tv/chileaoe
   youtube:
@@ -6725,6 +6882,7 @@
   aoeelo_updated: 2022-02-08
   canonical_name: Fish
   country: vn
+  discord_id: chutu#5673
   id: 352
   liquipedia: Fish
   name: Fish
@@ -6752,7 +6910,7 @@
     - '3167925'
     voobly:
     - '123975305'
-  team: 37
+  team: 34
   twitch:
   - https://www.twitch.tv/cz_somero
 - aka:
@@ -6828,6 +6986,7 @@
   country: de
   discord:
   - https://discord.gg/HXFSj2R
+  discord_id: FlyLikeDjango#0388
   esportsearnings: 84448
   id: 358
   liquipedia: FlyLikeDjango
@@ -6851,6 +7010,7 @@
 - aoeelo: 1153
   canonical_name: TieuQuy
   country: vn
+  discord_id: tieuquy1993#6540
   id: 359
   name: TieuQuy
   notability:
@@ -6889,6 +7049,10 @@
   platforms:
     rl:
     - '2361017'
+    - '12100183'
+  team: 24
+  twitch:
+  - https://www.twitch.tv/fanjita
 - aoeelo: 1242
   canonical_name: Sensar
   country: us
@@ -6918,6 +7082,7 @@
   canonical_name: DragonBo
   country: hk
   id: 364
+  liquipedia: DragonBo
   name: DragonBo
   notability:
     aoe2: true
@@ -6925,6 +7090,7 @@
     rl:
     - '3208255'
     - '2654967'
+    - '10020002'
 - aka:
   - blade
   aoeelo: 719
@@ -6976,6 +7142,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: Mihai
   country: ro
+  discord_id: Mihai06#5919
   id: 368
   liquipedia: Mihai06
   name: Mihai
@@ -6986,7 +7153,10 @@
     - '288714'
   twitch:
   - https://www.twitch.tv/mihai06_aoe
-- canonical_name: Snapy
+  youtube:
+  - https://www.youtube.com/@mihai06-ageofempires25
+- aoeelo: 1288
+  canonical_name: Snapy
   country: co
   discord:
   - https://discord.gg/S2Cg5nusrQ
@@ -7009,6 +7179,7 @@
 - aoeelo: 1151
   canonical_name: Minh Anh
   country: vn
+  discord_id: Minh Anh#8792
   facebook_gaming:
   - https://www.facebook.com/gaming/minhanhaoe2
   id: 370
@@ -7023,6 +7194,7 @@
 - aoeelo: 790
   canonical_name: Andre_2i
   country: ro
+  discord_id: Andre_2i#3401
   id: 371
   name: Andre_2i
   notability:
@@ -7030,12 +7202,14 @@
   platforms:
     rl:
     - '635884'
+    - '11801213'
   twitch:
   - https://www.twitch.tv/Andre_2i
 - aoeelo: 620
   canonical_name: BarneyS
   country: ca
   id: 372
+  liquipedia: Barneys
   name: BarneyS
   notability:
     aoe2: true
@@ -7046,6 +7220,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: c.salette
   country: fr
+  discord_id: c.salette#0653
   id: 373
   liquipedia: c.salette
   name: c.salette
@@ -7056,7 +7231,7 @@
     - '1920807'
     - '9337807'
     - '4890100'
-  team: 18
+  team: 17
   twitch:
   - https://www.twitch.tv/csalette
   twitter:
@@ -7064,6 +7239,7 @@
 - aoeelo: 957
   canonical_name: Chirris
   country: mx
+  discord_id: Chirris#8099
   id: 374
   name: Chirris
   notability:
@@ -7074,6 +7250,7 @@
 - aoeelo: 753
   canonical_name: darvoi
   country: gb
+  discord_id: darvoi#7298
   id: 375
   liquipedia: darvoi
   name: darvoi
@@ -7082,6 +7259,7 @@
   platforms:
     rl:
     - '234755'
+  team: 24
   twitch:
   - https://www.twitch.tv/darvoi
 - aka:
@@ -7099,7 +7277,7 @@
     rl:
     - '367774'
     - '3380761'
-  team: 44
+  team: 43
 - aka:
   - Dr. Kozmonot
   aoeelo: 886
@@ -7117,7 +7295,9 @@
     - '6426678'
     - '1827866'
     - '10262864'
-  team: 2
+    - '11257686'
+    - '13026457'
+  team: 20
   twitch:
   - https://www.twitch.tv/drkozmonot
   youtube:
@@ -7147,6 +7327,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: Gergis
   country: ar
+  discord_id: Gergis#1153
   id: 379
   liquipedia: Gergis
   name: Gergis
@@ -7189,6 +7370,7 @@
     - '243287'
     - '9699534'
     - '3217607'
+    - '3103118'
   team: 45
 - aoeelo: 826
   canonical_name: Ivanenko
@@ -7214,7 +7396,7 @@
     rl:
     - '1787077'
     - '10248391'
-  team: 54
+  team: 3
 - aoeelo: 725
   canonical_name: MingudaiLee
   country: uy
@@ -7238,6 +7420,7 @@
 - aoeelo: 454
   canonical_name: RaiD
   country: it
+  discord_id: Raid#6485
   id: 387
   name: RaiD
   notability:
@@ -7266,7 +7449,7 @@
   platforms:
     rl:
     - '435965'
-  team: 48
+  team: 47
 - aoeelo: 447
   aoeelo_updated: 2022-08-04
   canonical_name: Socksyy
@@ -7280,6 +7463,7 @@
   platforms:
     rl:
     - '949573'
+    - '10910496'
   twitch:
   - https://www.twitch.tv/socksyy
 - aoeelo: 1186
@@ -7293,7 +7477,7 @@
   platforms:
     rl:
     - '969542'
-  team: 14
+  team: 4
   twitch:
   - https://www.twitch.tv/dedlyyetti
 - canonical_name: Skillyourself
@@ -7309,6 +7493,7 @@
 - aoeelo: 1180
   aoeelo_updated: 2022-08-04
   canonical_name: Ozone
+  city: "Bogot\xE1"
   country: co
   discord_id: Ozone#4504
   id: 392
@@ -7319,6 +7504,7 @@
   platforms:
     rl:
     - '2654577'
+    - '11962856'
   twitch:
   - https://www.twitch.tv/ozoneaoe
   twitter:
@@ -7326,6 +7512,7 @@
   youtube:
   - https://www.youtube.com/OzoneAOE
 - canonical_name: StellarMeesh
+  city: Raleigh
   country: us
   id: 393
   name: StellarMeesh
@@ -7344,6 +7531,7 @@
   canonical_name: Dave
   country: ca
   id: 394
+  liquipedia: Dave
   name: Dave
   notability:
     aoe2: true
@@ -7393,7 +7581,9 @@
   twitch:
   - https://www.twitch.tv/kerpoaoe
 - canonical_name: Pinch3Terneira
+  city: "M\xE1laga"
   country: es
+  discord_id: Pinch3Terneira#5212
   id: 397
   liquipedia: Pinch3Terneira
   name: Pinch3Terneira
@@ -7465,6 +7655,7 @@
   canonical_name: Nacho
   country: ar
   id: 402
+  liquipedia: Nacho_AoE
   name: Nacho
   notability:
     aoe2: true
@@ -7474,7 +7665,7 @@
     - '5555119'
     voobly:
     - '123301799'
-  team: 10
+  team: 13
   twitch:
   - https://www.twitch.tv/nacho_aoe
   twitter:
@@ -7492,6 +7683,7 @@
   platforms:
     rl:
     - '2866'
+    - '12624973'
   twitch:
   - https://www.twitch.tv/twestaoe
   twitter:
@@ -7514,7 +7706,7 @@
     - '209329'
     - '1468509'
     - '1636659'
-  team: 48
+  team: 47
   twitch:
   - https://www.twitch.tv/philipphjs
 - aoeelo: 983
@@ -7546,9 +7738,11 @@
     rl:
     - '1867124'
     - '8656374'
-  team: 18
+  team: 17
   twitch:
   - https://www.twitch.tv/capoutaoe
+  twitter:
+  - https://twitter.com/CapoutFR
 - canonical_name: Torrelles
   country: es
   id: 407
@@ -7576,10 +7770,11 @@
     rl:
     - '3400947'
     - '5733905'
-  team: 36
+  team: 33
 - aoeelo: 1040
   canonical_name: Bulletchen
   country: ch
+  discord_id: Bulletchen#5213
   id: 409
   liquipedia: Bulletchen
   name: Bulletchen
@@ -7588,7 +7783,7 @@
   platforms:
     rl:
     - '215801'
-  team: 47
+  team: 46
   twitch:
   - https://www.twitch.tv/bulletchen
   twitter:
@@ -7616,8 +7811,9 @@
   aoeelo: 1071
   canonical_name: El Matador
   country: de
+  discord_id: El_Matador#8675
   id: 411
-  name: El Matador
+  name: El_Matador
   notability:
     aoe2: true
   platforms:
@@ -7642,7 +7838,7 @@
     rl:
     - '2826785'
     - '5163081'
-  team: 46
+  team: 45
   twitch:
   - https://www.twitch.tv/nahuel05_
 - aoeelo: 815
@@ -7662,7 +7858,7 @@
     - '2241917'
     voobly:
     - '124919015'
-  team: 50
+  team: 35
   twitch:
   - https://www.twitch.tv/paganini_aoc
   - https://www.twitch.tv/paganini_aoe2
@@ -7671,6 +7867,7 @@
 - aoeelo: 1226
   canonical_name: TRM
   country: ch
+  discord_id: TRM#9140
   id: 414
   liquipedia: TRM
   name: TRM
@@ -7682,6 +7879,8 @@
     - '5643458'
     - '9864612'
     - '11228276'
+    - '11396630'
+    - '10228698'
   twitch:
   - https://www.twitch.tv/trm_aoe
   youtube:
@@ -7711,6 +7910,8 @@
     - '1885671'
     - '3496780'
     - '5454328'
+  twitch:
+  - https://www.twitch.tv/mullisaukk0
 - canonical_name: SilentTV
   country: ar
   id: 416
@@ -7762,7 +7963,7 @@
   - macluffy
   aoeelo: 732
   canonical_name: Macluffy
-  country: be
+  country: ma
   discord_id: Macluffy#4746
   id: 419
   name: Macluffy
@@ -7783,7 +7984,7 @@
   platforms:
     rl:
     - '237568'
-  team: 27
+  team: 26
   twitch:
   - https://www.twitch.tv/jesus87_aoe
   youtube:
@@ -7833,10 +8034,14 @@
     rl:
     - '180520'
     - '4379431'
+  team: 24
+  twitch:
+  - https://www.twitch.tv/king_b0o
 - aoeelo: 612
   aoeelo_updated: 2022-07-27
   canonical_name: Poxo
   country: es
+  discord_id: Poxo#4127
   id: 425
   liquipedia: Poxo
   name: Poxo
@@ -7852,7 +8057,9 @@
 - aoeelo: 1191
   canonical_name: Argh
   country: pl
+  discord_id: Argh#4607
   id: 426
+  liquipedia: Argh
   name: Argh
   notability:
     aoe2: true
@@ -7863,6 +8070,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: Uzikoti
   country: fr
+  discord_id: Uzikoti#8715
   id: 427
   liquipedia: Uzikoti
   name: Uzikoti
@@ -7871,7 +8079,7 @@
   platforms:
     rl:
     - '1143826'
-  team: 18
+  team: 17
   twitch:
   - https://www.twitch.tv/uzikoti
   twitter:
@@ -7905,7 +8113,7 @@
     rl:
     - '2294850'
     - '5284131'
-  team: 36
+  team: 33
   twitch:
   - https://www.twitch.tv/1chelooo
 - aka:
@@ -7930,6 +8138,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: Redlash
   country: ar
+  discord_id: Redlash#0658
   id: 431
   liquipedia: Redlash
   name: Redlash
@@ -7939,7 +8148,7 @@
     rl:
     - '2771618'
     - '9343412'
-  team: 57
+  team: 62
   twitch:
   - https://www.twitch.tv/redlash_
 - canonical_name: Hackali
@@ -7955,6 +8164,7 @@
 - aoeelo: 966
   canonical_name: Kenshin
   country: br
+  discord_id: Kenshin#5831
   id: 433
   liquipedia: Kenshin
   name: Kenshin
@@ -7964,7 +8174,7 @@
     rl:
     - '36778'
     - '4812351'
-  team: 50
+  team: 35
   twitch:
   - https://www.twitch.tv/kenshin_aoe
 - canonical_name: HumzaCrumza
@@ -7997,7 +8207,7 @@
     - '3211660'
     voobly:
     - '124375438'
-  team: 50
+  team: 35
   twitch:
   - https://www.twitch.tv/faradayaoe
 - canonical_name: AirCooL
@@ -8019,18 +8229,26 @@
 - aoeelo: 1123
   canonical_name: dave_hun
   country: hu
+  discord_id: dave#1129
   id: 437
+  liquipedia: dave_hun
   name: dave_hun
   notability:
     aoe2: true
   platforms:
     rl:
     - '260231'
+  team: 24
   twitch:
   - https://www.twitch.tv/dave_hun
+  twitter:
+  - https://twitter.com/davehun8
+  youtube:
+  - https://www.youtube.com/@dave_hun9682
 - aoeelo: 937
   canonical_name: ChrisB
   country: cl
+  discord_id: ChrisB#2980
   id: 438
   name: ChrisB
   notability:
@@ -8041,6 +8259,8 @@
     - '4563541'
     - '6396309'
     - '5257573'
+  twitch:
+  - https://www.twitch.tv/chrisb_aoe
 - aka:
   - FuRy
   aoeelo: 467
@@ -8078,6 +8298,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: Aramis
   country: ar
+  discord_id: Aramis#5636
   id: 442
   liquipedia: Aramis
   name: Aramis
@@ -8086,7 +8307,7 @@
   platforms:
     rl:
     - '413924'
-  team: 11
+  team: 14
   twitch:
   - https://www.twitch.tv/sig_aramis
 - aoeelo: 123
@@ -8131,6 +8352,7 @@
 - aoeelo: 965
   canonical_name: alphaStar
   country: br
+  discord_id: alphastar#3193
   id: 446
   name: alphaStar
   notability:
@@ -8140,12 +8362,17 @@
     - '289216'
     - '6370127'
     - '8092025'
-  team: 42
+    - '4057020'
+    - '14715746'
+  team: 35
   twitch:
   - https://www.twitch.tv/bkalphastar
-- canonical_name: deaKer
+- aoeelo: 1304
+  canonical_name: deaKer
   country: ar
+  discord_id: IgnacioLM#8356
   id: 447
+  liquipedia: deaKer
   name: deaKer
   notability:
     aoe2: true
@@ -8164,12 +8391,13 @@
   platforms:
     rl:
     - '5921178'
-  team: 46
+  team: 45
 - aka:
   - martinhs
   aoeelo: 734
   canonical_name: Martinhs
   country: br
+  discord_id: martinhs#3182
   id: 449
   liquipedia: Martinhs
   name: Martinhs
@@ -8181,7 +8409,7 @@
     voobly:
     - '124808873'
     - '123550026'
-  team: 50
+  team: 35
   twitch:
   - https://www.twitch.tv/martinhsbr
 - aka:
@@ -8218,7 +8446,7 @@
     - '932058'
     voobly:
     - '123397726'
-  team: 59
+  team: 31
   twitch:
   - https://www.twitch.tv/wraith_aoe
   twitter:
@@ -8229,6 +8457,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: Tulendeena
   country: au
+  discord_id: Tulendeena#5871
   id: 453
   liquipedia: Tulendeena
   name: Tulendeena
@@ -8245,6 +8474,7 @@
   aoeelo_updated: 2022-02-28
   canonical_name: saps
   country: ro
+  discord_id: saps#1826
   id: 454
   liquipedia: Saps
   name: saps
@@ -8271,6 +8501,7 @@
 - aoeelo: 1200
   canonical_name: pren
   country: cz
+  discord_id: pren#6440
   id: 456
   name: pren
   notability:
@@ -8279,7 +8510,8 @@
     rl:
     - '2014691'
     - '5363603'
-- canonical_name: BlackheartB
+- aoeelo: 1121
+  canonical_name: BlackheartB
   country: de
   discord_id: Blackheart#8557
   id: 457
@@ -8289,7 +8521,7 @@
   platforms:
     rl:
     - '6440047'
-  team: 12
+  team: 6
   twitch:
   - https://www.twitch.tv/blackheartaoe
 - aka:
@@ -8330,7 +8562,7 @@
     - '2828949'
     voobly:
     - '123627685'
-  team: 43
+  team: 42
 - aka:
   - Original
   - ZaRYaB
@@ -8344,7 +8576,7 @@
   platforms:
     rl:
     - '5186718'
-  team: 26
+  team: 25
   twitch:
   - https://www.twitch.tv/zaryab
 - canonical_name: Hydra
@@ -8367,7 +8599,7 @@
   platforms:
     rl:
     - '2871576'
-  team: 34
+  team: 30
   twitch:
   - https://www.twitch.tv/hazzy_aoe
 - aka:
@@ -8396,12 +8628,14 @@
     rl:
     - '583791'
     - '2407064'
-  team: 36
+    - '7496811'
+  team: 33
 - aoeelo: 819
   canonical_name: Loco_Ser
   country: ar
   discord:
   - https://discord.gg/h8Dyrkb
+  discord_id: LocoSer#4916
   id: 461
   liquipedia: Loco_Ser
   name: Loco_Ser
@@ -8410,7 +8644,7 @@
   platforms:
     rl:
     - '234479'
-  team: 46
+  team: 45
   twitch:
   - https://www.twitch.tv/locoser
   youtube:
@@ -8421,6 +8655,7 @@
   aoeelo_updated: 2022-08-04
   canonical_name: Shed
   country: au
+  discord_id: Shed#5361
   id: 462
   liquipedia: Shed
   name: Shed
@@ -8429,6 +8664,7 @@
   platforms:
     rl:
     - '208952'
+  team: 44
   twitch:
   - https://www.twitch.tv/shed_au
 - aoeelo: 221
@@ -8446,6 +8682,7 @@
 - aoeelo: 1276
   canonical_name: kelar
   country: de
+  discord_id: kelar#2475
   id: 464
   liquipedia: kelar
   name: kelar
@@ -8454,7 +8691,7 @@
   platforms:
     rl:
     - '2048591'
-  team: 26
+  team: 25
   twitch:
   - https://www.twitch.tv/quendi_kelar
 - canonical_name: ClemoL45
@@ -8475,15 +8712,16 @@
   country: au
   id: 466
   liquipedia: LilTrouble
-  name: LilTrouble
+  name: BasicallyBebe
   notability:
     aoe2: true
   platforms:
     rl:
     - '272983'
-  team: 5
+  team: 9
   twitch:
   - https://www.twitch.tv/LilTrouble__
+  - https://www.twitch.tv/basicallybebe
   youtube:
   - http://www.youtube.com/LilTrouble_AoE
   - https://www.youtube.com/LilTrouble_AoE
@@ -8499,12 +8737,13 @@
   platforms:
     rl:
     - '382118'
-  team: 56
+  team: 61
   twitch:
   - https://www.twitch.tv/lockeaoe
 - aoeelo: 1275
   canonical_name: Tointoin
   country: fr
+  discord_id: Tointoin#9193
   id: 481
   liquipedia: Tointoin
   name: Tointoin
@@ -8514,7 +8753,7 @@
     rl:
     - '213249'
     - '2896472'
-  team: 18
+  team: 17
   twitch:
   - https://www.twitch.tv/Tointoiin
 - canonical_name: ___John___
@@ -8584,6 +8823,8 @@
   - https://www.twitch.tv/29roggy
 - canonical_name: Mununez
   country: us
+  id: 636
+  liquipedia: Mununez
   name: Mununez
   platforms:
     rl:
@@ -8644,6 +8885,7 @@
   aoeelo_updated: 2022-07-27
   canonical_name: MrPlanner
   country: si
+  discord_id: MrPlanner#2160
   id: 491
   liquipedia: MrPlanner
   name: MrPlanner
@@ -8654,9 +8896,14 @@
     - '4362836'
     - '6898407'
     - '5556595'
+    - '12353867'
   team: 2
   twitch:
   - https://www.twitch.tv/mrplanneraoe
+  twitter:
+  - https://twitter.com/MrPlannerAoE
+  youtube:
+  - https://www.youtube.com/@MrPlannerAoE
 - canonical_name: silverstar
   country: ca
   name: silverstar
@@ -8681,8 +8928,12 @@
   platforms:
     rl:
     - '2648074'
-- canonical_name: Target331
+- aoeelo: 1126
+  canonical_name: Target331
   country: de
+  discord_id: Target331#9006
+  id: 548
+  liquipedia: Target331
   name: Target331
   platforms:
     rl:
@@ -8733,6 +8984,8 @@
   platforms:
     rl:
     - '843204'
+  twitch:
+  - https://www.twitch.tv/jerry_aoe
 - aoeelo: 517
   canonical_name: FJ_chou
   name: FJ_chou
@@ -8806,6 +9059,7 @@
   country: ar
   discord:
   - https://discord.gg/EbVbZGU
+  discord_id: NOVA#9058
   id: 472
   liquipedia: NovaAoE
   name: Nova
@@ -8821,6 +9075,7 @@
 - aoeelo: 1114
   canonical_name: ElNoniro
   country: pl
+  discord_id: ElNoniro#6006
   id: 473
   liquipedia: ElNoniro
   name: ElNoniro
@@ -8832,6 +9087,8 @@
     - '9720580'
     - '8803060'
     - '10350782'
+    - '13718859'
+    - '14047859'
   twitch:
   - https://www.twitch.tv/elnoniro
   youtube:
@@ -8849,6 +9106,7 @@
 - aoeelo: 785
   canonical_name: Imperio_cc
   country: de
+  discord_id: Imperio_cc#4647
   id: 477
   liquipedia: Imperio_cc
   name: Imperio_cc
@@ -8881,6 +9139,7 @@
     - '3093864'
 - canonical_name: Zastosy
   country: pl
+  discord_id: Zastosy#6663
   id: 482
   liquipedia: Zastosy
   name: Zastosy
@@ -8916,12 +9175,14 @@
   canonical_name: Rayzor
   country: au
   id: 486
+  liquipedia: Rayzor
   name: Rayzor
   notability:
     aoe2: true
   platforms:
     rl:
     - '292318'
+    - '14824148'
 - canonical_name: Andrew
   country: hu
   id: 487
@@ -8943,6 +9204,7 @@
   platforms:
     rl:
     - '1651354'
+    - '12356224'
 - aoeelo: 947
   canonical_name: Leozim
   country: br
@@ -8955,7 +9217,7 @@
     rl:
     - '1978249'
     - '6095441'
-  team: 23
+  team: 22
 - aoeelo: 104
   canonical_name: squeak
   country: sk
@@ -8970,6 +9232,7 @@
     - '261055'
     - '5795845'
     - '6867619'
+    - '13189448'
   team: 38
   twitch:
   - https://www.twitch.tv/squeakaoe
@@ -8999,13 +9262,14 @@
     rl:
     - '240909'
     - '2902159'
-  team: 20
+  team: 19
   twitch:
   - https://www.twitch.tv/M4Te_
 - aoeelo: 801
   aoeelo_updated: 2022-07-27
   canonical_name: steak
   country: gb
+  discord_id: steak#6915
   id: 498
   liquipedia: steak
   name: steak
@@ -9014,9 +9278,11 @@
   platforms:
     rl:
     - '230432'
+  team: 24
 - aoeelo: 645
   canonical_name: dog9you
   country: hk
+  discord_id: "\u958B\u5514\u5230\u885B\u661F#4360"
   id: 499
   name: dog9you
   notability:
@@ -9053,12 +9319,15 @@
   platforms:
     rl:
     - '229173'
+    - '2800693'
   twitch:
   - https://www.twitch.tv/ar12__
 - aoeelo: 958
   canonical_name: Dexter
   country: ar
+  discord_id: Dexter#2863
   id: 503
+  liquipedia: Dexter
   name: Dexter
   notability:
     aoe2: true
@@ -9066,9 +9335,13 @@
     rl:
     - '1195043'
     - '7833793'
+  team: 33
+  twitch:
+  - https://www.twitch.tv/TM__Dexter
 - aoeelo: 972
   canonical_name: Lord Envidiates
   country: mx
+  discord_id: "Lord Envidiates\U0001F1F2#6994"
   id: 504
   liquipedia: Lord Envidiates
   name: Lord Envidiates
@@ -9079,12 +9352,13 @@
     - '401359'
     - '2498538'
     - '5014056'
-  team: 27
+  team: 26
   twitch:
   - https://www.twitch.tv/lord_envidiates
   youtube:
   - https://www.youtube.com/channel/UCESok43ZyL5f3NIV6dcORqg
-- canonical_name: robo
+- aoeelo: 608
+  canonical_name: robo
   country: au
   discord_id: robo_boro#5469
   id: 505
@@ -9103,6 +9377,7 @@
   - https://twitter.com/robo_boro_
 - canonical_name: webber
   country: ar
+  discord_id: webber#0098
   id: 506
   liquipedia: webber
   name: webber
@@ -9111,7 +9386,7 @@
   platforms:
     rl:
     - '368368'
-  team: 36
+  team: 33
   twitch:
   - https://www.twitch.tv/webber_aoe
 - canonical_name: paradox303
@@ -9144,6 +9419,7 @@
   country: fr
   discord_id: ciskhan#1284
   id: 510
+  liquipedia: Ciskhan
   name: Ciskhan
   notability:
     aoe2: true
@@ -9151,13 +9427,21 @@
     rl:
     - '1136191'
     - '3320450'
-  team: 18
+    - '6020935'
+    - '10285000'
+  team: 17
   twitch:
   - https://www.twitch.tv/ciskhan_
+  twitter:
+  - https://twitter.com/ciskhan_
+  youtube:
+  - https://www.youtube.com/channel/UCaCFrrglvXjOyshYJlZRqGQ/featured
 - aoeelo: 1224
   canonical_name: Prisma09
   country: ar
+  discord_id: prisma09#4624
   id: 511
+  liquipedia: Prisma09
   name: Prisma09
   notability:
     aoe2: true
@@ -9166,7 +9450,7 @@
     - '3176045'
     - '5821885'
     - '10104438'
-  team: 46
+  team: 45
 - aoeelo: 986
   canonical_name: TheAntman
   country: fi
@@ -9177,6 +9461,7 @@
   platforms:
     rl:
     - '339191'
+    - '9884544'
 - canonical_name: Wiki
   country: vn
   id: 513
@@ -9191,6 +9476,7 @@
 - aoeelo: 741
   canonical_name: ChriSt
   country: au
+  discord_id: ChriSt_AoE#5214
   id: 515
   liquipedia: ChriSt
   name: ChriSt
@@ -9201,6 +9487,7 @@
     - '209899'
 - canonical_name: sunsetfire
   country: us
+  discord_id: sunsetfire#2472
   id: 517
   liquipedia: sunsetfire
   name: sunsetfire
@@ -9209,7 +9496,7 @@
   platforms:
     rl:
     - '553794'
-  team: 40
+  team: 39
   twitch:
   - https://www.twitch.tv/sunsetfire
 - canonical_name: The Manko
@@ -9221,13 +9508,16 @@
   platforms:
     rl:
     - '319851'
+    - '11575429'
   youtube:
   - https://www.youtube.com/c/TheManko
   youtube_live:
   - https://www.youtube.com/channel/UChWXoxtEWgD5-MStx0omSSg/live
 - aoeelo: 1117
   canonical_name: x0r6zt
+  city: Melbourne
   country: au
+  discord_id: x0r6zt#0339
   id: 521
   liquipedia: x0r6zt
   name: x0r6zt
@@ -9236,7 +9526,7 @@
   platforms:
     rl:
     - '1361744'
-  team: 62
+  team: 65
   twitch:
   - https://www.twitch.tv/x0r6zt
   twitter:
@@ -9252,9 +9542,11 @@
   platforms:
     rl:
     - '1959055'
-  team: 26
+    - '9605513'
+  team: 25
 - canonical_name: LeeChia
   country: tw
+  discord_id: LEECHIA#3754
   id: 525
   liquipedia: LeeChia
   name: LeeChia
@@ -9263,6 +9555,8 @@
   platforms:
     rl:
     - '621969'
+  twitch:
+  - https://www.twitch.tv/ts01383840
 - aoeelo: 885
   canonical_name: Pyroptere
   country: ch
@@ -9285,9 +9579,12 @@
   platforms:
     rl:
     - '212710'
-  team: 28
+  team: 49
+  twitter:
+  - https://twitter.com/RorRxndy
 - canonical_name: Big Tuna
   country: us
+  discord_id: Big Tuna#4278
   id: 529
   liquipedia: Big Tuna
   name: Big Tuna
@@ -9296,11 +9593,13 @@
   platforms:
     rl:
     - '303714'
-  team: 51
+  team: 50
   twitch:
   - https://www.twitch.tv/Big__Tuna
-- canonical_name: Hitorek
+- aoeelo: 1189
+  canonical_name: Hitorek
   country: pl
+  discord_id: PL_Hitorek#2188
   id: 530
   liquipedia: Hitorek
   name: Hitorek
@@ -9309,9 +9608,10 @@
   platforms:
     rl:
     - '993449'
-  team: 52
+  team: 53
 - canonical_name: Kougrialka
   country: fr
+  discord_id: Kougrialka#5378
   id: 531
   liquipedia: Kougrialka
   name: Kougrialka
@@ -9320,8 +9620,10 @@
   platforms:
     rl:
     - '209321'
-- canonical_name: Nectarie
+- aoeelo: 925
+  canonical_name: Nectarie
   country: ro
+  discord_id: Nectarie#4346
   id: 532
   liquipedia: Nectarie
   name: Nectarie
@@ -9330,8 +9632,10 @@
   platforms:
     rl:
     - '250615'
-- canonical_name: PLP
+- aoeelo: 1196
+  canonical_name: PLP
   country: fr
+  discord_id: plp#9997
   id: 533
   liquipedia: PLP
   name: PLP
@@ -9341,7 +9645,7 @@
     rl:
     - '1619463'
     - '3245466'
-  team: 18
+  team: 17
   twitch:
   - https://www.twitch.tv/plp_aoe
 - canonical_name: daehiise
@@ -9354,7 +9658,7 @@
   platforms:
     rl:
     - '247781'
-  team: 60
+  team: 63
   twitter:
   - https://twitter.com/daehiise
 - canonical_name: kunyi
@@ -9368,3 +9672,603 @@
     rl:
     - '1594220'
   team: 61
+- aoeelo: 1173
+  canonical_name: Rogier505
+  country: nl
+  discord_id: Rogier505#6942
+  id: 536
+  liquipedia: Rogier505
+  name: Rogier505
+  platforms:
+    rl:
+    - '239883'
+    - '10165498'
+  team: 49
+- aoeelo: 796
+  canonical_name: Bity_kablem
+  country: pl
+  id: 539
+  liquipedia: Bity_kablem
+  name: Bity_kablem
+  platforms:
+    rl:
+    - '277557'
+- aoeelo: 1277
+  canonical_name: RAY
+  country: us
+  discord_id: RAY#8334
+  id: 540
+  liquipedia: RAY
+  name: RAY
+  platforms:
+    rl:
+    - '213474'
+    - '1652210'
+  twitch:
+  - https://www.twitch.tv/rayaoe
+  youtube:
+  - https://www.youtube.com/rayaoe
+- canonical_name: Archlord
+  country: mx
+  id: 542
+  liquipedia: Archlord
+  name: Archlord
+  platforms:
+    rl:
+    - '1249720'
+  team: 42
+- aoeelo: 882
+  canonical_name: Maxi
+  country: ar
+  discord_id: Maxi#1566
+  id: 545
+  liquipedia: Maxi
+  name: Maxi
+  platforms:
+    rl:
+    - '216073'
+  team: 14
+  youtube:
+  - https://www.youtube.com/c/maxiarg
+- aoeelo: 1246
+  canonical_name: MrOsoVC8
+  city: "San Luis Potos\xED"
+  country: mx
+  discord_id: MrOsoVC8#1536
+  id: 547
+  liquipedia: MrOsoVC8
+  name: MrOsoVC8
+  platforms:
+    rl:
+    - '1485562'
+    - '4839087'
+    - '3759883'
+    - '9175056'
+  team: 60
+  twitch:
+  - https://www.twitch.tv/mrosovc8
+  twitter:
+  - https://twitter.com/MrOsoVC8
+- canonical_name: Tomahawk
+  city: Curitiba
+  country: br
+  discord:
+  - https://discord.gg/UAFEHvwMad
+  discord_id: Tomahawk#9292
+  id: 549
+  liquipedia: Tomahawk
+  name: Tomahawk
+  platforms:
+    rl:
+    - '278650'
+    - '2771329'
+  twitch:
+  - https://www.twitch.tv/tomahawk_aoe
+  twitter:
+  - https://twitter.com/tomahawk_aoe
+  youtube:
+  - https://www.youtube.com/c/tomahawk_aoe
+- aoeelo: 1183
+  canonical_name: salsicciotto1999
+  country: it
+  discord_id: salsicciotto1999#3406
+  id: 550
+  liquipedia: salsicciotto1999
+  name: salsicciotto1999
+  platforms:
+    rl:
+    - '2532568'
+  twitch:
+  - https://www.twitch.tv/salsicciotto999
+- canonical_name: Lukas
+  country: de
+  id: 551
+  name: Lukas
+  platforms:
+    rl:
+    - '1895882'
+- aoeelo: 723
+  canonical_name: ronotovi
+  country: tr
+  discord_id: ronotovi#7483
+  id: 557
+  liquipedia: ronotovi
+  name: ronotovi
+  platforms:
+    rl:
+    - '1993381'
+    - '5748451'
+    - '6261206'
+    - '11451214'
+    voobly:
+    - '125044537'
+  team: 20
+  twitch:
+  - https://www.twitch.tv/ronotovi
+- aoeelo: 721
+  canonical_name: Karnal
+  country: ru
+  id: 561
+  liquipedia: Karnal
+  name: Karnal
+  platforms:
+    rl:
+    - '381021'
+- aoeelo: 880
+  canonical_name: ValihrAnt
+  country: lv
+  discord_id: Vali#1100
+  id: 562
+  name: ValihrAnt
+  platforms:
+    rl:
+    - '372704'
+- aoeelo: 1210
+  canonical_name: Moneimon
+  country: es
+  discord_id: Moneimon#8902
+  id: 567
+  liquipedia: Moneimon
+  name: Moneimon
+  platforms:
+    rl:
+    - '249653'
+    - '2916893'
+  twitch:
+  - https://www.twitch.tv/moneimon
+- canonical_name: Kugelblitz
+  country: de
+  id: 568
+  name: Kugelblitz
+  platforms:
+    rl:
+    - '2419773'
+    - '3983466'
+    - '9547213'
+    - '3282264'
+    - '11470508'
+- aoeelo: 989
+  canonical_name: Zuccolo
+  country: it
+  discord_id: Zuccolo#2521
+  id: 572
+  liquipedia: IKill UDie
+  name: Zuccolo
+  platforms:
+    rl:
+    - '3135672'
+  team: 37
+  twitch:
+  - https://www.twitch.tv/zuccolander
+- aoeelo: 1068
+  canonical_name: Ezio
+  country: de
+  id: 573
+  name: Ezio
+  platforms:
+    rl:
+    - '281038'
+    - '3966488'
+    - '9746939'
+  twitch:
+  - https://www.twitch.tv/ezio__aoe
+- aoeelo: null
+  canonical_name: Capy
+  country: gb
+  discord_id: Capy#0423
+  id: 576
+  liquipedia: Capy
+  name: Capy
+  platforms:
+    rl:
+    - '2116604'
+  team: 24
+  twitch:
+  - https://www.twitch.tv/Capybara_AoE
+- aoeelo: 1252
+  canonical_name: "E\xE4rnur"
+  city: Cuenca
+  country: ec
+  discord_id: "E\xE4rnur#7480"
+  id: 577
+  liquipedia: "E\xE4rnur"
+  name: "E\xE4rnur"
+  platforms:
+    rl:
+    - '5151558'
+    - '5531761'
+  team: 14
+  twitch:
+  - https://www.twitch.tv/earnuraoe
+  twitter:
+  - https://twitter.com/EarnurAoE
+  youtube:
+  - https://www.youtube.com//channel/UCC2RQZVMTpEjeHOjm5z25Zg
+- aoeelo: 1259
+  canonical_name: IAnTaGoNiStI
+  country: ru
+  id: 579
+  liquipedia: IAnTaGoNiStI
+  name: IAnTaGoNiStI
+  platforms:
+    rl:
+    - '2589331'
+    - '6280447'
+    - '9605132'
+  team: 39
+- aoeelo: 647
+  canonical_name: kw
+  country: tw
+  id: 586
+  liquipedia: kw
+  name: kw
+  platforms:
+    rl:
+    - '372422'
+    - '452917'
+  twitch:
+  - https://www.twitch.tv/kw91078
+- aoeelo: 1229
+  canonical_name: Mettiu
+  country: it
+  discord_id: Mettiu#2068
+  id: 587
+  name: Mettiu
+  platforms:
+    rl:
+    - '211777'
+    - '10960083'
+  twitch:
+  - https://www.twitch.tv/mettiusmalo
+- aoeelo: 1263
+  canonical_name: Nixishin
+  country: ru
+  id: 592
+  liquipedia: Nixishin
+  name: Nixishin
+  platforms:
+    rl:
+    - '1284176'
+  team: 39
+- aoeelo: 1290
+  canonical_name: biscuit
+  country: us
+  discord_id: biscuit#5049
+  id: 593
+  name: biscuit
+  platforms:
+    rl:
+    - '2059578'
+- aoeelo: 1066
+  canonical_name: Dooidy
+  country: de
+  discord_id: Terz#8397
+  id: 594
+  liquipedia: Terz
+  name: Terz
+  platforms:
+    rl:
+    - '573282'
+- aoeelo: 1208
+  canonical_name: m0re
+  country: es
+  discord_id: more#7195
+  id: 595
+  liquipedia: m0re
+  name: m0re
+  platforms:
+    rl:
+    - '279036'
+    - '9087865'
+  team: 64
+  twitch:
+  - https://www.twitch.tv/m0re_aoe
+  twitter:
+  - https://twitter.com/more_aoe
+- aoeelo: 1019
+  canonical_name: Dfx2
+  country: fr
+  discord_id: Dfx2#9161
+  id: 596
+  name: Dfx2
+  platforms:
+    rl:
+    - '383445'
+    - '11931570'
+    - '4519458'
+    - '11410593'
+    - '8368899'
+- aoeelo: 1243
+  canonical_name: Lighty
+  country: fr
+  discord_id: Lighty#9982
+  id: 597
+  liquipedia: Lighty
+  name: Lighty
+  platforms:
+    rl:
+    - '738035'
+    - '3463661'
+  team: 17
+  twitch:
+  - https://www.twitch.tv/lighty_gg
+- aoeelo: 1212
+  canonical_name: Tatengue
+  country: ar
+  discord_id: Tatengue_#9944
+  id: 598
+  liquipedia: Tatengue
+  name: Tatengue
+  platforms:
+    rl:
+    - '1361923'
+    - '5418224'
+  team: 45
+  twitch:
+  - https://www.twitch.tv/tatengue_
+- aoeelo: 985
+  canonical_name: "LePos\xE9idon"
+  country: fr
+  id: 599
+  name: "LePos\xE9idon"
+  platforms:
+    rl:
+    - '1444675'
+    - '11149951'
+- aoeelo: 577
+  canonical_name: Savage
+  country: de
+  id: 600
+  name: Savage
+  platforms:
+    rl:
+    - '6906024'
+    - '3240946'
+- canonical_name: XuanLv
+  country: cn
+  id: 601
+  name: XuanLv
+  platforms:
+    rl:
+    - '2972505'
+- canonical_name: BuloaSaky
+  country: vn
+  id: 602
+  name: BuloaSaky
+  platforms:
+    rl:
+    - '5689359'
+    - '10092761'
+    - '15213618'
+- canonical_name: Gadjo Dilo
+  country: gr
+  id: 603
+  name: Gadjo Dilo
+  platforms:
+    rl:
+    - '210372'
+- aoeelo: 1309
+  canonical_name: Acro17
+  country: de
+  discord_id: Acro17#6437
+  id: 604
+  name: Acro17
+  platforms:
+    rl:
+    - '907793'
+    - '10908042'
+  twitch:
+  - https://www.twitch.tv/acro17_aoe
+- canonical_name: BBQTurkman
+  country: au
+  id: 605
+  liquipedia: BBQTurkman
+  name: BBQTurkman
+  platforms:
+    rl:
+    - '11650897'
+- canonical_name: Sunset
+  country: fi
+  id: 612
+  liquipedia: Sunset
+  name: Sunset
+  platforms:
+    rl:
+    - '256356'
+- aoeelo: 1322
+  canonical_name: Ny4JyN
+  country: ma
+  id: 613
+  name: TeMo
+  platforms:
+    rl:
+    - '6815493'
+    - '12059289'
+    - '14910497'
+- canonical_name: Dai
+  country: tw
+  id: 614
+  name: Dai
+  platforms:
+    rl:
+    - '9750845'
+  twitch:
+  - https://www.twitch.tv/ares_dai
+- canonical_name: Prydz
+  country: tw
+  id: 620
+  liquipedia: Prydz
+  name: Prydz
+  platforms:
+    rl:
+    - '1254139'
+  twitch:
+  - https://www.twitch.tv/prydz_z
+- canonical_name: Muhammed
+  country: tr
+  discord_id: Muhammed33#9993
+  id: 621
+  name: Muhammed
+  platforms:
+    rl:
+    - '3500355'
+    voobly:
+    - '125944'
+- canonical_name: Wanderbraun
+  country: ua
+  id: 622
+  name: Wanderbraun
+  platforms:
+    rl:
+    - '1835221'
+  twitch:
+  - https://www.twitch.tv/wanderbraun
+- canonical_name: DontCallMeChris
+  country: ua
+  id: 623
+  name: DontCallMeChris
+  platforms:
+    rl:
+    - '6001124'
+  twitch:
+  - https://www.twitch.tv/dontcallmechris
+- canonical_name: Dash
+  country: us
+  id: 624
+  name: Dash
+  platforms:
+    rl:
+    - '210103'
+  twitch:
+  - https://www.twitch.tv/thejamesdash
+- aoeelo: 1206
+  canonical_name: Wes Iwobi
+  country: de
+  discord_id: Wes Jasper#5905
+  id: 625
+  liquipedia: Wes Iwobi
+  name: Wes Iwobi
+  platforms:
+    rl:
+    - '253145'
+    - '4171293'
+- canonical_name: Dabighead
+  country: pe
+  id: 626
+  name: Dabighead
+  platforms:
+    rl:
+    - '3244108'
+    - '14179654'
+    - '6219826'
+    - '14734877'
+    voobly:
+    - '125025549'
+  twitch:
+  - https://www.twitch.tv/dabighead117
+- canonical_name: "Bourb\u043En"
+  country: ru
+  id: 629
+  liquipedia: "Bourb\u043En"
+  name: "Bourb\u043En"
+  platforms:
+    rl:
+    - '3156635'
+    - '1877180'
+  team: 27
+- canonical_name: Youpudding
+  country: tw
+  id: 630
+  name: Youpudding
+  platforms:
+    rl:
+    - '1617161'
+    - '5376904'
+    - '6456674'
+- aoeelo: 1332
+  canonical_name: Lucho
+  country: ar
+  discord_id: Lucho#7623
+  id: 637
+  name: Lucho
+  platforms:
+    rl:
+    - '10921131'
+    - '9423131'
+- canonical_name: Noszombie
+  country: au
+  discord_id: Noszombie#2051
+  id: 638
+  liquipedia: Noszombie
+  name: Noszombie
+  platforms:
+    rl:
+    - '322534'
+    - '4424586'
+  twitch:
+  - https://www.twitch.tv/noszombie
+- canonical_name: Daniela
+  country: ro
+  discord_id: Daniela_AoE#9540
+  id: 639
+  liquipedia: Daniela_AoE
+  name: Daniela
+  platforms:
+    rl:
+    - '9462465'
+    - '9773810'
+  twitch:
+  - https://www.twitch.tv/daniela_aoe
+  twitter:
+  - https://twitter.com/daniela_aoe
+  youtube:
+  - http://youtube.com/channel/UCUjaaULhgNOJs-eurX4sW4g
+- canonical_name: Hannibal
+  country: eg
+  id: 640
+  name: Hannibal
+  platforms:
+    rl:
+    - '1350868'
+    - '5013857'
+    - '3309475'
+- canonical_name: widy
+  country: ru
+  id: 641
+  name: widy
+  platforms:
+    rl:
+    - '3747802'
+    - '10892656'
+    - '4438140'
+- aoeelo: null
+  canonical_name: Hellrazer
+  country: in
+  id: 645
+  liquipedia: HELLRAZER
+  name: Hellrazer
+  platforms:
+    rl:
+    - '3079181'
+    - '6851129'
+  team: 21
