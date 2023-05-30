@@ -589,6 +589,7 @@
     - '9615599'
     - '9798830'
     - '6381504'
+    - '11255662'
     voobly:
     - '182612'
     - '125129993'
@@ -1547,6 +1548,7 @@
     - '1252385'
     - '2431776'
     - '5416282'
+    - '575514'
     voobly:
     - '123273973'
     - '123725868'
@@ -1579,7 +1581,7 @@
     - '9806'
     zone:
     - dziamdziak
-  team: 50
+  team: 52
   twitch:
   - https://www.twitch.tv/dziamdziak
 - aka:
@@ -1601,6 +1603,7 @@
   - Chunyu
   - I_Love_Yin_Hing
   - Yanzi
+  aoeelo: 274
   canonical_name: Yanzi
   country: hk
   esportsearnings: 2178
@@ -1958,7 +1961,8 @@
     - vile
     zone:
     - vile
-- canonical_name: Kmkm
+- aoeelo: 373
+  canonical_name: Kmkm
   country: tw
   esportsearnings: 2183
   id: 76
@@ -2334,6 +2338,8 @@
   team: 39
   twitch:
   - https://www.twitch.tv/ralbertv
+  twitter:
+  - https://twitter.com/rAlbErTV
 - aka:
   - DreaIVIs
   aoeelo: 167
@@ -2412,6 +2418,7 @@
   canonical_name: Duck
   country: cn
   id: 96
+  liquipedia: Duck
   name: Duck
   notability:
     aoe2: true
@@ -2561,6 +2568,7 @@
   - https://www.twitch.tv/ra_aoe
 - aka:
   - NO_23
+  aoeelo: 220
   canonical_name: Miss_Xue
   country: cn
   esportsearnings: 14709
@@ -2657,7 +2665,6 @@
   platforms:
     rl:
     - '3548560'
-    - '575514'
     voobly:
     - '123410633'
     - '124223825'
@@ -3046,7 +3053,8 @@
     zone:
     - poisn
   team: 8
-- canonical_name: Playboy
+- aoeelo: 319
+  canonical_name: Playboy
   country: cn
   id: 132
   name: Playboy
@@ -3738,6 +3746,7 @@
 - aka:
   - DevilZ_HigH
   - High
+  aoeelo: 433
   canonical_name: DevilZ_High
   country: dk
   esportsearnings: 42050
@@ -3885,7 +3894,7 @@
     - '5658345'
     voobly:
     - '124317014'
-  team: 57
+  team: 58
   twitch:
   - https://www.twitch.tv/sobek_aoe
   - https://www.twitch.tv/sobekaoe
@@ -4127,6 +4136,7 @@
     - '489128'
     voobly:
     - '123369268'
+  team: 34
   twitch:
   - https://www.twitch.tv/TheCode_AoE
 - aka:
@@ -4633,6 +4643,7 @@
     - '5123311'
     voobly:
     - '124423817'
+  team: 50
   twitch:
   - https://www.twitch.tv/onleke
   youtube:
@@ -4874,6 +4885,7 @@
   canonical_name: z40305125
   country: tw
   id: 246
+  liquipedia: z40
   name: z40305125
   notability:
     aoe2: true
@@ -5568,6 +5580,7 @@
   platforms:
     rl:
     - '212294'
+    - '9246070'
   team: 12
   twitch:
   - https://www.twitch.tv/d3rp276
@@ -5830,7 +5843,7 @@
   platforms:
     rl:
     - '839529'
-  team: 52
+  team: 53
   twitch:
   - https://www.twitch.tv/ultra_coming
   youtube:
@@ -5900,7 +5913,7 @@
   platforms:
     rl:
     - '581780'
-  team: 54
+  team: 55
   twitch:
   - https://www.twitch.tv/kioss3000
   twitter:
@@ -6025,6 +6038,7 @@
 - aka:
   - Aura
   - Micav
+  aoeelo: 1201
   canonical_name: Mica
   country: ar
   id: 311
@@ -6365,6 +6379,7 @@
   - https://www.twitch.tv/kaaaai_
 - aka:
   - Noboru
+  aoeelo: 239
   canonical_name: noboru
   country: jp
   id: 331
@@ -6391,7 +6406,7 @@
   platforms:
     rl:
     - '267597'
-  team: 57
+  team: 58
   twitch:
   - https://www.twitch.tv/wakko_aoe
 - aoeelo: 900
@@ -6485,6 +6500,7 @@
   canonical_name: AnTiDeMoN
   country: br
   id: 338
+  liquipedia: AnTiDeMoN
   name: AnTiDeMoN
   notability:
     aoe2: true
@@ -6495,6 +6511,7 @@
     - '2659351'
     voobly:
     - '124651224'
+  team: 50
   twitch:
   - https://twitch.tv/antidemon_aoe
 - aka:
@@ -6574,7 +6591,8 @@
   team: 34
   twitch:
   - https://www.twitch.tv/wbpolar
-- canonical_name: RollsRoyce
+- aoeelo: 961
+  canonical_name: RollsRoyce
   country: vn
   id: 344
   liquipedia: RollsRoyce
@@ -6597,7 +6615,7 @@
   platforms:
     rl:
     - '3085163'
-  team: 57
+  team: 58
   twitch:
   - https://www.twitch.tv/imvalak
   twitter:
@@ -6830,7 +6848,8 @@
   youtube:
   - https://www.youtube.com/channel/UC7li9aVSk8b94hNEZdDPAcg
   - https://www.youtube.com/channel/UCkONYmgc8jP97a4AXQ4yGiA
-- canonical_name: TieuQuy
+- aoeelo: 1153
+  canonical_name: TieuQuy
   country: vn
   id: 359
   name: TieuQuy
@@ -6924,6 +6943,7 @@
   - https://www.twitch.tv/iam2k1
 - aka:
   - Hope
+  aoeelo: 1220
   canonical_name: "Qu\u1EA3ng Tr\u1ECB"
   country: vn
   id: 366
@@ -6935,6 +6955,8 @@
     - '2660491'
     voobly:
     - '125387373'
+  twitch:
+  - https://www.twitch.tv/hope220594
 - aoeelo: 964
   canonical_name: Salted Pepper
   country: nl
@@ -6948,7 +6970,9 @@
     - '938639'
   twitch:
   - https://www.twitch.tv/salted_pepper
-- aoeelo: 878
+- aka:
+  - Mihai06
+  aoeelo: 878
   aoeelo_updated: 2022-08-04
   canonical_name: Mihai
   country: ro
@@ -7083,6 +7107,7 @@
   country: tr
   discord_id: Kozmonot#3676
   id: 377
+  liquipedia: Dr.Kozmonot
   name: Dr.Kozmonot
   notability:
     aoe2: true
@@ -7095,6 +7120,8 @@
   team: 2
   twitch:
   - https://www.twitch.tv/drkozmonot
+  youtube:
+  - https://www.youtube.com/channel/UCADnocq-SCC28Xr5Tq-sF5Q
 - aka:
   - emalius2
   aoeelo: 636
@@ -7161,6 +7188,7 @@
     rl:
     - '243287'
     - '9699534'
+    - '3217607'
   team: 45
 - aoeelo: 826
   canonical_name: Ivanenko
@@ -7186,7 +7214,7 @@
     rl:
     - '1787077'
     - '10248391'
-  team: 53
+  team: 54
 - aoeelo: 725
   canonical_name: MingudaiLee
   country: uy
@@ -7580,6 +7608,9 @@
     - '4129359'
   twitch:
   - https://www.twitch.tv/varvarus_aoe
+  - https://www.twitch.tv/varvarus_aoea
+  youtube:
+  - https://www.youtube.com/channel/UCr-daXEOPfoOIFI1nPEyQOQ
 - aka:
   - El_Matador
   aoeelo: 1071
@@ -7631,7 +7662,7 @@
     - '2241917'
     voobly:
     - '124919015'
-  team: 51
+  team: 50
   twitch:
   - https://www.twitch.tv/paganini_aoc
   - https://www.twitch.tv/paganini_aoe2
@@ -7846,6 +7877,7 @@
   twitter:
   - https://twitter.com/uzikoti
   youtube:
+  - https://www.youtube.com/channel/UC372upvOX6eiYrdPL55gI4g
   - https://www.youtube.com/channel/UC372upvOX6eiYrdPL55gI4g/videos
 - canonical_name: cebdos
   country: fr
@@ -7907,7 +7939,7 @@
     rl:
     - '2771618'
     - '9343412'
-  team: 56
+  team: 57
   twitch:
   - https://www.twitch.tv/redlash_
 - canonical_name: Hackali
@@ -7924,6 +7956,7 @@
   canonical_name: Kenshin
   country: br
   id: 433
+  liquipedia: Kenshin
   name: Kenshin
   notability:
     aoe2: true
@@ -7931,7 +7964,7 @@
     rl:
     - '36778'
     - '4812351'
-  team: 42
+  team: 50
   twitch:
   - https://www.twitch.tv/kenshin_aoe
 - canonical_name: HumzaCrumza
@@ -7964,7 +7997,7 @@
     - '3211660'
     voobly:
     - '124375438'
-  team: 51
+  team: 50
   twitch:
   - https://www.twitch.tv/faradayaoe
 - canonical_name: AirCooL
@@ -8148,7 +8181,7 @@
     voobly:
     - '124808873'
     - '123550026'
-  team: 51
+  team: 50
   twitch:
   - https://www.twitch.tv/martinhsbr
 - aka:
@@ -8185,7 +8218,7 @@
     - '932058'
     voobly:
     - '123397726'
-  team: 58
+  team: 59
   twitch:
   - https://www.twitch.tv/wraith_aoe
   twitter:
@@ -8277,6 +8310,7 @@
     - '96571'
     - '2745300'
     - '2599393'
+    - '8359256'
   twitch:
   - https://www.twitch.tv/c3mbrich
 - aka:
@@ -8349,7 +8383,8 @@
 - canonical_name: LyRiCs
   liquipedia: LyRiCs
   name: LyRiCs
-- canonical_name: Heisen
+- aoeelo: 665
+  canonical_name: Heisen
   country: ar
   discord_id: HeisenN#7109
   id: 460
@@ -8362,7 +8397,8 @@
     - '583791'
     - '2407064'
   team: 36
-- canonical_name: Loco_Ser
+- aoeelo: 819
+  canonical_name: Loco_Ser
   country: ar
   discord:
   - https://discord.gg/h8Dyrkb
@@ -8407,7 +8443,8 @@
   platforms:
     rl:
     - '3392442'
-- canonical_name: kelar
+- aoeelo: 1276
+  canonical_name: kelar
   country: de
   id: 464
   liquipedia: kelar
@@ -8462,10 +8499,11 @@
   platforms:
     rl:
     - '382118'
-  team: 55
+  team: 56
   twitch:
   - https://www.twitch.tv/lockeaoe
-- canonical_name: Tointoin
+- aoeelo: 1275
+  canonical_name: Tointoin
   country: fr
   id: 481
   liquipedia: Tointoin
@@ -8905,7 +8943,8 @@
   platforms:
     rl:
     - '1651354'
-- canonical_name: Leozim
+- aoeelo: 947
+  canonical_name: Leozim
   country: br
   id: 489
   liquipedia: Leozim
@@ -9128,7 +9167,8 @@
     - '5821885'
     - '10104438'
   team: 46
-- canonical_name: TheAntman
+- aoeelo: 986
+  canonical_name: TheAntman
   country: fi
   id: 512
   name: TheAntman
@@ -9148,7 +9188,8 @@
     - '2297260'
   youtube_live:
   - https://www.youtube.com/channel/UCkWBCKcqodEcakCQTb2Sc9w/live
-- canonical_name: ChriSt
+- aoeelo: 741
+  canonical_name: ChriSt
   country: au
   id: 515
   liquipedia: ChriSt
@@ -9184,7 +9225,8 @@
   - https://www.youtube.com/c/TheManko
   youtube_live:
   - https://www.youtube.com/channel/UChWXoxtEWgD5-MStx0omSSg/live
-- canonical_name: x0r6zt
+- aoeelo: 1117
+  canonical_name: x0r6zt
   country: au
   id: 521
   liquipedia: x0r6zt
@@ -9194,12 +9236,13 @@
   platforms:
     rl:
     - '1361744'
-  team: 59
+  team: 62
   twitch:
   - https://www.twitch.tv/x0r6zt
   twitter:
   - https://twitter.com/x0r6zt
-- canonical_name: Solara
+- aoeelo: 830
+  canonical_name: Solara
   country: il
   id: 523
   liquipedia: Solara
@@ -9210,3 +9253,118 @@
     rl:
     - '1959055'
   team: 26
+- canonical_name: LeeChia
+  country: tw
+  id: 525
+  liquipedia: LeeChia
+  name: LeeChia
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '621969'
+- aoeelo: 885
+  canonical_name: Pyroptere
+  country: ch
+  id: 526
+  liquipedia: Pyroptere
+  name: Pyroptere
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '228572'
+- aoeelo: 797
+  canonical_name: Rxndy
+  country: de
+  id: 527
+  liquipedia: Rxndy
+  name: Rxndy
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '212710'
+  team: 28
+- canonical_name: Big Tuna
+  country: us
+  id: 529
+  liquipedia: Big Tuna
+  name: Big Tuna
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '303714'
+  team: 51
+  twitch:
+  - https://www.twitch.tv/Big__Tuna
+- canonical_name: Hitorek
+  country: pl
+  id: 530
+  liquipedia: Hitorek
+  name: Hitorek
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '993449'
+  team: 52
+- canonical_name: Kougrialka
+  country: fr
+  id: 531
+  liquipedia: Kougrialka
+  name: Kougrialka
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '209321'
+- canonical_name: Nectarie
+  country: ro
+  id: 532
+  liquipedia: Nectarie
+  name: Nectarie
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '250615'
+- canonical_name: PLP
+  country: fr
+  id: 533
+  liquipedia: PLP
+  name: PLP
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '1619463'
+    - '3245466'
+  team: 18
+  twitch:
+  - https://www.twitch.tv/plp_aoe
+- canonical_name: daehiise
+  country: ch
+  id: 534
+  liquipedia: daehiise
+  name: daehiise
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '247781'
+  team: 60
+  twitter:
+  - https://twitter.com/daehiise
+- canonical_name: kunyi
+  country: hu
+  id: 535
+  liquipedia: kunyi
+  name: kunyi
+  notability:
+    aoe2: true
+  platforms:
+    rl:
+    - '1594220'
+  team: 61
